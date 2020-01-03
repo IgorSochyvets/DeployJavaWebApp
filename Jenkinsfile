@@ -72,7 +72,7 @@ spec:
 //
       stage('Unit Tests') {
         container('maven') {
-          sh "mvn test" ;
+          echo "test"
           }
         }
 
