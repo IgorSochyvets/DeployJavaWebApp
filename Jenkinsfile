@@ -77,7 +77,6 @@ stage('Checkout App repo') {
         sh "pwd"
         sh "ls -la"
         sh "git log --oneline -n 1 | cut -b 1-7"
-        sh "git describe --tags $(git rev-list --tags --max-count=1)"
 }
 
 
