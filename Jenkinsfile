@@ -74,7 +74,7 @@ spec:
 stage('Checkout App repo') {
         checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
         sh "ls -la"
-        sj "ls -la AppDir"
+        sh "ls -la AppDir"
 }
 
 
