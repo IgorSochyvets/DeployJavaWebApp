@@ -86,6 +86,8 @@ spec:
         echo "$tagDockerImage"
         echo "${tagDockerImage}"
         echo "tagDockerImage"
+        echo "${TEST_VAR}"
+        echo ${TEST_VAR}
         deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
 
