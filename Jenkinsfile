@@ -72,7 +72,7 @@ stage('Checkout App repo') {
             credentialsId: 'github_key',
             url: 'https://github.com/IgorSochyvets/DeployJavaWebApp.git'
         sh "ls -la"
-        sh "ls -la ../"
+        sh "ls -la ../../"
 }
 
 // git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
