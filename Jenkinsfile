@@ -62,6 +62,7 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
+        sh "ls -la"
       }
 
 //
@@ -70,9 +71,8 @@ spec:
 stage('Checkout App repo') {
         git branch: 'master',
             credentialsId: 'github_key',
-            url: 'https://github.com/IgorSochyvets/DeployJavaWebApp.git'
+            url: 'https://github.com/IgorSochyvets/fizz-buzz.git'
         sh "ls -la"
-        sh "ls -la ../../"
 }
 
 // git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
