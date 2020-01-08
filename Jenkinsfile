@@ -61,11 +61,9 @@ spec:
       def nameStage
 
       stage('Checkout SCM') {
-        dir('subDir') {
         checkout scm
         sh "pwd"
         sh "ls -la"
-      }
       }
 
 
