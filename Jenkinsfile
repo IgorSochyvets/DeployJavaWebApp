@@ -83,6 +83,9 @@ spec:
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
+        echo "$tagDockerImage"
+        echo "${tagDockerImage}"
+        echo "tagDockerImage"
         deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
 
