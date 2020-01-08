@@ -76,5 +76,43 @@ spec:
           }
         }
 
+//
+// *** Deploy DEV release
+//
+
+    stage('Deploy DEV release') {
+        echo "Every commit to master branch is a dev release"
+        echo "Deploy Dev release after commit to master"
+        deployHelm("javawebapp-dev2","dev",tagDockerImage)
+    }
+
+
+
     } // node
   } //podTemplate
+
+
+//
+// Deployment function
+// name = javawebapp
+// ns = dev/qa/prod
+// tag = image's tag
+  def deployHelm(name, ns, tag) {
+     container('helm') {
+        withKubeConfig([credentialsId: 'kubeconfig']) {
+        sh """
+            echo "Deployments is starting..."
+            helm upgrade --install $name --debug ./javawebapp-chart \
+            --force \
+            --wait \
+            --namespace $ns \
+            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
+            --set-string ingress.hosts[0].host=${name}.ddns.net \
+            --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
+            --set-string ingress.tls[0].secretName=acme-${name}-tls \
+            --set image.tag=$tag
+            helm ls
+        """
+        }
+    }
+  }
