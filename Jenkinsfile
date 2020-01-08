@@ -73,6 +73,7 @@ stage('Checkout App repo') {
             credentialsId: 'github_key',
             url: 'https://github.com/IgorSochyvets/fizz-buzz.git'
         sh "ls -la"
+        sh "git log  --pretty=oneline | tail -n 1 | cut -b 1-7"
 }
 
 // git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
