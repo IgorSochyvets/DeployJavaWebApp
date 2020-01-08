@@ -62,19 +62,24 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
-        SHORT_COMMIT = readFile('GIT_COMMIT_SHORT')
-        echo "Short Commit: ${SHORT_COMMIT}"
       }
 
 //
-// *** Test and build Java Web App
+// *** Git Clone /
 //
-      stage('Unit Tests') {
-        container('maven') {
-          echo "test"
-          }
-        }
+stage('Checkout App repo') {
+    steps {
+        git branch: 'master',
+            credentialsId: 'github_key',
+            url: 'https://git@test.com/proj/test_proj.git'
+
+        sh "ls -la"
+    }
+}
+
+// git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
+// git describe --tags $(git rev-list --tags --max-count=1) # most recent tag
+// git tag -l  | tail -n1  # highest tag
 
 //
 // *** Deploy DEV release
@@ -83,11 +88,6 @@ spec:
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
-        echo "$tagDockerImage"
-        echo "${tagDockerImage}"
-        echo "tagDockerImage"
-        echo "${TEST_VAR}"
-        echo ${TEST_VAR}
         deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
 
