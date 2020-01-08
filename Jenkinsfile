@@ -73,10 +73,10 @@ stage('Checkout App repo') {
             credentialsId: 'github_key',
             url: 'https://github.com/IgorSochyvets/fizz-buzz.git'
         sh "ls -la"
-        sh "git log  --pretty=oneline | tail -n 1 | cut -b 1-7"
+        sh "git log --oneline -n 1 | cut -b 1-7"
 }
 
-// git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
+// git log --oneline -n 1 | cut -b 1-7  # it is mast recent short commit from master
 // git describe --tags $(git rev-list --tags --max-count=1) # most recent tag
 // git tag -l  | tail -n1  # highest tag
 
