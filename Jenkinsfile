@@ -72,7 +72,12 @@ spec:
 // *** Git Clone /
 //
 stage('Checkout App repo') {
-        checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
+        checkout([$class: 'GitSCM',
+        branches: [[name: '**']],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
+        submoduleCfg: [],
+        userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
         sh "ls -la"
         sh "ls -la AppDir"
 }
