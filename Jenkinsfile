@@ -64,6 +64,7 @@ spec:
         checkout scm
         sh "pwd"
         sh "ls -la"
+        echo "${params.BRANCH_NAME1}"
       }
 
 
