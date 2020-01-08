@@ -79,7 +79,8 @@ stage('Checkout App repo') {
         submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
         sh "ls -la"
-        sh "ls -l .git/refs/tags | awk '{ print $9 }'"
+        sh "ls -l .git/refs/tags > tmp_file1"
+        sh "cat tmp_file1"
 
 }
 
