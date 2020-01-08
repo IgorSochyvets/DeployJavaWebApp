@@ -62,9 +62,11 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
+        sh "pwd"
         sh "ls -la"
       }
 
+// working / tested
 //
 // *** Git Clone /
 //
@@ -72,9 +74,11 @@ stage('Checkout App repo') {
         git branch: 'master',
             credentialsId: 'github_key',
             url: 'https://github.com/IgorSochyvets/fizz-buzz.git'
+        sh "pwd"
         sh "ls -la"
         sh "git log --oneline -n 1 | cut -b 1-7"
 }
+
 
 // git log --oneline -n 1 | cut -b 1-7  # it is mast recent short commit from master
 // git describe --tags $(git rev-list --tags --max-count=1) # most recent tag
