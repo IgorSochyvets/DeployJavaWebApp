@@ -73,10 +73,7 @@ spec:
 //
 stage('Checkout App repo') {
         checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-        sh "pwd"
         sh "ls -la"
-        sh "git log --oneline -n 1 | cut -b 1-7"
-        sh "git describe --tags $(git rev-list --tags --max-count=1)"
 }
 
 
@@ -84,6 +81,11 @@ stage('Checkout App repo') {
 git branch: 'master',
     credentialsId: 'github_key',
     url: 'https://github.com/IgorSochyvets/fizz-buzz.git'
+
+    sh "pwd"
+    sh "ls -la"
+    sh "git log --oneline -n 1 | cut -b 1-7"
+    sh "git describe --tags $(git rev-list --tags --max-count=1)"
 
 */
 
