@@ -68,13 +68,10 @@ spec:
 // *** Git Clone /
 //
 stage('Checkout App repo') {
-    steps {
         git branch: 'master',
             credentialsId: 'github_key',
             url: 'https://git@test.com/proj/test_proj.git'
-
         sh "ls -la"
-    }
 }
 
 // git log  --pretty=oneline | tail -n 1 | cut -b 1-7  # it is short commit from master
