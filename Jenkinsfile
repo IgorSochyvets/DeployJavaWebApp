@@ -70,7 +70,7 @@ spec:
 stage('Checkout App repo') {
         git branch: 'master',
             credentialsId: 'github_key',
-            url: 'https://git@test.com/proj/test_proj.git'
+            url: 'https://github.com/IgorSochyvets/DeployJavaWebApp.git'
         sh "ls -la"
 }
 
