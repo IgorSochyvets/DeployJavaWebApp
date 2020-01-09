@@ -100,7 +100,7 @@ stage('Checkout SCM App repo') {
 //
 // *** Deploy DEV release
 //
-
+tagDockerImage = ${params.DEPLOY_TAG}
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
@@ -123,7 +123,7 @@ stage('Checkout SCM App repo') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm upgrade --install $name --debug ./javawebapp-chart \
+            helm upgrade --install $name --debug .AppDir/javawebapp-chart \
             --force \
             --wait \
             --namespace $ns \
