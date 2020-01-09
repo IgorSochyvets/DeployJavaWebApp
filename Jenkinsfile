@@ -82,6 +82,7 @@ stage('Checkout SCM App repo') {
         userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 
         sh 'ls -l AppDir/.git/'
+        sh 'tree AppDir'
 
 }
 
