@@ -100,11 +100,11 @@ stage('Checkout SCM App repo') {
 //
 // *** Deploy DEV release
 //
-tagDockerImage = ${params.DEPLOY_TAG}
+// tagDockerImage = ${params.DEPLOY_TAG}
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
-        deployHelm("javawebapp-dev2","dev",tagDockerImage)
+        deployHelm("javawebapp-dev2","dev",${params.DEPLOY_TAG})
     }
 
 
