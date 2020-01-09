@@ -65,7 +65,7 @@ spec:
         checkout scm
         sh "ls"
         echo "${params.DEPLOY_TAG}"
-        tagDockerImage = "${params.DEPLOY_TAG}"
+        tagDockerImage = params.DEPLOY_TAG
         echo $tagDockerImage
       }
 
@@ -106,7 +106,7 @@ stage('Checkout SCM App repo') {
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
-        deployHelm("javawebapp-dev2","dev",${params.DEPLOY_TAG})
+        deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
 
 
