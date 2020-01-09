@@ -135,9 +135,6 @@ stage('Checkout SCM App repo') {
   }
 
 
-
-
-
     } // node
   } //podTemplate
 
