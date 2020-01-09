@@ -83,7 +83,7 @@ stage('Checkout SCM App repo') {
 
         sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
         sh './script.sh'
-        short_commit = "${sh(./script.sh,returnStdout: true)}"
+        short_commit = "${sh(script.sh,returnStdout: true)}"
         echo "short_commit ${short_commit}"
 
 }
