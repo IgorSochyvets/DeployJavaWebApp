@@ -60,11 +60,11 @@ spec:
       def tagDockerImage
       def nameStage
 
-      stage('Checkout SCM') {
+      stage('Checkout SCM Deploy Config repo') {
         checkout scm
         sh "pwd"
         sh "ls -la"
-        echo "${params.BRANCH_NAME1}"
+        echo "${params.DEPLOY_TAG}"
       }
 
 
@@ -72,7 +72,7 @@ spec:
 //
 // *** Git Clone /
 //
-stage('Checkout App repo') {
+stage('Checkout SCM App repo') {
         checkout([$class: 'GitSCM',
         branches: [[name: '**']],
         doGenerateSubmoduleConfigurations: false,
