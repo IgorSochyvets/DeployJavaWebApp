@@ -125,7 +125,7 @@ stage('Checkout SCM App repo') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm upgrade --install $name --debug .AppDir/javawebapp-chart \
+            helm upgrade --install $name --debug AppDir/javawebapp-chart \
             --force \
             --wait \
             --namespace $ns \
