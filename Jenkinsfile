@@ -82,7 +82,7 @@ stage('Checkout SCM App repo') {
         userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 
         sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
-        sh 'AppDir/check_short.sh'
+        sh './AppDir/check_short.sh'
         short_commit = "${sh(AppDir/check_short.sh,returnStdout: true)}"
         echo "short_commit ${short_commit}"
 
