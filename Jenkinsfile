@@ -65,8 +65,9 @@ spec:
         checkout scm
         sh "ls"
         echo "${params.DEPLOY_TAG}"
-        tagDockerImage = params.DEPLOY_TAG
-        echo  "tag: ${tagDockerImage}"
+        echo "${params.BRANCHNAME}"
+  //      tagDockerImage = params.DEPLOY_TAG
+  //      echo  "tag: ${tagDockerImage}"
       }
 
 // working / tested
@@ -104,6 +105,7 @@ stage('Checkout SCM App repo') {
 //
 // tagDockerImage = ${params.DEPLOY_TAG}
 if ( isMaster() ) {
+    tagDockerImage = params.DEPLOY_TAG
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
@@ -112,6 +114,7 @@ if ( isMaster() ) {
 }
 
 else if ( isBuildingTag() ) {
+    tagDockerImage = params.BRANCHNAME
     stage('Deploy QA release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
@@ -125,11 +128,11 @@ else if ( isBuildingTag() ) {
   } //podTemplate
 
   def isMaster() {
-      return ( tagDockerImage == "......." )
+      return ( params.BRANCHNAME == "master" )
   }
 
   def isBuildingTag() {
-    return ( tagDockerImage ==~ /^\d.\d.\d$/ )
+    return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
   }
 
 //
