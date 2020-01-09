@@ -103,7 +103,7 @@ stage('Checkout SCM App repo') {
 // *** Deploy DEV release
 //
 // tagDockerImage = ${params.DEPLOY_TAG}
-if ( isMaster() ) }
+if ( isMaster() ) {
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
@@ -111,7 +111,7 @@ if ( isMaster() ) }
     }
 }
 
-else if ( isBuildingTag() ){
+else if ( isBuildingTag() ) {
     stage('Deploy QA release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
