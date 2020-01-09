@@ -63,16 +63,9 @@ spec:
       stage('Checkout SCM Deploy Config repo') {
         checkout scm
         sh "ls"
-        echo "${params.DEPLOY_TAG}"
-        echo "${params.BRANCHNAME}"
-  //      tagDockerImage = params.DEPLOY_TAG
-  //      echo  "tag: ${tagDockerImage}"
+        echo "${params.DEPLOY_TAG}"  // parameters from upstream job
+        echo "${params.BRANCHNAME}"  // parameters from upstream job
       }
-
-// working / tested
-//
-// *** Git Clone /
-//
 
 // checkout App repo
 stage('Checkout SCM App repo') {
@@ -86,33 +79,19 @@ stage('Checkout SCM App repo') {
 
 }
 
-
-/*
-    sh "pwd"
-    sh "ls -la"
-    sh "git log --oneline -n 1 | cut -b 1-7"
-    sh "git describe --tags $(git rev-list --tags --max-count=1)"
-*/
-
-
-// git log --oneline -n 1 | cut -b 1-7  # it is mast recent short commit from master
-// git describe --tags $(git rev-list --tags --max-count=1) # most recent tag
-// git tag -l  | tail -n1  # highest tag
-
 //
 // *** Deploy PROD/DEV/QA  release
 //
-//
 
 // deploy PROD
-  if ( isChangeSet()  ) {
+  stage('Deploy PROD release') {
+    if ( isChangeSet()  ) {
       tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-      stage('Deploy PROD release') {
           echo "Production release controlled by a change to production-release.txt file in application repository root,"
           echo "containing a git tag that should be released to production environment"
           tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
           deployHelm("javawebapp-prod2","prod",tagDockerImage)
-      }
+    }
   }
 //deploy DEV
   else if ( isMaster() ) {
