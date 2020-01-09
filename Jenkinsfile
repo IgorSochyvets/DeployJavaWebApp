@@ -82,7 +82,7 @@ stage('Checkout SCM App repo') {
         userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 
         sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
-        sh 'cd AppDir/.git/logs/refs/remotes/origin && tail -1 master'
+        sh 'cd AppDir/.git/logs/refs/remotes/origin && tail -1 master | awk {'{print $2}'}'
 
 
 }
