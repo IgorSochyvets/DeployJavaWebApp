@@ -101,26 +101,40 @@ stage('Checkout SCM App repo') {
 // git tag -l  | tail -n1  # highest tag
 
 //
-// *** Deploy DEV release
+// *** Deploy PROD/DEV/QA  release
 //
-// tagDockerImage = ${params.DEPLOY_TAG}
-if ( isMaster() ) {
+//
+
+// deploy PROD
+  if ( isChangeSet()  ) {
+      tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+      stage('Deploy PROD release') {
+          echo "Production release controlled by a change to production-release.txt file in application repository root,"
+          echo "containing a git tag that should be released to production environment"
+          tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+          deployHelm("javawebapp-prod2","prod",tagDockerImage)
+      }
+  }
+//deploy DEV
+  else if ( isMaster() ) {
     tagDockerImage = params.DEPLOY_TAG
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
         deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
-}
-
-else if ( isBuildingTag() ) {
+  }
+// deploy QA
+  else if ( isBuildingTag() ) {
     tagDockerImage = params.BRANCHNAME
     stage('Deploy QA release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
         deployHelm("javawebapp-qa2","qa",tagDockerImage)
     }
-}
+  }
+
+
 
 
 
@@ -134,6 +148,35 @@ else if ( isBuildingTag() ) {
   def isBuildingTag() {
     return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
   }
+
+  def isChangeSet() {
+
+/* new version - need testing
+    currentBuild.changeSets.any { changeSet ->
+          changeSet.items.any { entry ->
+            entry.affectedFiles.any { file ->
+              if (file.path.equals("production-release.txt")) {
+                return true
+              }
+            }
+          }
+        }
+
+*/
+// old version
+      def changeLogSets = currentBuild.changeSets
+             for (int i = 0; i < changeLogSets.size(); i++) {
+             def entries = changeLogSets[i].items
+             for (int j = 0; j < entries.length; j++) {
+                 def files = new ArrayList(entries[j].affectedFiles)
+                 for (int k = 0; k < files.size(); k++) {
+                     def file = files[k]
+                     if (file.path.equals("production-release.txt")) {
+                         return true
+                     }
+                 }
+              }
+      }
 
 //
 // Deployment function
