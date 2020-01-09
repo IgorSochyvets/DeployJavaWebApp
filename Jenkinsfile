@@ -81,7 +81,7 @@ stage('Checkout SCM App repo') {
         submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 
-        sh 'ls -l AppDir/.git/logs/'
+        sh 'ls -l AppDir/.git/logs/refs'
 
 
 }
