@@ -55,28 +55,27 @@ spec:
 """
   ){
 
-    node(label) {
+node(label) {
 
-      def tagDockerImage
+def tagDockerImage
 
 // checkout Config repo
-      stage('Checkout SCM Deploy Config repo') {
-        checkout scm
-        sh "ls"
-        echo "${params.DEPLOY_TAG}"  // parameters from upstream job
-        echo "${params.BRANCHNAME}"  // parameters from upstream job
-      }
+stage('Checkout SCM Deploy Config repo') {
+  checkout scm
+  sh "ls"
+  echo "${params.DEPLOY_TAG}"  // parameters from upstream job
+  echo "${params.BRANCHNAME}"  // parameters from upstream job
+}
 
 // checkout App repo
 stage('Checkout SCM App repo') {
-        checkout([$class: 'GitSCM',
-        branches: [[name: '**']],
-        doGenerateSubmoduleConfigurations: false,
-        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
-        submoduleCfg: [],
-        userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-        sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
-
+  checkout([$class: 'GitSCM',
+  branches: [[name: '**']],
+  doGenerateSubmoduleConfigurations: false,
+  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
+  submoduleCfg: [],
+  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
+  sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
 }
 
 //
@@ -84,47 +83,47 @@ stage('Checkout SCM App repo') {
 //
 
 // deploy PROD
-  stage('Deploy PROD release') {
-    if ( isChangeSet()  ) {
-      tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-          echo "Production release controlled by a change to production-release.txt file in application repository root,"
-          echo "containing a git tag that should be released to production environment"
-          tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-          deployHelm("javawebapp-prod2","prod",tagDockerImage)
-    }
+stage('Deploy PROD release') {
+  if ( isChangeSet()  ) {
+    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+    echo "Production release controlled by a change to production-release.txt file in application repository root,"
+    echo "containing a git tag that should be released to production environment"
+    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+    deployHelm("javawebapp-prod2","prod",tagDockerImage)
   }
+}
 //deploy DEV
- if ( isMaster() ) {
+stage('Deploy DEV release') {
+  if ( isMaster() ) {
     tagDockerImage = params.DEPLOY_TAG
-    stage('Deploy DEV release') {
-        echo "Every commit to master branch is a dev release"
-        echo "Deploy Dev release after commit to master"
-        deployHelm("javawebapp-dev2","dev",tagDockerImage)
-    }
+    echo "Every commit to master branch is a dev release"
+    echo "Deploy Dev release after commit to master"
+    deployHelm("javawebapp-dev2","dev",tagDockerImage)
   }
+}
 // deploy QA
-  else if ( isBuildingTag() ) {
+stage('Deploy QA release') {
+  if ( isBuildingTag() ) {
     tagDockerImage = params.BRANCHNAME
-    stage('Deploy QA release') {
-        echo "Every commit to master branch is a dev release"
-        echo "Deploy Dev release after commit to master"
-        deployHelm("javawebapp-qa2","qa",tagDockerImage)
-    }
+    echo "Every commit to master branch is a dev release"
+    echo "Deploy Dev release after commit to master"
+    deployHelm("javawebapp-qa2","qa",tagDockerImage)
   }
+}
 
 
     } // node
   } //podTemplate
 
-  def isMaster() {
-      return ( params.BRANCHNAME == "master" )
-  }
+def isMaster() {
+  return ( params.BRANCHNAME == "master" )
+}
 
-  def isBuildingTag() {
-    return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
-  }
+def isBuildingTag() {
+  return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
+}
 
-  def isChangeSet() {
+def isChangeSet() {
 /* new version - need testing
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
