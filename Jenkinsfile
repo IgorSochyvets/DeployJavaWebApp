@@ -103,17 +103,34 @@ stage('Checkout SCM App repo') {
 // *** Deploy DEV release
 //
 // tagDockerImage = ${params.DEPLOY_TAG}
+if ( isMaster() ) }
     stage('Deploy DEV release') {
         echo "Every commit to master branch is a dev release"
         echo "Deploy Dev release after commit to master"
         deployHelm("javawebapp-dev2","dev",tagDockerImage)
     }
+}
+
+else if ( isBuildingTag() ){
+    stage('Deploy QA release') {
+        echo "Every commit to master branch is a dev release"
+        echo "Deploy Dev release after commit to master"
+        deployHelm("javawebapp-qa2","qa",tagDockerImage)
+    }
+}
 
 
 
     } // node
   } //podTemplate
 
+  def isMaster() {
+      return ( tagDockerImage == "......." )
+  }
+
+  def isBuildingTag() {
+    return ( tagDockerImage ==~ /^\d.\d.\d$/ )
+  }
 
 //
 // Deployment function
