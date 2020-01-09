@@ -147,7 +147,6 @@ stage('Checkout SCM App repo') {
   }
 
   def isChangeSet() {
-
 /* new version - need testing
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
@@ -158,7 +157,6 @@ stage('Checkout SCM App repo') {
             }
           }
         }
-
 */
 // old version
       def changeLogSets = currentBuild.changeSets
@@ -174,6 +172,7 @@ stage('Checkout SCM App repo') {
                  }
               }
       }
+}
 
 //
 // Deployment function
