@@ -58,7 +58,6 @@ spec:
     node(label) {
 
       def tagDockerImage
-      def nameStage
 
 // checkout Config repo
       stage('Checkout SCM Deploy Config repo') {
