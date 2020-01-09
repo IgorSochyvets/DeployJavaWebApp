@@ -65,7 +65,7 @@ spec:
         checkout scm
         sh "ls"
         echo "${params.DEPLOY_TAG}"
-        tagDockerImage = ${params.DEPLOY_TAG}
+        tagDockerImage = "${params.DEPLOY_TAG}"
         echo $tagDockerImage
       }
 
