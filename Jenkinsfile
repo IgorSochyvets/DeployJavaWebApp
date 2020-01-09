@@ -66,7 +66,7 @@ spec:
         sh "ls"
         echo "${params.DEPLOY_TAG}"
         tagDockerImage = params.DEPLOY_TAG
-        echo $tagDockerImage
+        echo  "tag: ${tagDockerImage}"
       }
 
 // working / tested
