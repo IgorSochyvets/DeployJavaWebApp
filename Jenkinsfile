@@ -66,7 +66,7 @@ stage('Checkout SCM Deploy Config repo') {
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
-  apk add awk
+  sh "apk add awk"
   sh "cat prod-us1/values.yaml"
 }
 
