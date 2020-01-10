@@ -1,1 +1,10 @@
-test
+image:
+  repository: kongurua/fizz-buzz
+  tag: 2.2.5
+ingress:
+  hosts:
+  - host: prod-us2.ddns.net
+  tls:
+  - hosts:
+    - prod-us2.ddns.net
+    secretName: acme-prod-us2-tls

@@ -59,18 +59,21 @@ node(label) {
 
 def tagDockerImage
 
+
 // checkout Config repo
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
+  String fileContents = new File('prod-us1/values.yaml').text
+  echo "fileContents"
 }
 
 // checkout App repo
 stage('Checkout SCM App repo') {
   checkout([$class: 'GitSCM',
-  branches: [[name: '2.2.5']],
+  branches: [[name: '**']],
   doGenerateSubmoduleConfigurations: false,
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
   submoduleCfg: [],
