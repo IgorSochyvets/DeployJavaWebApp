@@ -59,6 +59,18 @@ node(label) {
 
 def tagDockerImage
 
+myFileDirectory = prod-us1
+myFileName = "values.yaml"
+myFile = new File(myFileDirectory + myFileName)
+
+lastLine = myFile.readLines().get(myFile.readLines().size().toInteger() - 1)
+if (lastLine ==~ /.Fatal Error.*/ ){
+    println "Fatal error found"
+    System.exit(1)
+} else{
+   println "nothing to see here"
+}
+
 
 // checkout Config repo
 stage('Checkout SCM Deploy Config repo') {
@@ -66,8 +78,7 @@ stage('Checkout SCM Deploy Config repo') {
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
-  sh "apk add awk"
-  sh "cat prod-us1/values.yaml"
+
 }
 
 // checkout App repo
