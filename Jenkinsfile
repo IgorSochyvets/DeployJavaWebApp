@@ -70,7 +70,7 @@ stage('Checkout SCM Deploy Config repo') {
 // checkout App repo
 stage('Checkout SCM App repo') {
   checkout([$class: 'GitSCM',
-  branches: [[name: '**']],
+  branches: [[name: '2.2.5']],
   doGenerateSubmoduleConfigurations: false,
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
   submoduleCfg: [],
