@@ -67,7 +67,8 @@ stage('Checkout SCM Deploy Config repo') {
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
-  file = new File("${Jenkins.instance.getJob('IBM_Project/DeployJavaWebApp').workspace}/README.md").text
+  String fileContents = new File('prod-us1/values.yaml).text
+  echo "${fileContents}"
 }
 
 // checkout App repo
