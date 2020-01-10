@@ -67,7 +67,6 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
   String fileContents = new File('prod-us1/values.yaml').text
-  echo "fileContents"
 }
 
 // checkout App repo
