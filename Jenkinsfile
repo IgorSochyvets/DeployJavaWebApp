@@ -72,7 +72,7 @@ stage('Checkout SCM Deploy Config repo') {
 // checkout App repo
 stage('Checkout SCM App repo') {
 
-  checkoutAppRepo ("8f5d6c5")
+  checkoutAppRepo("8f5d6c5")
 
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
@@ -217,7 +217,7 @@ def isChangeSet(file_path) {
 
 
 // checkout App repo to commit function
-def checkoutAppRepo (commitId) {
+def checkoutAppRepo(commitId) {
   checkout([$class: 'GitSCM',
   branches: [[name: '$commitId']],
   doGenerateSubmoduleConfigurations: false,
