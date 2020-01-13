@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
-env.DOCKERHUB_IMAGE = 'fizz-buzz'
-env.DOCKERHUB_USER = 'kongurua'
+// env.DOCKERHUB_IMAGE = 'fizz-buzz'
+// env.DOCKERHUB_USER = 'kongurua'
 
 def label = "jenkins-agent"
 
@@ -69,6 +69,8 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.BRANCHNAME}"  // parameters from upstream job
   def values = readYaml(file: 'prod-us1/values.yaml')
   println "tag from yaml: ${values.image.tag}"
+  tagDockerImage = "${values.image.tag}"
+  echo "tagDockerImage is $tagDockerImage"
 }
 
 // checkout App repo
@@ -89,7 +91,8 @@ stage('Checkout SCM App repo') {
 // deploy PROD
 stage('Deploy PROD release') {
   if ( isChangeSet()  ) {
-    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+    tagDockerImage = "${values.image.tag}"
+
     echo "Production release controlled by a change to production-release.txt file in application repository root,"
     echo "containing a git tag that should be released to production environment"
     tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
@@ -128,7 +131,7 @@ def isBuildingTag() {
 }
 
 def isChangeSet() {
-/* new version - need testing
+/* new version - need to test
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
             entry.affectedFiles.any { file ->
@@ -147,7 +150,7 @@ def isChangeSet() {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals("production-release.txt")) {
+                     if (file.path.equals("prod-us1/values.yaml")) {
                          return true
                      }
                  }
