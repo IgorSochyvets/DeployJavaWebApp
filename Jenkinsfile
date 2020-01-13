@@ -92,11 +92,11 @@ stage('Checkout SCM App repo') {
 
 // deploy PROD
 stage('Deploy prod-us1 release') {
-  if ( isChangeSet("prod-us1/values.yaml")  ) {
-    def values = readYaml(file: 'prod-us1/values.yaml')
+  if ( isChangeSet("prod-us1/javawebapp-prod-us1.yaml")  ) {
+    def values = readYaml(file: 'prod-us1/javawebapp-prod-us1.yaml')
     println "tag for prod-us1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
-    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml","${values.image.tag}")
+    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp-prod-us1.yaml","${values.image.tag}")
   }
 }
 stage('Deploy prod-us2 release') {
