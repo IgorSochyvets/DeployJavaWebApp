@@ -230,5 +230,5 @@ def checkoutAppRepo(commitId) {
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-  sh 'ls -la "${commitId}"'
+  sh 'ls -la 2.2.4'
 }
