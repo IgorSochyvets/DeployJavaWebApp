@@ -69,8 +69,8 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.BRANCHNAME}"  // parameters from upstream job
   def values = readYaml(file: 'prod-us1/values.yaml')
   println "tag from yaml: ${values.image.tag}"
-  tagDockerImage = "${values.image.tag}"
-  echo "tagDockerImage is $tagDockerImage"
+//  tagDockerImage = "${values.image.tag}"
+//  echo "tagDockerImage is $tagDockerImage"
 }
 
 // checkout App repo
@@ -92,10 +92,6 @@ stage('Checkout SCM App repo') {
 stage('Deploy PROD release') {
   if ( isChangeSet()  ) {
     tagDockerImage = "${values.image.tag}"
-
-    echo "Production release controlled by a change to production-release.txt file in application repository root,"
-    echo "containing a git tag that should be released to production environment"
-    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
     deployHelm("javawebapp-prod2","prod",tagDockerImage)
   }
 }
