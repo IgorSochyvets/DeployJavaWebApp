@@ -69,11 +69,13 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
 
+
 // checkout App repo
 stage('Checkout SCM App repo') {
-
-  checkoutAppRepo("8f5d6c5")
-
+  def values1 = readYaml(file: 'prod-us1/values.yaml')
+  println "tag for prod-us1: ${values1.image.tag}"
+  checkoutAppRepo("${values1.image.tag}")
+  
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
 //  doGenerateSubmoduleConfigurations: false,
@@ -82,6 +84,7 @@ stage('Checkout SCM App repo') {
 //  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 //  sh 'ls -la AppDir/'
 }
+
 
 //
 // *** Deploy PROD/DEV/QA  release
