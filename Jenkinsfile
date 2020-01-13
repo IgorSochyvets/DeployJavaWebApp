@@ -116,11 +116,11 @@ stage('Deploy prod-eu1 release') {
   }
 }
 stage('Deploy prod-ap1 release') {
-  if ( isChangeSet("prod-ap1/values.yaml")  ) {
-    def values = readYaml(file: 'prod-ap1/values.yaml')
+  if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
+    def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
     println "tag for prod-ap1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")
-    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/values.yaml","${values.image.tag}")
+    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
   }
 }
 //deploy DEV
