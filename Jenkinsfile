@@ -70,12 +70,12 @@ stage('Checkout SCM Deploy Config repo') {
 }
 
 
-
+/*
 // checkout App repo
 stage('Checkout SCM App repo') {
   def values1 = readYaml(file: 'prod-us1/values.yaml')
   println "tag for prod-us1: ${values1.image.tag}"
-  checkoutAppRepo("8f5d6c5")
+  checkoutAppRepo("${values1.image.tag}")
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
 //  doGenerateSubmoduleConfigurations: false,
@@ -84,7 +84,7 @@ stage('Checkout SCM App repo') {
 //  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 //  sh 'ls -la AppDir/'
 }
-
+*/
 
 //
 // *** Deploy PROD/DEV/QA  release
@@ -95,7 +95,7 @@ stage('Deploy prod-us1 release') {
   if ( isChangeSet("prod-us1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag for prod-us1: ${values1.image.tag}"
-    checkoutAppRepo("${values1.image.tag}")
+//    checkoutAppRepo("${values1.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml","${values1.image.tag}")
   }
 }
@@ -103,21 +103,21 @@ stage('Deploy prod-us2 release') {
   if ( isChangeSet("prod-us2/values.yaml")  ) {
     def values2 = readYaml(file: 'prod-us2/values.yaml')
     println "tag for prod-us2: ${values2.image.tag}"
-    deployProd("javawebapp-prod-us2","prod-us2","prod-us2/values.yaml")
+    deployProd("javawebapp-prod-us2","prod-us2","prod-us2/values.yaml","${values1.image.tag}")
   }
 }
 stage('Deploy prod-eu1 release') {
   if ( isChangeSet("prod-eu1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-eu1/values.yaml')
     println "tag for prod-eu1: ${values1.image.tag}"
-    deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/values.yaml")
+    deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/values.yaml","${values1.image.tag}")
   }
 }
 stage('Deploy prod-ap1 release') {
   if ( isChangeSet("prod-ap1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-ap1/values.yaml')
     println "tag for prod-ap1: ${values1.image.tag}"
-    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/values.yaml")
+    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/values.yaml","${values1.image.tag}")
   }
 }
 //deploy DEV
