@@ -84,8 +84,32 @@ stage('Checkout SCM App repo') {
 //
 
 // deploy PROD
-stage('Deploy PROD release') {
+stage('Deploy prod-us1 release') {
   if ( isChangeSet("prod-us1/values.yaml")  ) {
+    def values1 = readYaml(file: 'prod-us1/values.yaml')
+    println "tag for prod-us1: ${values1.image.tag}"
+//    tagDockerImage = "${values1.image.tag}"
+    deployHelm("javawebapp-prod-us1","prod-us1","${values1.image.tag}")
+  }
+}
+stage('Deploy prod-us2 release') {
+  if ( isChangeSet("prod-us2/values.yaml")  ) {
+    def values1 = readYaml(file: 'prod-us2/values.yaml')
+    println "tag from yaml: ${values1.image.tag}"
+    tagDockerImage = "${values1.image.tag}"
+    deployHelm("javawebapp-prod-us2","prod-us2",tagDockerImage)
+  }
+}
+stage('Deploy prod-eu1 release') {
+  if ( isChangeSet("prod-eu1/values.yaml")  ) {
+    def values1 = readYaml(file: 'prod-us1/values.yaml')
+    println "tag from yaml: ${values1.image.tag}"
+    tagDockerImage = "${values1.image.tag}"
+    deployHelm("javawebapp-prod-us1","prod-us1",tagDockerImage)
+  }
+}
+stage('Deploy prod-ap1 release') {
+  if ( isChangeSet("prod-ap1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag from yaml: ${values1.image.tag}"
     tagDockerImage = "${values1.image.tag}"
