@@ -132,8 +132,8 @@ stage('Deploy DEV release') {
 // deploy QA
 stage('Deploy QA release') {
   if ( isBuildingTag() ) {
-    checkoutAppRepo(params.BRANCHNAME)
-    deployDEVQA("javawebapp-qa2","qa",params.BRANCHNAME)
+    checkoutAppRepo("${params.BRANCHNAME}")
+    deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}")
   }
 }
 
