@@ -168,13 +168,11 @@ def isChangeSet() {
             --force \
             --wait \
             --namespace $ns \
-            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=${name}.ddns.net \
-            --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
-            --set-string ingress.tls[0].secretName=acme-${name}-tls \
-            --set image.tag=$tag
+            --values prod-us1/values.yaml --reuse-values
             helm ls
         """
         }
     }
   }
+
+  // helm upgrade --install javawebapp-prod2 --debug javawebapp-chart --force --wait --namespace prod  --values ./file1.yaml --reuse-values
