@@ -205,7 +205,7 @@ def isChangeSet(file_path) {
       withKubeConfig([credentialsId: 'kubeconfig']) {
       sh """
           echo "Deployments is starting..."
-          helm upgrade --install $name --debug ${tag}/javawebapp-chart \
+          helm upgrade --install $name --debug '${tag}/javawebapp-chart' \
           --force \
           --wait \
           --namespace $ns \
