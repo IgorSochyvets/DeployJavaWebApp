@@ -168,7 +168,7 @@ def isChangeSet() {
             --force \
             --wait \
             --namespace $ns \
-            --values prod-us1/values.yaml --reuse-values
+            --values values.yaml --reuse-values
             helm ls
         """
         }
