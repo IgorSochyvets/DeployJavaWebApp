@@ -67,19 +67,20 @@ stage('Checkout SCM Deploy Config repo') {
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
-  def values = readYaml(file: 'prod-us1/values.yaml')
-  println "tag from yaml: ${values.image.tag}"
 }
 
 // checkout App repo
 stage('Checkout SCM App repo') {
-  checkout([$class: 'GitSCM',
-  branches: [[name: '**']],
-  doGenerateSubmoduleConfigurations: false,
-  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
-  submoduleCfg: [],
-  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-  sh 'ls -la AppDir/'
+
+  checkoutAppRepo ("8f5d6c5")
+
+//  checkout([$class: 'GitSCM',
+//  branches: [[name: '**']],
+//  doGenerateSubmoduleConfigurations: false,
+//  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
+//  submoduleCfg: [],
+//  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
+//  sh 'ls -la AppDir/'
 }
 
 //
@@ -175,7 +176,7 @@ def isChangeSet(file_path) {
 }
 
 //
-// deployment function fir PROD releases
+// deployment function for PROD releases
   def deployProd(name, ns, file_path) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -193,7 +194,7 @@ def isChangeSet(file_path) {
   }
 
 
-// deployment function fir DEV qa QA releases
+// deployment function for DEV qa QA releases
   def deployDEVQA(name, ns, tag) {
    container('helm') {
       withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -215,4 +216,13 @@ def isChangeSet(file_path) {
 }
 
 
-  // helm upgrade --install javawebapp-prod2 --debug javawebapp-chart --force --wait --namespace prod  --values ./file1.yaml --reuse-values
+// checkout App repo to commit function
+def checkoutAppRepo (commitId) {
+  checkout([$class: 'GitSCM',
+  branches: [[name: '$commitId']],
+  doGenerateSubmoduleConfigurations: false,
+  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '$commitId']],
+  submoduleCfg: [],
+  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
+  sh 'ls -la $commitId'
+}
