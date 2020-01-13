@@ -85,7 +85,7 @@ stage('Checkout SCM App repo') {
 
 // deploy PROD
 stage('Deploy PROD release') {
-  if ( isChangeSet()  ) {
+  if ( isChangeSet("prod-us1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag from yaml: ${values1.image.tag}"
     tagDockerImage = "${values1.image.tag}"
@@ -123,7 +123,7 @@ def isBuildingTag() {
   return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
 }
 
-def isChangeSet() {
+def isChangeSet(file_to_check) {
 /* new version - need to test
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
@@ -143,7 +143,7 @@ def isChangeSet() {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals("prod-us1/values.yaml")) {
+                     if (file.path.equals($file_to_check)) {
                          return true
                      }
                  }
