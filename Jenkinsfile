@@ -96,7 +96,7 @@ stage('Deploy prod-us1 release') {
     def values = readYaml(file: 'prod-us1/javawebapp.yaml')
     println "tag for prod-us1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
-    deployProd("javawebapp","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
   }
 }
 stage('Deploy prod-us2 release') {
@@ -104,7 +104,7 @@ stage('Deploy prod-us2 release') {
     def values = readYaml(file: 'prod-us2/javawebapp.yaml')
     println "tag for prod-us2: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")
-    deployProd("javawebapp","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
+    deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
   }
 }
 stage('Deploy prod-eu1 release') {
