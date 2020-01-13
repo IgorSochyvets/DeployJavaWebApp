@@ -70,14 +70,12 @@ stage('Checkout SCM Deploy Config repo') {
 }
 
 
-
+/*
 // checkout App repo
 stage('Checkout SCM App repo') {
   def values1 = readYaml(file: 'prod-us1/values.yaml')
   println "tag for prod-us1: ${values1.image.tag}"
   checkoutAppRepo("${values1.image.tag}")
-  sh 'ls -la'
-  sh 'pwd'
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
 //  doGenerateSubmoduleConfigurations: false,
@@ -86,7 +84,7 @@ stage('Checkout SCM App repo') {
 //  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 //  sh 'ls -la AppDir/'
 }
-
+*/
 
 //
 // *** Deploy PROD/DEV/QA  release
@@ -98,7 +96,7 @@ stage('Deploy prod-us1 release') {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag for prod-us1: ${values1.image.tag}"
     checkoutAppRepo("${values1.image.tag}")
-    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml")
+    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml","${values1.image.tag}")
   }
 }
 stage('Deploy prod-us2 release') {
@@ -183,12 +181,13 @@ def isChangeSet(file_path) {
 
 //
 // deployment function for PROD releases
-  def deployProd(name, ns, file_path) {
+// name - app's name; ns - namespace; file_path - path to values.yaml, dir_name - name of dir where App Repo is stored;
+  def deployProd(name, ns, file_path, dir_name) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm upgrade --install $name --debug AppDir/javawebapp-chart \
+            helm upgrade --install $name --debug $dir_name/javawebapp-chart \
             --force \
             --wait \
             --namespace $ns \
@@ -230,5 +229,5 @@ def checkoutAppRepo(commitId) {
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-  sh 'ls -la 2.2.4'
+  sh 'ls -la'
 }
