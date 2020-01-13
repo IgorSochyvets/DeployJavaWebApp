@@ -91,8 +91,9 @@ stage('Checkout SCM App repo') {
 // deploy PROD
 stage('Deploy PROD release') {
   if ( isChangeSet()  ) {
-    println "tag from yaml: ${values.image.tag}"
-    tagDockerImage = "${values.image.tag}"
+    def values1 = readYaml(file: 'values.yaml')
+    println "tag from yaml: ${values1.image.tag}"
+    tagDockerImage = "${values1.image.tag}"
     deployHelm("javawebapp-prod-us1","prod-us1",tagDockerImage)
   }
 }
