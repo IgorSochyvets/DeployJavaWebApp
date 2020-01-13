@@ -60,7 +60,6 @@ node(label) {
 def tagDockerImage
 
 
-
 // checkout Config repo
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
@@ -128,7 +127,7 @@ stage('Deploy DEV release') {
   if ( isMaster() ) {
 //    tagDockerImage = params.DEPLOY_TAG
     checkoutAppRepo("${params.DEPLOY_TAG}")
-    deployDEVQA("javawebapp-dev2","dev","${params.DEPLOY_TAG}")
+    deployDEVQA("javawebapp-dev2","dev",params.DEPLOY_TAG)
   }
 }
 // deploy QA
