@@ -65,7 +65,7 @@ def tagDockerImage
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
   sh "ls -la"
-  echo "${params.DEPLOY_TAG}"  // parameters from upstream job
+  echo "${params.DEPLOY_TAG}"  // parameters from upstream job - short commit
   echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
 
@@ -205,7 +205,7 @@ def isChangeSet(file_path) {
       withKubeConfig([credentialsId: 'kubeconfig']) {
       sh """
           echo "Deployments is starting..."
-          helm upgrade --install $name --debug $tag/javawebapp-chart \
+          helm upgrade --install $name --debug ${tag}/javawebapp-chart \
           --force \
           --wait \
           --namespace $ns \
