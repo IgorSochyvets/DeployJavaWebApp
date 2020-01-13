@@ -70,12 +70,12 @@ stage('Checkout SCM Deploy Config repo') {
 }
 
 
-/*
+
 // checkout App repo
 stage('Checkout SCM App repo') {
   def values1 = readYaml(file: 'prod-us1/values.yaml')
   println "tag for prod-us1: ${values1.image.tag}"
-  checkoutAppRepo("${values1.image.tag}")
+  checkoutAppRepo("8f5d6c5")
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
 //  doGenerateSubmoduleConfigurations: false,
@@ -84,7 +84,7 @@ stage('Checkout SCM App repo') {
 //  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 //  sh 'ls -la AppDir/'
 }
-*/
+
 
 //
 // *** Deploy PROD/DEV/QA  release
