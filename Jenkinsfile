@@ -127,8 +127,7 @@ stage('Deploy prod-ap1 release') {
 stage('Deploy DEV release') {
   if ( isMaster() ) {
     tagDockerImage = params.DEPLOY_TAG
-    echo "Every commit to master branch is a dev release"
-    echo "Deploy Dev release after commit to master"
+    checkoutAppRepo("${params.DEPLOY_TAG}")
     deployDEVQA("javawebapp-dev2","dev",tagDockerImage)
   }
 }
@@ -136,8 +135,6 @@ stage('Deploy DEV release') {
 stage('Deploy QA release') {
   if ( isBuildingTag() ) {
     tagDockerImage = params.BRANCHNAME
-    echo "Every commit to master branch is a dev release"
-    echo "Deploy Dev release after commit to master"
     deployDEVQA("javawebapp-qa2","qa",tagDockerImage)
   }
 }
@@ -208,7 +205,7 @@ def isChangeSet(file_path) {
       withKubeConfig([credentialsId: 'kubeconfig']) {
       sh """
           echo "Deployments is starting..."
-          helm upgrade --install $name --debug AppDir/javawebapp-chart \
+          helm upgrade --install $name --debug $tag/javawebapp-chart \
           --force \
           --wait \
           --namespace $ns \
