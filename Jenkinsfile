@@ -1,5 +1,8 @@
 #!/usr/bin/env groovy
 
+env.DOCKERHUB_IMAGE = 'fizz-buzz'
+env.DOCKERHUB_USER = 'kongurua'
+
 def label = "jenkins-agent"
 
 podTemplate(label: label, yaml: """
@@ -88,28 +91,28 @@ stage('Deploy prod-us1 release') {
   if ( isChangeSet("prod-us1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag for prod-us1: ${values1.image.tag}"
-    deployHelm("javawebapp-prod-us1","prod-us1","${values1.image.tag}")
+    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml")
   }
 }
 stage('Deploy prod-us2 release') {
   if ( isChangeSet("prod-us2/values.yaml")  ) {
-    def values1 = readYaml(file: 'prod-us2/values.yaml')
-    println "tag for prod-us2: ${values1.image.tag}"
-    deployHelm("javawebapp-prod-us2","prod-us2","${values1.image.tag}")
+    def values2 = readYaml(file: 'prod-us2/values.yaml')
+    println "tag for prod-us2: ${values2.image.tag}"
+    deployProd("javawebapp-prod-us2","prod-us2","prod-us2/values.yaml")
   }
 }
 stage('Deploy prod-eu1 release') {
   if ( isChangeSet("prod-eu1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-eu1/values.yaml')
     println "tag for prod-eu1: ${values1.image.tag}"
-    deployHelm("javawebapp-prod-eu1","prod-eu1","${values1.image.tag}")
+    deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/values.yaml")
   }
 }
 stage('Deploy prod-ap1 release') {
   if ( isChangeSet("prod-ap1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-ap1/values.yaml')
     println "tag for prod-ap1: ${values1.image.tag}"
-    deployHelm("javawebapp-prod-ap1","prod-ap1","${values1.image.tag}")
+    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/values.yaml")
   }
 }
 //deploy DEV
@@ -118,7 +121,7 @@ stage('Deploy DEV release') {
     tagDockerImage = params.DEPLOY_TAG
     echo "Every commit to master branch is a dev release"
     echo "Deploy Dev release after commit to master"
-    deployHelm("javawebapp-dev2","dev",tagDockerImage)
+    deployDEVQA("javawebapp-dev2","dev",tagDockerImage)
   }
 }
 // deploy QA
@@ -127,7 +130,7 @@ stage('Deploy QA release') {
     tagDockerImage = params.BRANCHNAME
     echo "Every commit to master branch is a dev release"
     echo "Deploy Dev release after commit to master"
-    deployHelm("javawebapp-qa2","qa",tagDockerImage)
+    deployDEVQA("javawebapp-qa2","qa",tagDockerImage)
   }
 }
 
@@ -143,7 +146,7 @@ def isBuildingTag() {
   return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
 }
 
-def isChangeSet(file_to_check) {
+def isChangeSet(file_path) {
 /* new version - need to test
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
@@ -163,7 +166,7 @@ def isChangeSet(file_to_check) {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals(file_to_check)) {
+                     if (file.path.equals(file_path)) {
                          return true
                      }
                  }
@@ -172,11 +175,8 @@ def isChangeSet(file_to_check) {
 }
 
 //
-// Deployment function
-// name = javawebapp
-// ns = dev/qa/prod
-// tag = image's tag
-  def deployHelm(name, ns, tag) {
+// deployment function fir PROD releases
+  def deployProd(name, ns, file_path) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
@@ -185,11 +185,34 @@ def isChangeSet(file_to_check) {
             --force \
             --wait \
             --namespace $ns \
-            --values prod-us1/values.yaml --reuse-values
+            --values $file_path --reuse-values
             helm ls
         """
         }
     }
   }
+
+
+// deployment function fir DEV qa QA releases
+  def deployDEVQA(name, ns, tag) {
+   container('helm') {
+      withKubeConfig([credentialsId: 'kubeconfig']) {
+      sh """
+          echo "Deployments is starting..."
+          helm upgrade --install $name --debug AppDir/javawebapp-chart \
+          --force \
+          --wait \
+          --namespace $ns \
+          --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
+          --set-string ingress.hosts[0].host=${name}.ddns.net \
+          --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
+          --set-string ingress.tls[0].secretName=acme-${name}-tls \
+          --set image.tag=$tag
+          helm ls
+      """
+      }
+  }
+}
+
 
   // helm upgrade --install javawebapp-prod2 --debug javawebapp-chart --force --wait --namespace prod  --values ./file1.yaml --reuse-values
