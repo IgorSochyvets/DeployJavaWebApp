@@ -219,7 +219,7 @@ def isChangeSet(file_path) {
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
   checkout([$class: 'GitSCM',
-  branches: [[name: $commitId]],
+  branches: [[name: '8f5d6c5']],
   doGenerateSubmoduleConfigurations: false,
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '$commitId']],
   submoduleCfg: [],
