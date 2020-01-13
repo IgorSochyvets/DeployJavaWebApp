@@ -81,7 +81,7 @@ stage('Checkout SCM App repo') {
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
   submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-  sh 'ls -l AppDir/.git/logs/refs/remotes/origin'
+  sh 'ls -la AppDir/'
 }
 
 //
@@ -92,7 +92,7 @@ stage('Checkout SCM App repo') {
 stage('Deploy PROD release') {
   if ( isChangeSet()  ) {
     tagDockerImage = "${values.image.tag}"
-    deployHelm("javawebapp-prod2","prod",tagDockerImage)
+    deployHelm("javawebapp-prod-us1","prod-us1",tagDockerImage)
   }
 }
 //deploy DEV
