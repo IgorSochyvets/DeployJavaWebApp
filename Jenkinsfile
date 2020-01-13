@@ -64,10 +64,11 @@ def tagDockerImage
 // checkout Config repo
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
-  sh "ls"
+  sh "ls -la"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
+
 
 
 // checkout App repo
@@ -75,7 +76,8 @@ stage('Checkout SCM App repo') {
   def values1 = readYaml(file: 'prod-us1/values.yaml')
   println "tag for prod-us1: ${values1.image.tag}"
   checkoutAppRepo("${values1.image.tag}")
-  
+  sh 'ls -la'
+  sh 'pwd'
 //  checkout([$class: 'GitSCM',
 //  branches: [[name: '**']],
 //  doGenerateSubmoduleConfigurations: false,
@@ -95,6 +97,7 @@ stage('Deploy prod-us1 release') {
   if ( isChangeSet("prod-us1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag for prod-us1: ${values1.image.tag}"
+    checkoutAppRepo("${values1.image.tag}")
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml")
   }
 }
@@ -224,7 +227,7 @@ def checkoutAppRepo(commitId) {
   checkout([$class: 'GitSCM',
   branches: [[name: "${commitId}"]],
   doGenerateSubmoduleConfigurations: false,
-  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: '$commitId']],
+  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la $commitId'
