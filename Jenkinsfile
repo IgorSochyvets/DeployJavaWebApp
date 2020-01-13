@@ -64,7 +64,7 @@ stage('Checkout SCM Deploy Config repo') {
   sh "ls"
   echo "${params.DEPLOY_TAG}"  // parameters from upstream job
   echo "${params.BRANCHNAME}"  // parameters from upstream job
-  def values = readYaml(file: 'values.yaml')
+  def values = readYaml(file: 'prod-us1/values.yaml')
   println "tag from yaml: ${values.image.tag}"
 }
 
