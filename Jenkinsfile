@@ -125,7 +125,6 @@ stage('Deploy prod-ap1 release') {
 //deploy DEV
 stage('Deploy DEV release') {
   if ( isMaster() ) {
-//    tagDockerImage = params.DEPLOY_TAG
     checkoutAppRepo(params.DEPLOY_TAG)
     deployDEVQA("javawebapp-dev2","dev",params.DEPLOY_TAG)
   }
@@ -133,8 +132,8 @@ stage('Deploy DEV release') {
 // deploy QA
 stage('Deploy QA release') {
   if ( isBuildingTag() ) {
-    tagDockerImage = params.BRANCHNAME
-    deployDEVQA("javawebapp-qa2","qa",tagDockerImage)
+    checkoutAppRepo(params.BRANCHNAME)
+    deployDEVQA("javawebapp-qa2","qa",params.BRANCHNAME)
   }
 }
 
