@@ -143,7 +143,7 @@ def isChangeSet(file_to_check) {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals($file_to_check)) {
+                     if (file.path.equals(file_to_check)) {
                          return true
                      }
                  }
