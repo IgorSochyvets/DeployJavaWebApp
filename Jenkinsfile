@@ -1,8 +1,5 @@
 #!/usr/bin/env groovy
 
-// env.DOCKERHUB_IMAGE = 'fizz-buzz'
-// env.DOCKERHUB_USER = 'kongurua'
-
 def label = "jenkins-agent"
 
 podTemplate(label: label, yaml: """
@@ -69,8 +66,6 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.BRANCHNAME}"  // parameters from upstream job
   def values = readYaml(file: 'values.yaml')
   println "tag from yaml: ${values.image.tag}"
-//  tagDockerImage = "${values.image.tag}"
-//  echo "tagDockerImage is $tagDockerImage"
 }
 
 // checkout App repo
@@ -91,7 +86,7 @@ stage('Checkout SCM App repo') {
 // deploy PROD
 stage('Deploy PROD release') {
   if ( isChangeSet()  ) {
-    def values1 = readYaml(file: 'values.yaml')
+    def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag from yaml: ${values1.image.tag}"
     tagDockerImage = "${values1.image.tag}"
     deployHelm("javawebapp-prod-us1","prod-us1",tagDockerImage)
@@ -148,7 +143,7 @@ def isChangeSet() {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals("values.yaml")) {
+                     if (file.path.equals("prod-us1/values.yaml")) {
                          return true
                      }
                  }
@@ -170,7 +165,7 @@ def isChangeSet() {
             --force \
             --wait \
             --namespace $ns \
-            --values values.yaml --reuse-values
+            --values prod-us1/values.yaml --reuse-values
             helm ls
         """
         }
