@@ -146,7 +146,7 @@ def isChangeSet() {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals("prod-us1/values.yaml")) {
+                     if (file.path.equals("values.yaml")) {
                          return true
                      }
                  }
