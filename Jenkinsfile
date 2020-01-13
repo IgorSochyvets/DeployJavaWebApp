@@ -95,7 +95,7 @@ stage('Deploy prod-us1 release') {
   if ( isChangeSet("prod-us1/values.yaml")  ) {
     def values1 = readYaml(file: 'prod-us1/values.yaml')
     println "tag for prod-us1: ${values1.image.tag}"
-//    checkoutAppRepo("${values1.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
+    checkoutAppRepo("${values1.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/values.yaml","${values1.image.tag}")
   }
 }
