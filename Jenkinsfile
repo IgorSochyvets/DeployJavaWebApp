@@ -26,27 +26,11 @@ spec:
     command:
     - cat
     tty: true
-  - name: maven
-    image: maven:latest
-    command:
-    - cat
-    tty: true
   - name: kubectl
     image: lachlanevenson/k8s-kubectl:v1.8.8
     command:
     - cat
     tty: true
-  - name: docker
-    image: docker:19-git
-    command:
-    - cat
-    tty: true
-    env:
-    - name: DOCKER_HOST
-      value: tcp://docker-dind:2375
-    volumeMounts:
-      - name: dind-storage
-        mountPath: /var/lib/docker
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
     command:
