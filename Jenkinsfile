@@ -64,7 +64,7 @@ def tagDockerImage
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
   sh "ls -la"
-  echo "${params.DEPLOY_TAG}"  // parameters from upstream job - short commit
+  echo "${params.deployTag}"  // parameters from upstream job - short commit
   echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
 
@@ -125,8 +125,8 @@ stage('Deploy prod-ap1 release') {
 //deploy DEV
 stage('Deploy DEV release') {
   if ( isMaster() ) {
-    checkoutAppRepo("${params.DEPLOY_TAG}")
-    deployDEVQA("javawebapp-dev2","dev","${params.DEPLOY_TAG}")
+    checkoutAppRepo("${params.deployTag}")
+    deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
   }
 }
 // deploy QA
