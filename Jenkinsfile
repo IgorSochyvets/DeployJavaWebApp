@@ -146,7 +146,7 @@ def isMaster() {
 }
 
 def isBuildingTag() {
-  return ( params.BRANCHNAME ==~ /^\d.\d.\d$/ )
+  return ( params.BRANCHNAME ==~ /^\d+.\d+.\d+$/ )
 }
 
 def isChangeSet(file_path) {
