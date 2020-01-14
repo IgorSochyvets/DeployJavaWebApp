@@ -3,6 +3,13 @@
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 
+properties([
+  parameters([
+    string(name: 'deployTag', defaultValue: 'Null', description: 'Short commit ID or Tag from upstream job', )
+   ])
+])
+
+
 def label = "jenkins-agent"
 
 podTemplate(label: label, yaml: """
@@ -43,7 +50,6 @@ node(label) {
 
 def tagDockerImage
 
-
 // checkout Config repo
 stage('Checkout SCM Deploy Config repo') {
   checkout scm
@@ -51,23 +57,6 @@ stage('Checkout SCM Deploy Config repo') {
   echo "${params.deployTag}"  // parameters from upstream job - short commit
   echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
-
-
-/*
-// checkout App repo
-stage('Checkout SCM App repo') {
-  def values1 = readYaml(file: 'prod-us1/values.yaml')
-  println "tag for prod-us1: ${values1.image.tag}"
-  checkoutAppRepo("${values1.image.tag}")
-//  checkout([$class: 'GitSCM',
-//  branches: [[name: '**']],
-//  doGenerateSubmoduleConfigurations: false,
-//  extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'AppDir']],
-//  submoduleCfg: [],
-//  userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
-//  sh 'ls -la AppDir/'
-}
-*/
 
 //
 // *** Deploy PROD/DEV/QA  release
