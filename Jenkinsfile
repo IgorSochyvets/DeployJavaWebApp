@@ -71,8 +71,8 @@ stage('DeployProdUs1') {
     println "tag for prod-us1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
-    Utils.markStageSkippedForConditional('DeployProdUs1')
   }
+  else Utils.markStageSkippedForConditional('DeployProdUs1')
 }
 stage('DeployProdUs2') {
   if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
@@ -81,6 +81,7 @@ stage('DeployProdUs2') {
     checkoutAppRepo("${values.image.tag}")
     deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
   }
+  else Utils.markStageSkippedForConditional('DeployProdUs2')
 }
 stage('DeployProdEu1') {
   if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
@@ -89,6 +90,7 @@ stage('DeployProdEu1') {
     checkoutAppRepo("${values.image.tag}")
     deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
   }
+  else Utils.markStageSkippedForConditional('DeployProdEu1')
 }
 stage('DeployProdAp1') {
   if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
@@ -97,6 +99,7 @@ stage('DeployProdAp1') {
     checkoutAppRepo("${values.image.tag}")
     deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
   }
+  else Utils.markStageSkippedForConditional('DeployProdAp1')
 }
 //deploy DEV
 stage('DeployDev') {
@@ -104,13 +107,15 @@ stage('DeployDev') {
     checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
   }
+  else Utils.markStageSkippedForConditional('DeployDev')
 }
 // deploy QA
-stage('DeployQA') {
+stage('DeployQa') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.BRANCHNAME}")
     deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}")
   }
+  else Utils.markStageSkippedForConditional('DeployQa')
 }
 
 
