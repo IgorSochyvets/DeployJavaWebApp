@@ -11,7 +11,6 @@ properties([
    ])
 ])
 
-
 def label = "jenkins-agent"
 
 podTemplate(label: label, yaml: """
@@ -93,10 +92,19 @@ stage('DeployProdAp1') {
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
+    deployProd("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
+  }
+  else Utils.markStageSkippedForConditional('DeployDev')
+}
+/*
+stage('DeployDev') {
+  if ( isMaster() ) {
+    checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
+*/
 // deploy QA
 stage('DeployQa') {
   if ( isBuildingTag() ) {
@@ -153,7 +161,6 @@ def isChangeSet(file_path) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-            echo "Deployments is starting..."
             helm upgrade --install $name --debug $dir_name/javawebapp-chart \
             --force \
             --wait \
@@ -165,13 +172,11 @@ def isChangeSet(file_path) {
     }
   }
 
-
 // deployment function for DEV qa QA releases
   def deployDEVQA(name, ns, tag) {
    container('helm') {
       withKubeConfig([credentialsId: 'kubeconfig']) {
       sh """
-          echo "Deployments is starting..."
           helm upgrade --install $name --debug '${tag}/javawebapp-chart' \
           --force \
           --wait \
