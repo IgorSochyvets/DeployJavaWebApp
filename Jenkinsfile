@@ -35,11 +35,6 @@ spec:
     command:
     - cat
     tty: true
-  - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.8.8
-    command:
-    - cat
-    tty: true
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
     command:
