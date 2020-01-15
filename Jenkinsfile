@@ -92,7 +92,7 @@ stage('DeployProdAp1') {
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
-    deployProd("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
+    deployDEVQA("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
@@ -173,6 +173,24 @@ def isChangeSet(file_path) {
   }
 
 // deployment function for DEV qa QA releases
+// rename dir_name - > ref_name
+def deployDEVQA(name, ns, file_path, ref_name) {
+ container('helm') {
+    withKubeConfig([credentialsId: 'kubeconfig']) {
+    sh """
+        helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
+        --force \
+        --wait \
+        --namespace $ns \
+        --set image.tag=$ref_name \
+        --values $file_path
+        helm ls
+    """
+    }
+}
+}
+
+/*
   def deployDEVQA(name, ns, tag) {
    container('helm') {
       withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -191,6 +209,7 @@ def isChangeSet(file_path) {
       }
   }
 }
+*/
 
 
 // checkout App repo to commit function
