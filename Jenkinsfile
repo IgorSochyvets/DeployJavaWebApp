@@ -102,7 +102,7 @@ stage('DeployDev') {
 stage('DeployQa') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.BRANCHNAME}")
-    deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}","${params.BRANCHNAME}")
+    deployDEVQA("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.BRANCHNAME}")
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
