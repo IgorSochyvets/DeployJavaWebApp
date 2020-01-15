@@ -53,7 +53,7 @@ node(label) {
 def tagDockerImage
 
 // checkout Config repo
-stage('Checkout SCM Deploy Config repo') {
+stage('CheckoutScmDeployConfigRepo') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
@@ -65,16 +65,16 @@ stage('Checkout SCM Deploy Config repo') {
 //
 
 // deploy PROD
-stage('deployProd-US1Release') {
+stage('DeployProdUs1') {
   if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
     def values = readYaml(file: 'prod-us1/javawebapp.yaml')
     println "tag for prod-us1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
-    Utils.markStageSkippedForConditional('deployProd-US1Release')
+    Utils.markStageSkippedForConditional('DeployProdUs1')
   }
 }
-stage('Deploy prod-us2 release') {
+stage('DeployProdUs2') {
   if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
     def values = readYaml(file: 'prod-us2/javawebapp.yaml')
     println "tag for prod-us2: ${values.image.tag}"
@@ -82,7 +82,7 @@ stage('Deploy prod-us2 release') {
     deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
   }
 }
-stage('Deploy prod-eu1 release') {
+stage('DeployProdEu1') {
   if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
     def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
     println "tag for prod-eu1: ${values.image.tag}"
@@ -90,7 +90,7 @@ stage('Deploy prod-eu1 release') {
     deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
   }
 }
-stage('Deploy prod-ap1 release') {
+stage('DeployProdAp1') {
   if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
     def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
     println "tag for prod-ap1: ${values.image.tag}"
@@ -99,14 +99,14 @@ stage('Deploy prod-ap1 release') {
   }
 }
 //deploy DEV
-stage('deployDevRelease') {
+stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
   }
 }
 // deploy QA
-stage('Deploy QA release') {
+stage('DeployQA') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.BRANCHNAME}")
     deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}")
