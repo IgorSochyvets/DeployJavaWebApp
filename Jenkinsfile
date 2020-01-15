@@ -26,7 +26,6 @@ metadata:
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
-
   containers:
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
@@ -36,12 +35,6 @@ spec:
 """
   ){
 
-
-    /*
-    volumes:
-    - name: dind-storage
-      emptyDir: {}
-      */
 
 node(label) {
 
@@ -165,7 +158,7 @@ def isChangeSet(file_path) {
             --force \
             --wait \
             --namespace $ns \
-            --values $file_path --reuse-values
+            --values $file_path
             helm ls
         """
         }
