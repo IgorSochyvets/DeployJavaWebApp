@@ -65,12 +65,13 @@ stage('Checkout SCM Deploy Config repo') {
 //
 
 // deploy PROD
-stage('Deploy prod-us1 release') {
+stage('deployProd-US1Release') {
   if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
     def values = readYaml(file: 'prod-us1/javawebapp.yaml')
     println "tag for prod-us1: ${values.image.tag}"
     checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
     deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+    Utils.markStageSkippedForConditional('deployProd-US1Release')
   }
 }
 stage('Deploy prod-us2 release') {
@@ -102,7 +103,6 @@ stage('deployDevRelease') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
-    Utils.markStageSkippedForConditional(deployDevRelease)
   }
 }
 // deploy QA
