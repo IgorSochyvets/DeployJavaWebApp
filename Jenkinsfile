@@ -89,6 +89,7 @@ stage('DeployProdAp1') {
   else Utils.markStageSkippedForConditional('DeployProdAp1')
 }
 //deploy DEV
+/*
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
@@ -96,7 +97,7 @@ stage('DeployDev') {
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
-/*
+*/
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
@@ -104,7 +105,7 @@ stage('DeployDev') {
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
-*/
+
 // deploy QA
 stage('DeployQa') {
   if ( isBuildingTag() ) {
@@ -174,6 +175,7 @@ def isChangeSet(file_path) {
 
 // deployment function for DEV qa QA releases
 // rename dir_name - > ref_name
+/*
 def deployDEVQA(name, ns, file_path, ref_name) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -189,8 +191,8 @@ def deployDEVQA(name, ns, file_path, ref_name) {
     }
 }
 }
+*/
 
-/*
   def deployDEVQA(name, ns, tag) {
    container('helm') {
       withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -209,7 +211,7 @@ def deployDEVQA(name, ns, file_path, ref_name) {
       }
   }
 }
-*/
+
 
 
 // checkout App repo to commit function
