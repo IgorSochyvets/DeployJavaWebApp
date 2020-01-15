@@ -183,9 +183,8 @@ def deployDEVQA(name, ns, file_path, ref_name) {
         --force \
         --wait \
         --namespace $ns \
-        --set image.tag=$ref_name \
-        --values $file_path
-
+        --values $file_path \
+        --set image.tag=$ref_name
         helm ls
     """
     }
