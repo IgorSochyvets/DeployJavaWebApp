@@ -26,9 +26,7 @@ metadata:
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
-  volumes:
-  - name: dind-storage
-    emptyDir: {}
+
   containers:
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
@@ -40,11 +38,9 @@ spec:
 
 
     /*
-    - name: git
-      image: alpine/git
-      command:
-      - cat
-      tty: true
+    volumes:
+    - name: dind-storage
+      emptyDir: {}
       */
 
 node(label) {
