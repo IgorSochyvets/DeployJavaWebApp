@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 
@@ -100,6 +102,7 @@ stage('Deploy DEV release') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
+    Utils.markStageSkippedForConditional(stageName)
   }
 }
 // deploy QA
