@@ -1,6 +1,5 @@
 image:
   repository: kongurua/fizz-buzz
-  tag: 2.2.5
 ingress:
   hosts:
   - host: javawebapp-dev2.ddns.net
