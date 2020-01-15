@@ -97,20 +97,12 @@ stage('DeployDev') {
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
-/*
-stage('DeployDev') {
-  if ( isMaster() ) {
-    checkoutAppRepo("${params.deployTag}")
-    deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
-  }
-  else Utils.markStageSkippedForConditional('DeployDev')
-}
-*/
+
 // deploy QA
 stage('DeployQa') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.BRANCHNAME}")
-    deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}")
+    deployDEVQA("javawebapp-qa2","qa","${params.BRANCHNAME}","${params.BRANCHNAME}")
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
@@ -174,7 +166,7 @@ def isChangeSet(file_path) {
   }
 
 // deployment function for DEV qa QA releases
-
+// * --set image.tag - only difference from deployProd
 def deployDEVQA(name, ns, file_path, ref_name) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
