@@ -184,14 +184,14 @@ def deployDEVQA(name, ns, file_path, ref_name) {
         --force \
         --wait \
         --namespace $ns \
-        --values $file_path --reuse-values \
+        --values $file_path \
         --set image.tag=$ref_name
         helm ls
     """
     }
 }
 }
-
+// --reuse-values
 /*
   def deployDEVQA(name, ns, tag) {
    container('helm') {
