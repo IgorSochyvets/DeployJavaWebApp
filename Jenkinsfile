@@ -98,11 +98,11 @@ stage('Deploy prod-ap1 release') {
   }
 }
 //deploy DEV
-stage('Deploy DEV release') {
+stage('deployDevRelease') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
     deployDEVQA("javawebapp-dev2","dev","${params.deployTag}")
-    Utils.markStageSkippedForConditional(stageName)
+    Utils.markStageSkippedForConditional(deployDevRelease)
   }
 }
 // deploy QA
