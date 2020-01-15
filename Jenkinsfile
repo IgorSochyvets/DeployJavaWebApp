@@ -157,12 +157,12 @@ def isChangeSet(file_path) {
 
 //
 // deployment function for PROD releases
-// name - app's name; ns - namespace; file_path - path to values.yaml, dir_name - name of dir where App Repo is stored;
-  def deployProd(name, ns, file_path, dir_name) {
+// name - app's name; ns - namespace; file_path - path to values.yaml, ref_name - name of dir where App Repo is stored;
+  def deployProd(name, ns, file_path, ref_name) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-            helm upgrade --install $name --debug '$dir_name/javawebapp-chart' \
+            helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
             --force \
             --wait \
             --namespace $ns \
@@ -174,7 +174,6 @@ def isChangeSet(file_path) {
   }
 
 // deployment function for DEV qa QA releases
-// rename dir_name - > ref_name
 
 def deployDEVQA(name, ns, file_path, ref_name) {
  container('helm') {
@@ -184,35 +183,14 @@ def deployDEVQA(name, ns, file_path, ref_name) {
         --force \
         --wait \
         --namespace $ns \
-        --values $file_path \
-        --set image.tag=$ref_name
+        --set image.tag=$ref_name \
+        --values $file_path
+
         helm ls
     """
     }
 }
 }
-// --reuse-values
-/*
-  def deployDEVQA(name, ns, tag) {
-   container('helm') {
-      withKubeConfig([credentialsId: 'kubeconfig']) {
-      sh """
-          helm upgrade --install $name --debug '${tag}/javawebapp-chart' \
-          --force \
-          --wait \
-          --namespace $ns \
-          --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-          --set-string ingress.hosts[0].host=${name}.ddns.net \
-          --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
-          --set-string ingress.tls[0].secretName=acme-${name}-tls \
-          --set image.tag=$tag
-          helm ls
-      """
-      }
-  }
-}
-*/
-
 
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
