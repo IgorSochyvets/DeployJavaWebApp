@@ -30,11 +30,6 @@ spec:
   - name: dind-storage
     emptyDir: {}
   containers:
-  - name: git
-    image: alpine/git
-    command:
-    - cat
-    tty: true
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
     command:
@@ -42,6 +37,15 @@ spec:
     tty: true
 """
   ){
+
+
+    /*
+    - name: git
+      image: alpine/git
+      command:
+      - cat
+      tty: true
+      */
 
 node(label) {
 
