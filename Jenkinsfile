@@ -161,7 +161,7 @@ def isChangeSet(file_path) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-            helm upgrade --install $name --debug $dir_name/javawebapp-chart \
+            helm upgrade --install $name --debug '$dir_name/javawebapp-chart' \
             --force \
             --wait \
             --namespace $ns \
