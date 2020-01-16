@@ -40,7 +40,7 @@ def tagDockerImage
 
 
 // checkout Config repo
-stage('CheckoutScmDeployConfigRepo') {
+stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
@@ -55,8 +55,7 @@ running_set = [
       stage('DeployProdUs1') {
         if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us1/javawebapp.yaml')
-          println "tag for prod-us1: ${values.image.tag}"
-          checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
+          checkoutAppRepo("${values.image.tag}")
           deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs1')
@@ -66,7 +65,6 @@ running_set = [
       stage('DeployProdUs2') {
         if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us2/javawebapp.yaml')
-          println "tag for prod-us2: ${values.image.tag}"
           checkoutAppRepo("${values.image.tag}")
           deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
         }
@@ -77,7 +75,6 @@ running_set = [
       stage('DeployProdEu1') {
         if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
-          println "tag for prod-eu1: ${values.image.tag}"
           checkoutAppRepo("${values.image.tag}")
           deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
         }
@@ -88,7 +85,6 @@ running_set = [
       stage('DeployProdAp1') {
         if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
-          println "tag for prod-ap1: ${values.image.tag}"
           checkoutAppRepo("${values.image.tag}")
           deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
         }
@@ -96,7 +92,7 @@ running_set = [
       }
     }
 ]
-
+// next Stage starts Deploy Prod in parallel 
 stage('DeployProd') {
   parallel(running_set)
 }
