@@ -42,14 +42,16 @@ def tagDockerImage
 
 def numberOfChanges = 4
 
-
-
 running_set = [
     "task1": {
-        somefunc()
+        stage('ParallelStage1') {
+          echo "It is ParallelStage1"
+        }
     },
     "task2": {
-        somefunc2()
+        stage('ParallelStage2') {
+          echo "It is ParallelStage2"
+        }
     }
 ]
 
