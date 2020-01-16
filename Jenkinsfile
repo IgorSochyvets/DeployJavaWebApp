@@ -54,7 +54,7 @@ running_set = [
             echo "It is prod-us2"
           }
           else {
-            else Utils.markStageSkippedForConditional('prod-us2')
+            Utils.markStageSkippedForConditional('prod-us2')
           }
         }
     },
