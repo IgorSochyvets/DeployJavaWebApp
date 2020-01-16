@@ -2,4 +2,5 @@
 Configuration for Deployment for CI/CD
 
 
-* test line 2
+Feature list:
+Helm chart AppVersion added.
