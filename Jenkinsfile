@@ -110,7 +110,7 @@ stage('DeployQa') {
 
 def isMaster() {    // is it DEV release ?
 //  return ( params.deployTag ==~ /^\d+.\d+.\d+$/ ) // DEV release has short commit as paramete
-  return ( !isBuildingTag() )
+  return ( (!isBuildingTag()) && (params.deployTag != 'Null') )
 }
 
 def isBuildingTag() {
