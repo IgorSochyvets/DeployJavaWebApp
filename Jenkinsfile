@@ -56,7 +56,7 @@ running_set = [
         if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us1/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+          deployDEVQA("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs1')
       }
@@ -92,7 +92,7 @@ running_set = [
       }
     }
 ]
-// next Stage starts Deploy Prod in parallel 
+// next Stage starts Deploy Prod in parallel
 stage('DeployProd') {
   parallel(running_set)
 }
