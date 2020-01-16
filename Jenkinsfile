@@ -2,9 +2,6 @@
 
 import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
 
-env.DOCKERHUB_IMAGE = 'fizz-buzz'
-env.DOCKERHUB_USER = 'kongurua'
-
 properties([
   parameters([
     string(name: 'deployTag', defaultValue: 'Null', description: 'Short commit ID or Tag from upstream job', )
