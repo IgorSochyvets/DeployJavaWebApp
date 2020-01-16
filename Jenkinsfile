@@ -56,7 +56,7 @@ running_set = [
         if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us1/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deployDEVQA("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs1')
       }
@@ -66,7 +66,7 @@ running_set = [
         if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us2/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs2')
       }
@@ -76,7 +76,7 @@ running_set = [
         if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdEu1')
       }
@@ -86,7 +86,7 @@ running_set = [
         if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdAp1')
       }
@@ -98,54 +98,11 @@ stage('DeployProd') {
 }
 
 
-/*
-//
-// *** Deploy PROD/DEV/QA  release / without parallel
-//
-// deploy PROD
-stage('DeployProdUs1') {
-  if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
-    def values = readYaml(file: 'prod-us1/javawebapp.yaml')
-    println "tag for prod-us1: ${values.image.tag}"
-    checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
-    deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
-  }
-  else Utils.markStageSkippedForConditional('DeployProdUs1')
-}
-stage('DeployProdUs2') {
-  if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
-    def values = readYaml(file: 'prod-us2/javawebapp.yaml')
-    println "tag for prod-us2: ${values.image.tag}"
-    checkoutAppRepo("${values.image.tag}")
-    deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
-  }
-  else Utils.markStageSkippedForConditional('DeployProdUs2')
-}
-stage('DeployProdEu1') {
-  if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
-    def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
-    println "tag for prod-eu1: ${values.image.tag}"
-    checkoutAppRepo("${values.image.tag}")
-    deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
-  }
-  else Utils.markStageSkippedForConditional('DeployProdEu1')
-}
-stage('DeployProdAp1') {
-  if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
-    def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
-    println "tag for prod-ap1: ${values.image.tag}"
-    checkoutAppRepo("${values.image.tag}")
-    deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
-  }
-  else Utils.markStageSkippedForConditional('DeployProdAp1')
-}
-*/
-
 //deploy DEV
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
-    deployDEVQA("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
+    deploy("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
@@ -154,7 +111,7 @@ stage('DeployDev') {
 stage('DeployQa') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.deployTag}")
-    deployDEVQA("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.deployTag}")
+    deploy("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
@@ -202,24 +159,8 @@ def isChangeSet(file_path) {
 //
 // deployment function for PROD releases
 // name - app's name; ns - namespace; file_path - path to values.yaml, ref_name - name of dir where App Repo is stored;
-  def deployProd(name, ns, file_path, ref_name) {
-     container('helm') {
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh """
-            helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
-            --force \
-            --wait \
-            --namespace $ns \
-            --values $file_path
-            helm ls
-        """
-        }
-    }
-  }
 
-// deployment function for DEV qa QA releases
-// * --set image.tag - only difference from deployProd
-def deployDEVQA(name, ns, file_path, ref_name) {
+def deploy(name, ns, file_path, ref_name) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
