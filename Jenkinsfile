@@ -40,6 +40,7 @@ def tagDockerImage
 //////////////////////////////////////
 //////////////////////////////////////
 
+def numberOfChanges = 4
 
 running_set = [
     "prod-us1": {
@@ -49,7 +50,12 @@ running_set = [
     },
     "prod-us2": {
         stage('prod-us2') {
-          echo "It is prod-us2"
+          if (numberOfChanges == 3) {
+            echo "It is prod-us2"
+          }
+          else {
+            else Utils.markStageSkippedForConditional('prod-us2')
+          }
         }
     },
     "prod-eu1": {
