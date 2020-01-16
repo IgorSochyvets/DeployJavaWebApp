@@ -36,49 +36,9 @@ node(label) {
 
 def tagDockerImage
 
-// testing parallel
-//////////////////////////////////////
-//////////////////////////////////////
-
-def numberOfChanges = 4
-
-running_set = [
-    "prod-us1": {
-        stage('prod-us1') {
-          echo "It is prod-us1"
-        }
-    },
-    "prod-us2": {
-        stage('prod-us2') {
-          if (numberOfChanges == 3) {
-            echo "It is prod-us2"
-          }
-          else {
-            Utils.markStageSkippedForConditional('prod-us2')
-          }
-        }
-    },
-    "prod-eu1": {
-        stage('prod-eu1') {
-          echo "It is prod-eu1"
-        }
-    },
-    "prod-ap1": {
-        stage('prod-ap1') {
-          echo "It is prod-ap1"
-        }
-    }
-]
-
-stage('DeployProd') {
-  parallel(running_set)
-}
-
-//////////////////////////////////////
-//////////////////////////////////////
 
 
-/*
+
 // checkout Config repo
 stage('CheckoutScmDeployConfigRepo') {
   checkout scm
@@ -86,9 +46,65 @@ stage('CheckoutScmDeployConfigRepo') {
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 }
 
-
 //
-// *** Deploy PROD/DEV/QA  release
+// *** Deploy PROD /  parallel
+//
+
+running_set = [
+    "prod-us1": {
+      stage('DeployProdUs1') {
+        if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
+          def values = readYaml(file: 'prod-us1/javawebapp.yaml')
+          println "tag for prod-us1: ${values.image.tag}"
+          checkoutAppRepo("${values.image.tag}")    //for checkout to separate Folder, if it will be needed in future (deploy several PRODS simultaneously)
+          deployProd("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdUs1')
+      }
+    },
+    "prod-us2": {
+      stage('DeployProdUs2') {
+        if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
+          def values = readYaml(file: 'prod-us2/javawebapp.yaml')
+          println "tag for prod-us2: ${values.image.tag}"
+          checkoutAppRepo("${values.image.tag}")
+          deployProd("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdUs2')
+      }
+    },
+    "prod-eu1": {
+      stage('DeployProdEu1') {
+        if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
+          def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
+          println "tag for prod-eu1: ${values.image.tag}"
+          checkoutAppRepo("${values.image.tag}")
+          deployProd("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdEu1')
+      }
+    },
+    "prod-ap1": {
+      stage('DeployProdAp1') {
+        if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
+          def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
+          println "tag for prod-ap1: ${values.image.tag}"
+          checkoutAppRepo("${values.image.tag}")
+          deployProd("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdAp1')
+      }
+    }
+]
+
+stage('DeployProd') {
+  parallel(running_set)
+}
+
+
+/*
+//
+// *** Deploy PROD/DEV/QA  release / without parallel
 //
 // deploy PROD
 stage('DeployProdUs1') {
@@ -127,6 +143,7 @@ stage('DeployProdAp1') {
   }
   else Utils.markStageSkippedForConditional('DeployProdAp1')
 }
+*/
 
 //deploy DEV
 stage('DeployDev') {
@@ -145,7 +162,6 @@ stage('DeployQa') {
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
-*/
 
     } // node
   } //podTemplate
