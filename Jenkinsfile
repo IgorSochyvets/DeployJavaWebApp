@@ -42,13 +42,7 @@ def tagDockerImage
 
 def numberOfChanges = 4
 
-def somefunc() {
-    echo 'echo1'
-}
 
-def somefunc2() {
-    echo 'echo2'
-}
 
 running_set = [
     "task1": {
@@ -223,4 +217,14 @@ def checkoutAppRepo(commitId) {
   submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
+}
+
+
+///// testing below
+def somefunc() {
+    echo 'echo1'
+}
+
+def somefunc2() {
+    echo 'echo2'
 }
