@@ -41,7 +41,7 @@ stage('CheckoutScmDeployConfigRepo') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  echo "${params.BRANCHNAME}"  // parameters from upstream job
+//  echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
 
 //
@@ -98,8 +98,8 @@ stage('DeployDev') {
 // deploy QA
 stage('DeployQa') {
   if ( isBuildingTag() ) {
-    checkoutAppRepo("${params.BRANCHNAME}")
-    deployDEVQA("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.BRANCHNAME}")
+    checkoutAppRepo("${params.deployTag}")
+    deployDEVQA("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
@@ -108,12 +108,13 @@ stage('DeployQa') {
     } // node
   } //podTemplate
 
-def isMaster() {
-  return ( params.BRANCHNAME == "master" )
+def isMaster() {    // is it DEV release ?
+  return ( params.deployTag != /^\d+.\d+.\d+$/ ) // DEV release has short commit as paramete
+//  return ( !isBuildingTag() )
 }
 
 def isBuildingTag() {
-  return ( params.BRANCHNAME ==~ /^\d+.\d+.\d+$/ )
+  return ( params.deployTag ==~ /^\d+.\d+.\d+$/ ) // // QA release has tag as paramete
 }
 
 def isChangeSet(file_path) {
