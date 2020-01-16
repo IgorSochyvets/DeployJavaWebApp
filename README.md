@@ -2,4 +2,4 @@
 Configuration for Deployment for CI/CD
 
 
-* test line 1
+* test line 2
