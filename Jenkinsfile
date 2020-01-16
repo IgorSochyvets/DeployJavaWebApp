@@ -36,18 +36,27 @@ node(label) {
 
 def tagDockerImage
 
+// testing parallel
+def numberOfChanges = 4
+stage('TestingParallel') {
+  echo "test"
+  echo "$numberOfChanges"
+}
+
+//
+
+/*
 // checkout Config repo
 stage('CheckoutScmDeployConfigRepo') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-//  echo "${params.BRANCHNAME}"  // parameters from upstream job
 }
+
 
 //
 // *** Deploy PROD/DEV/QA  release
 //
-
 // deploy PROD
 stage('DeployProdUs1') {
   if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
@@ -85,8 +94,8 @@ stage('DeployProdAp1') {
   }
   else Utils.markStageSkippedForConditional('DeployProdAp1')
 }
-//deploy DEV
 
+//deploy DEV
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
@@ -103,7 +112,7 @@ stage('DeployQa') {
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
-
+*/
 
     } // node
   } //podTemplate
