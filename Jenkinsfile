@@ -37,13 +37,37 @@ node(label) {
 def tagDockerImage
 
 // testing parallel
+//////////////////////////////////////
+//////////////////////////////////////
+
 def numberOfChanges = 4
+
+def somefunc() {
+    echo 'echo1'
+}
+
+def somefunc2() {
+    echo 'echo2'
+}
+
+running_set = [
+    "task1": {
+        somefunc()
+    },
+    "task2": {
+        somefunc2()
+    }
+]
+
 stage('TestingParallel') {
   echo "test"
   echo "$numberOfChanges"
+  parallel(running_set)
 }
 
-//
+//////////////////////////////////////
+//////////////////////////////////////
+
 
 /*
 // checkout Config repo
