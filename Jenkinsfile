@@ -164,6 +164,7 @@ def deploy(name, ns, file_path, ref_name) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
+        echo $ref_name >> '$ref_name/javawebapp-chart/Chart.yaml'
         helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
         --force \
         --wait \
