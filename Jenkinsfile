@@ -186,13 +186,3 @@ def checkoutAppRepo(commitId) {
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
 }
-
-
-///// testing below
-def somefunc() {
-    echo 'echo1'
-}
-
-def somefunc2() {
-    echo 'echo2'
-}
