@@ -40,24 +40,31 @@ def tagDockerImage
 //////////////////////////////////////
 //////////////////////////////////////
 
-def numberOfChanges = 4
 
 running_set = [
-    "task1": {
-        stage('ParallelStage1') {
-          echo "It is ParallelStage1"
+    "prod-us1": {
+        stage('prod-us1') {
+          echo "It is prod-us1"
         }
     },
-    "task2": {
-        stage('ParallelStage2') {
-          echo "It is ParallelStage2"
+    "prod-us2": {
+        stage('prod-us2') {
+          echo "It is prod-us2"
+        }
+    }
+    "prod-eu1": {
+        stage('prod-eu1') {
+          echo "It is prod-eu1"
+        }
+    }
+    "prod-ap1": {
+        stage('prod-ap1') {
+          echo "It is prod-ap1"
         }
     }
 ]
 
-stage('TestingParallel') {
-  echo "test"
-  echo "$numberOfChanges"
+stage('DeployProd') {
   parallel(running_set)
 }
 
