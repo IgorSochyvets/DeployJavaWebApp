@@ -42,22 +42,22 @@ def tagDockerImage
 
 
 running_set = [
-    "prod-us1": {
+    "task1": {
         stage('prod-us1') {
           echo "It is prod-us1"
         }
     },
-    "prod-us2": {
+    "task2": {
         stage('prod-us2') {
           echo "It is prod-us2"
         }
     }
-    "prod-eu1": {
+    "task3": {
         stage('prod-eu1') {
           echo "It is prod-eu1"
         }
     }
-    "prod-ap1": {
+    "task4": {
         stage('prod-ap1') {
           echo "It is prod-ap1"
         }
