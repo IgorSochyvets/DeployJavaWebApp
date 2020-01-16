@@ -163,7 +163,7 @@ def isChangeSet(file_path) {
 def deploy(name, ns, file_path, ref_name) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
-    sh "
+    sh """
         helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
         --force \
         --wait \
@@ -171,8 +171,7 @@ def deploy(name, ns, file_path, ref_name) {
         --values $file_path \
         --set image.tag=$ref_name
         helm ls
-    "
-    sh "helm ls"
+    """
     }
 }
 }
