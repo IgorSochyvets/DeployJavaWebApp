@@ -125,7 +125,7 @@ def isMaster() {    // is it DEV release ?
 }
 
 def isBuildingTag() {
-  return ( params.deployTag ==~ /^\d+.\d+.\d+$/ ) // // QA release has tag as paramete
+  return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
 }
 
 def isChangeSet(file_path) {
