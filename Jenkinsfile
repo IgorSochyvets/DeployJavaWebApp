@@ -165,6 +165,7 @@ def deploy(name, ns, file_path, ref_name) {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
         echo appVersion: \"$ref_name\" >> '$ref_name/javawebapp-chart/Chart.yaml'
+        echo name: javawebapp-chart-\"$ref_name\" >> '$ref_name/javawebapp-chart/Chart.yaml'
         helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
         --force \
         --wait \
