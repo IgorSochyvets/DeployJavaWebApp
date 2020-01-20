@@ -44,6 +44,11 @@ stage('Checkout1') {
   buildDeployProdMap()
   buildDeployQaMap()
   buildDeployDevMap()
+
+  list1 = ischangeSetList()
+  echo "*************************"
+  list1.each { println(it); }
+
 }
 
 //
@@ -142,6 +147,23 @@ def isChangeSet(filePath) {
   return varBooleanResult
 }
 
+/////////
+def ischangeSetList() {
+  def list = []
+  currentBuild.changeSets.each { changeSet ->
+    changeSet.items.each { entry ->
+      entry.affectedFiles.each { file ->
+        if (file.path ==~ /^prod-(ap1|eu1|us1|us2)\/\w+.yaml$/) {
+          list.add(file.path)
+        }
+      }
+    }
+  }
+  return list.toSet()
+}
+
+
+////////
 
 //
 // deployment function for PROD releases
@@ -180,9 +202,17 @@ def checkoutAppRepo(commitId) {
 // prod-us2/javawebapp.yaml: false
 
 def buildDeployProdMap() {
-  sh 'ls -l | grep prod-'
-  varProdFolders = sh(returnStdout: true, script: "ls | grep prod-")
+  varProdFolders = sh(returnStdout: true, script: "ls | grep prod-") // varProdFolders - string, contains all names of prod
   echo "varProdFolders output: $varProdFolders"
+  {item}
+
+
+  def greeting = "Goodbye";
+def sayGoodbye = {theName -> println("$greeting $theName")}
+
+sayGoodbye("Derek");
+
+
 //  String varProdFolders = new File('/path/to/file').text
 }
 
