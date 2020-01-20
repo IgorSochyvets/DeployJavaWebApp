@@ -185,7 +185,6 @@ def checkoutAppRepo(commitId) {
   branches: [[name: "${commitId}"]],
   doGenerateSubmoduleConfigurations: false,
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
-  submoduleCfg: [],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
 }
