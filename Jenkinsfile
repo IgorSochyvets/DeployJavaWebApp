@@ -45,9 +45,6 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-  echo "Some test with ChangeSets..."
-  isChangeSet("prod-us1/javawebapp.yaml")
-
 }
 
 //
@@ -137,16 +134,10 @@ def isChangeSet(file_path) {
 
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
-               echo "First FOR"
-               println(changeLogSets)
              def entries = changeLogSets[i].items
              for (int j = 0; j < entries.length; j++) {
-                echo "Second FOR"
-                println(entries)
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
-                   echo "Third FOR"
-                   println(files)
                      def file = files[k]
                      if (file.path.equals(file_path)) {
                          return true
