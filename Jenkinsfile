@@ -127,7 +127,7 @@ def isBuildingTag() {
   return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
 }
 
-
+/* working
 def isChangeSet(filePath) {
   def changeLogSets = currentBuild.changeSets
   for (int i = 0; i < changeLogSets.size(); i++) {
@@ -142,6 +142,20 @@ def isChangeSet(filePath) {
       }
     }
   }
+}
+*/
+
+def isChangeSet(filePath) {
+  currentBuild.changeSets.each { changeSet ->
+    changeSet.items.each { entry ->
+      entry.affectedFiles.each { file ->
+        if (file.path.equals(filePath)) {
+          var1 = true
+        }
+      }
+    }
+  }
+  return var1
 }
 
 
