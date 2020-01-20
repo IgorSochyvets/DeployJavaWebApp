@@ -130,7 +130,7 @@ def isBuildingTag() {
 
 
 //=====================================================
-def isChangeSet(file_path) {
+def isChangeSet(filePath) {
 
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
@@ -139,14 +139,14 @@ def isChangeSet(file_path) {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals(file_path)) {
+                     if (file.path.equals(filePath)) {
                          return true
                      }
                  }
               }
       }
 }
-//=====================================================
+
 
 //
 // deployment function for PROD releases
