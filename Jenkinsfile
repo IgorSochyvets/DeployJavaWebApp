@@ -183,7 +183,6 @@ def deploy(name, ns, file_path, ref_name) {
 def checkoutAppRepo(commitId) {
   checkout([$class: 'GitSCM',
   branches: [[name: "${commitId}"]],
-  doGenerateSubmoduleConfigurations: false,
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
