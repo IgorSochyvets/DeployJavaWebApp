@@ -127,19 +127,20 @@ def isBuildingTag() {
   return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
 }
 
-def isChangeSet(file_path) {
-/* new version - need to test
-    currentBuild.changeSets.any { changeSet ->
-          changeSet.items.any { entry ->
-            entry.affectedFiles.any { file ->
-              if (file.path.equals("production-release.txt")) {
+def isChangeSet(filePath) {
+
+    currentBuild.changeSets.each { changeSet ->
+          changeSet.items.each { entry ->
+            entry.affectedFiles.each { file ->
+              if (file.path.equals(filePath)) {
                 return true
               }
             }
           }
         }
-*/
+
 // old version
+/*
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
              def entries = changeLogSets[i].items
@@ -147,37 +148,36 @@ def isChangeSet(file_path) {
                  def files = new ArrayList(entries[j].affectedFiles)
                  for (int k = 0; k < files.size(); k++) {
                      def file = files[k]
-                     if (file.path.equals(file_path)) {
+                     if (file.path.equals(filePath)) {
                          return true
                      }
                  }
               }
       }
+*/
+
 }
 
 //
 // deployment function for PROD releases
-// name - app's name; ns - namespace; file_path - path to values.yaml, ref_name - name of dir where App Repo is stored;
+// name - app's name; ns - namespace; filePath - path to values.yaml, refName - name of dir where App Repo is stored;
 
-def deploy(name, ns, file_path, ref_name) {
+def deploy(name, ns, filePath, refName) {
  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
-        echo appVersion: \"$ref_name\" >> '$ref_name/javawebapp-chart/Chart.yaml'
-        helm upgrade --install $name --debug '$ref_name/javawebapp-chart' \
+        echo appVersion: \"$refName\" >> '$refName/javawebapp-chart/Chart.yaml'
+        helm upgrade --install $name --debug '$refName/javawebapp-chart' \
         --force \
         --wait \
         --namespace $ns \
-        --values $file_path \
-        --set image.tag=$ref_name
+        --values $filePath \
+        --set image.tag=$refName
         helm ls
     """
     }
 }
 }
-
-//Chart name//        echo name: javawebapp-chart-\"$ref_name\" >> '$ref_name/javawebapp-chart/Chart.yaml'
-
 
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
