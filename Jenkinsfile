@@ -49,7 +49,6 @@ stage('Checkout1') {
 //
 // *** Deploy PROD /  parallel
 //
-
 running_set = [
     "prod-us1": {
       stage('DeployProdUs1') {
@@ -98,6 +97,7 @@ stage('DeployProd') {
 }
 
 
+
 //deploy DEV
 stage('DeployDev') {
   if ( isMaster() ) {
@@ -127,37 +127,19 @@ def isBuildingTag() {
   return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
 }
 
-/* working
-def isChangeSet(filePath) {
-  def changeLogSets = currentBuild.changeSets
-  for (int i = 0; i < changeLogSets.size(); i++) {
-    def entries = changeLogSets[i].items
-    for (int j = 0; j < entries.length; j++) {
-      def files = new ArrayList(entries[j].affectedFiles)
-      for (int k = 0; k < files.size(); k++) {
-        def file = files[k]
-        if (file.path.equals(filePath)) {
-          return true
-        }
-      }
-    }
-  }
-}
-*/
-
 
 def isChangeSet(filePath) {
-  def var1=false
+  def varBooleanResult=false
   currentBuild.changeSets.each { changeSet ->
     changeSet.items.each { entry ->
       entry.affectedFiles.each { file ->
         if (file.path.equals(filePath)) {
-          var1 = true
+          varBooleanResult = true
         }
       }
     }
   }
-  return var1
+  return varBooleanResult
 }
 
 
