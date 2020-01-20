@@ -183,5 +183,5 @@ def checkoutAppRepo(commitId) {
 // prod-us2/javawebapp.yaml: false
 
 def buildDeployMap() {
-  sh 'ls -la | grep prod-*'
+  sh 'ls -la | grep prod-'
 }
