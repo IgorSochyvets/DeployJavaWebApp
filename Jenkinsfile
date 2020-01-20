@@ -127,6 +127,8 @@ def isBuildingTag() {
   return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
 }
 
+
+/*
 def isChangeSet(filePath) {
 
     currentBuild.changeSets.each { changeSet ->
@@ -140,7 +142,7 @@ def isChangeSet(filePath) {
         }
 
 // old version
-/*
+
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
              def entries = changeLogSets[i].items
@@ -154,9 +156,40 @@ def isChangeSet(filePath) {
                  }
               }
       }
+}
 */
 
+
+
+//=====================================================
+def isChangeSet(file_path) {
+/* new version - need to test
+    currentBuild.changeSets.any { changeSet ->
+          changeSet.items.any { entry ->
+            entry.affectedFiles.any { file ->
+              if (file.path.equals("production-release.txt")) {
+                return true
+              }
+            }
+          }
+        }
+*/
+// old version
+      def changeLogSets = currentBuild.changeSets
+             for (int i = 0; i < changeLogSets.size(); i++) {
+             def entries = changeLogSets[i].items
+             for (int j = 0; j < entries.length; j++) {
+                 def files = new ArrayList(entries[j].affectedFiles)
+                 for (int k = 0; k < files.size(); k++) {
+                     def file = files[k]
+                     if (file.path.equals(file_path)) {
+                         return true
+                     }
+                 }
+              }
+      }
 }
+//=====================================================
 
 //
 // deployment function for PROD releases
