@@ -41,9 +41,9 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  buildDeployMap()
+  buildDeployProdMap()
   buildDeployQaMap()
-  buildDeployDevMap() 
+  buildDeployDevMap()
 }
 
 //
