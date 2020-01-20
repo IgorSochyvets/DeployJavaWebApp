@@ -204,14 +204,6 @@ def checkoutAppRepo(commitId) {
 def buildDeployProdMap() {
   varProdFolders = sh(returnStdout: true, script: "ls | grep prod-") // varProdFolders - string, contains all names of prod
   echo "varProdFolders output: $varProdFolders"
-  {item}
-
-
-  def greeting = "Goodbye";
-def sayGoodbye = {theName -> println("$greeting $theName")}
-
-sayGoodbye("Derek");
-
 
 //  String varProdFolders = new File('/path/to/file').text
 }
