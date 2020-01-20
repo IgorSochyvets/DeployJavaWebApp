@@ -145,7 +145,9 @@ def isChangeSet(filePath) {
 }
 */
 
+
 def isChangeSet(filePath) {
+  def var1=false
   currentBuild.changeSets.each { changeSet ->
     changeSet.items.each { entry ->
       entry.affectedFiles.each { file ->
