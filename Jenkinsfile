@@ -181,7 +181,7 @@ def checkoutAppRepo(commitId) {
 
 def buildDeployProdMap() {
   sh 'ls -l | grep prod-'
-  varProdFolders = sh(returnStdout: true, script: "ls -l | grep prod-")
+  varProdFolders = sh(returnStdout: true, script: "ls | grep prod-")
   echo "varProdFolders output: $varProdFolders"
 //  String varProdFolders = new File('/path/to/file').text
 }
