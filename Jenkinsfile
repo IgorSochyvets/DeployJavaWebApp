@@ -36,15 +36,14 @@ node(label) {
 
 def tagDockerImage
 
-
-
-
 // checkout Config repo
 stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
   buildDeployMap()
+  buildDeployQaMap()
+  buildDeployDevMap() 
 }
 
 //
@@ -182,6 +181,14 @@ def checkoutAppRepo(commitId) {
 // prod-us1/javawebapp.yaml: true
 // prod-us2/javawebapp.yaml: false
 
-def buildDeployMap() {
+def buildDeployProdMap() {
   sh 'ls -la | grep prod-'
+}
+
+def buildDeployQaMap() {
+  sh 'ls -la | grep qa'
+}
+
+def buildDeployDevMap() {
+  sh 'ls -la | grep dev'
 }
