@@ -48,6 +48,11 @@ stage('Checkout1') {
   list1 = ischangeSetList()
   echo "*************************"
   list1.each { println(it); }
+  echo "========================="
+  def folder = ".";
+  def baseDir = new File(folder);
+  files = baseDir.listFiles();
+
 
 }
 
@@ -147,7 +152,7 @@ def isChangeSet(filePath) {
   return varBooleanResult
 }
 
-/////////
+///////// it creates list fir file pathes to files which were changed
 def ischangeSetList() {
   def list = []
   currentBuild.changeSets.each { changeSet ->
