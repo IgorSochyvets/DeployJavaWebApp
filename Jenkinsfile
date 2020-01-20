@@ -180,7 +180,10 @@ def checkoutAppRepo(commitId) {
 // prod-us2/javawebapp.yaml: false
 
 def buildDeployProdMap() {
-  sh 'ls -la | grep prod-'
+  sh 'ls -l | grep prod-'
+  varProdFolders = sh(returnStdout: true, script: "ls -l | grep prod-")
+  echo "varProdFolders output: $varProdFolders"
+//  String varProdFolders = new File('/path/to/file').text
 }
 
 def buildDeployQaMap() {
