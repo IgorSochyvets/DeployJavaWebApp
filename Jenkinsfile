@@ -44,7 +44,7 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-
+  buildDeployMap()
 }
 
 //
@@ -129,22 +129,20 @@ def isBuildingTag() {
 }
 
 
-//=====================================================
 def isChangeSet(filePath) {
-
-      def changeLogSets = currentBuild.changeSets
-             for (int i = 0; i < changeLogSets.size(); i++) {
-             def entries = changeLogSets[i].items
-             for (int j = 0; j < entries.length; j++) {
-                 def files = new ArrayList(entries[j].affectedFiles)
-                 for (int k = 0; k < files.size(); k++) {
-                     def file = files[k]
-                     if (file.path.equals(filePath)) {
-                         return true
-                     }
-                 }
-              }
+  def changeLogSets = currentBuild.changeSets
+  for (int i = 0; i < changeLogSets.size(); i++) {
+    def entries = changeLogSets[i].items
+    for (int j = 0; j < entries.length; j++) {
+      def files = new ArrayList(entries[j].affectedFiles)
+      for (int k = 0; k < files.size(); k++) {
+        def file = files[k]
+        if (file.path.equals(filePath)) {
+          return true
+        }
       }
+    }
+  }
 }
 
 
@@ -176,4 +174,14 @@ def checkoutAppRepo(commitId) {
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
+}
+
+// Build MAP key : values   - which contains information which Prod app to deploy
+// key: path to file with confug_app; value: true/false (true - deploy; false - skip)
+// example:
+// prod-us1/javawebapp.yaml: true
+// prod-us2/javawebapp.yaml: false
+
+def buildDeployMap() {
+  sh 'ls -la | grep prod-*'
 }
