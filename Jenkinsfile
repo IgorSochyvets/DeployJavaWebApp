@@ -260,12 +260,13 @@ def buildDeployProdMap() {
   def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
   stringProdFolders.tokenize('/\n').each { println(it) }           // print them
+  stringProdFolders.tokenize('/\n').each { ls (it) }
   stringProdFolders.tokenize('/\n').each { listProdFolders << it }    // create list with folder names
 
 //  echo listProdFolders[0]  // test is list is working
 
 
-  def devMap = [
+  def deployMap = [
     releaseName : 'javawebapp-dev2',
     filePathToChart : '1234567/javawebapp-chart',
     namespace : 'dev',
@@ -273,9 +274,9 @@ def buildDeployProdMap() {
     imageTag : '1234567'
   ]
 
-  echo devMap.releaseName
+  echo deployMap.releaseName
 
-//  sh 'ls ${listProdFolders[0]}'
+
 
 
 
