@@ -55,7 +55,7 @@ for (element in devMap) {
     echo "${element.key} ${element.value}"
 }
 
-  dev.each {devi -> echo "$devi.value : $devi.key "}
+//  dev.each {devi -> echo "$devi.value : $devi.key "}
 /*
   for(devi in dev){
       println("$devi.value : $devi.key ");
