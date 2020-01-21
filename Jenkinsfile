@@ -257,7 +257,7 @@ def checkoutAppRepo(commitId) {
 // not used
 def buildDeployProdMap() {
   String stringProdFolders
-  def listProdFolders
+  def listProdFolders = []
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')
   echo stringProdFolders
   stringProdFolders.tokenize('/\n').each { println(it) }
