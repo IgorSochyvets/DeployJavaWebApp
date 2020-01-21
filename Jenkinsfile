@@ -257,7 +257,7 @@ def checkoutAppRepo(commitId) {
 // not used
 def buildDeployProdMap() {
 //  String stringProdFolders
-  def listProdFolders = [] // this will be stages and Maps for deployment
+//  def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
   stringProdFolders.tokenize('/\n').each { println(it) }           // print them
   stringProdFolders.tokenize('/\n').each { listProdFolders << it }    // create list with folder names
