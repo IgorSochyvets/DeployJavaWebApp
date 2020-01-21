@@ -73,10 +73,10 @@ running_set = [
     },
     "prod-us2": {
       stage('DeployProdUs2') {
-        if ( isChangeSet("prod-us2/javawebapp.yaml")  ) {
-          def values = readYaml(file: 'prod-us2/javawebapp.yaml')
+        if ( isChangeSet("prod-us2/javawebapp-prod-us2.yaml")  ) {
+          def values = readYaml(file: 'prod-us2/javawebapp-prod-us2.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deploy("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp-prod-us2.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs2')
       }
