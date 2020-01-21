@@ -259,9 +259,9 @@ def buildDeployProdMap() {
 //  String stringProdFolders
   def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
-  stringProdFolders.tokenize('/\n').each { println(it) }           // print them
-  stringProdFolders.tokenize('/\n').each { ls (it) }
-  stringProdFolders.tokenize('/\n').each { listProdFolders << it }    // create list with folder names
+  stringProdFolders.split('/\n').each { println(it) }           // print them
+  stringProdFolders.split('/\n').each { sh 'ls ${it}' }
+  stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
 
 //  echo listProdFolders[0]  // test is list is working
 
