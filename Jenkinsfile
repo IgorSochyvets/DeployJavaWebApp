@@ -255,7 +255,7 @@ def buildDeployProdMap() {
 //  echo "varProdFolders output: $varProdFolders"
   echo varProdFolders
 
-  listProdFolders = varProdFolders.split()
+  listProdFolders = varProdFolders.split('/')
   return listProdFolders
 //  String varProdFolders = new File('/path/to/file').text
 }
