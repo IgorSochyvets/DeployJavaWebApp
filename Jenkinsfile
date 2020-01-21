@@ -36,7 +36,7 @@ node(label) {
 
 def tagDockerImage
 
-/*
+
 def devMap = [
   "releaseName" : { “javawebapp-dev2” },
   "filePathToChart" : { “1234567/javawebapp-chart” },
@@ -44,18 +44,18 @@ def devMap = [
   "valuesPath" : { “dev/javawebapp-dev2.yaml” },
   "imageTag" : { “1234567” }
 ]
-*/
+
 // checkout Config repo
 stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-/*
+
 for (element in devMap) {
     echo "${element.key} ${element.value}"
 }
-
+/*
 //  dev.each {devi -> echo "$devi.value : $devi.key "}
 
   for(devi in dev){
