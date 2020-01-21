@@ -54,7 +54,7 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  echo buildDeployProdMap()
+  buildDeployProdMap()
 /*
   def sampleText = "Groovy is Cool"
   def values = sampleText.tokenize(' ')
@@ -260,6 +260,7 @@ def buildDeployProdMap() {
   def listProdFolders = ["qa", "dev", "prod-us1"]
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
   echo stringProdFolders
+  //stringProdFolders
   // "[a,b,c]".tokenize(',[]')
 //  String varProdFolders = new File('/path/to/file').text
 }
