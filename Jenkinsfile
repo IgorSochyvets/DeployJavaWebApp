@@ -258,11 +258,11 @@ def checkoutAppRepo(commitId) {
 def buildDeployProdMap() {
   String stringProdFolders
   def listProdFolders = []
-  stringProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
+  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')
   echo stringProdFolders
-  stringProdFolders.split('\n').each { listProdFolders.add(it) }
+  stringProdFolders.split('\n').each { println(it) }
   echo "+++++++++"
-  echo listProdFolders
+
   // "[a,b,c]".tokenize(',[]')
 //  String varProdFolders = new File('/path/to/file').text
 }
