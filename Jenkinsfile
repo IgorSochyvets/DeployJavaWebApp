@@ -272,8 +272,9 @@ def buildDeployProdMap() {
   stringDevPathes.split('/\n').each { println(it) }
   echo listProdFolders[0]  // test is list is working
 
-//  stringDeployPathes = stringProdPathes + stringQaPathes + stringDevPathes
-//  stringDeployPathes.split('/\n').each { println(it) }
+  echo "concut !!!"
+  stringDeployPathes = stringProdPathes + stringQaPathes + stringDevPathes
+  stringDeployPathes.split('/\n').each { println(it) }
 
   def deployMap = [
     releaseName : 'javawebapp-dev2',
