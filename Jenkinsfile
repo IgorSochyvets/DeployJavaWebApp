@@ -261,7 +261,7 @@ def buildDeployProdMap() {
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
   echo stringProdFolders
   listProdFolders = stringProdFolders.tokenize('/')
-
+  echo listProdFolders
   // "[a,b,c]".tokenize(',[]')
 //  String varProdFolders = new File('/path/to/file').text
 }
