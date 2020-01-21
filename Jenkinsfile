@@ -54,7 +54,7 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-
+  echo buildDeployProdMap()
 }
 
 //
@@ -252,7 +252,7 @@ def checkoutAppRepo(commitId) {
 // not used
 def buildDeployProdMap() {
   varProdFolders = sh(returnStdout: true, script: "ls | grep prod-") // varProdFolders - string, contains all names of prod
-  echo "varProdFolders output: $varProdFolders"
-
+//  echo "varProdFolders output: $varProdFolders"
+  return varProdFolders
 //  String varProdFolders = new File('/path/to/file').text
 }
