@@ -254,10 +254,7 @@ def buildDeployProdMap() {
   String varProdFolders
   varProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
 //  echo "varProdFolders output: $varProdFolders"
-  echo varProdFolders
-  def sampleText = "AxBxC E F"
-  println sampleText.split('x')
-  listProdFolders = varProdFolders.split('-')
+
   return listProdFolders
 //  String varProdFolders = new File('/path/to/file').text
 }
