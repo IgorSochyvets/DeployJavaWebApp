@@ -264,15 +264,17 @@ def buildDeployProdMap() {
 
 //  echo listProdFolders[0]  // test is list is working
 
-  listProdFolders.each {
-    def it = [
-      releaseName : 'javawebapp-dev2',
-      filePathToChart : '1234567/javawebapp-chart',
-      namespace : 'dev',
-      valuesPath : 'dev/javawebapp-dev2.yaml',
-      imageTag : '1234567'
-    ]
 
-}
+  def devMap = [
+    releaseName : 'javawebapp-dev2',
+    filePathToChart : '1234567/javawebapp-chart',
+    namespace : 'dev',
+    valuesPath : 'dev/javawebapp-dev2.yaml',
+    imageTag : '1234567'
+  ]
+
+  echo devMap.releaseName
+
+
 
 }
