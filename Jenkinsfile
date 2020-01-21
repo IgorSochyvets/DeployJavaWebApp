@@ -42,14 +42,6 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-def devMap = [
-  "releaseName" : { “javawebapp-dev2” },
-  "filePathToChart" : { “1234567/javawebapp-chart” },
-  "namespace" : { “dev” },
-  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
-  "imageTag" : { “1234567” }
-]
-
 
 for (element in devMap) {
     echo "${element.key} ${element.value}"
@@ -224,3 +216,11 @@ def buildDeployProdMap() {
 def buildDeployQaMap() {
   sh 'ls -la | grep qa'
 }
+
+def devMap = [
+  "releaseName" : { “javawebapp-dev2” },
+  "filePathToChart" : { “1234567/javawebapp-chart” },
+  "namespace" : { “dev” },
+  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
+  "imageTag" : { “1234567” }
+]
