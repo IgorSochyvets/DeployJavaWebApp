@@ -260,8 +260,8 @@ def buildDeployProdMap() {
   def listProdFolders = []
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')
   echo stringProdFolders
-  stringProdFolders.tokenize('/\n').each { println(it) }
-  stringProdFolders.tokenize('/\n').each { listProdFolders.add.(it) }
+  stringProdFolders.split('/\n').each { println(it) }
+  stringProdFolders.split('/\n').each { listProdFolders.add.(it) }
   echo "+++++++++"
   echo listProdFolders
 
