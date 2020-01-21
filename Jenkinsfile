@@ -260,8 +260,8 @@ def buildDeployProdMap() {
   def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
   echo "test!!!"
-  commandSh = "find $PWD | grep "prod-\|qa\|dev" | grep yaml"
-  stringDeployPathes = sh(returnStdout: true, script: '$commandSh')
+  commandSh = "find $PWD | grep 'prod-\|qa\|dev' | grep yaml"
+  stringDeployPathes = sh(returnStdout: true, script: "$commandSh")
   stringProdFolders.split('/\n').each { println(it) }
   stringDeployPathes.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
