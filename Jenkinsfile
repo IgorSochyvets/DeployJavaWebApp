@@ -50,10 +50,13 @@ dev = [
   "imageTag" : { “1234567” }
 ]
 
+
+  dev.each {devi -> echo "$devi.value : $devi.key "}
+/*
   for(devi in dev){
       println("$devi.value : $devi.key ");
     }
-
+*/
 
 }
 
