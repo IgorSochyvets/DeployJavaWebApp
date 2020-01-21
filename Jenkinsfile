@@ -39,7 +39,7 @@ def tagDockerImage
 
 def devMap = [
   releaseName : 'javawebapp-dev2',
-  filePathToChart : '1234567/javawebapp-chart' },
+  filePathToChart : '1234567/javawebapp-chart',
   namespace : 'dev',
   valuesPath : 'dev/javawebapp-dev2.yaml',
   imageTag : '1234567'
