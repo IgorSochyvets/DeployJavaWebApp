@@ -56,6 +56,8 @@ stage('Checkout1') {
 
       print "releaseName is: $devMap.releaseName \n"
 
+      println "releaseName is: $devMap "
+
 
 
 /*
