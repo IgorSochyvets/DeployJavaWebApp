@@ -265,7 +265,7 @@ def buildDeployProdMap() {
 //  echo listProdFolders[0]  // test is list is working
 
 
-  def devMap = [
+  def $listProdFolders[0]+"MAP" = [
     releaseName : 'javawebapp-dev2',
     filePathToChart : '1234567/javawebapp-chart',
     namespace : 'dev',
