@@ -251,6 +251,7 @@ def checkoutAppRepo(commitId) {
 
 // not used
 def buildDeployProdMap() {
+  String varProdFolders
   varProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
 //  echo "varProdFolders output: $varProdFolders"
   echo varProdFolders
