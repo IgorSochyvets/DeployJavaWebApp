@@ -8,7 +8,7 @@ properties([
    ])
 ])
 
-def label = "jenkins-agent"
+def label = "jenkins-agent2"
 
 podTemplate(label: label, yaml: """
 apiVersion: v1
@@ -18,7 +18,7 @@ metadata:
   namespace: jenkins
   labels:
     component: ci
-    jenkins: jenkins-agent
+    jenkins: jenkins-agent2
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
@@ -36,19 +36,28 @@ node(label) {
 
 def tagDockerImage
 
+/*
+def devMap = [
+  "releaseName" : { “javawebapp-dev2” },
+  "filePathToChart" : { “1234567/javawebapp-chart” },
+  "namespace" : { “dev” },
+  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
+  "imageTag" : { “1234567” }
+]
+*/
 // checkout Config repo
 stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-
+/*
 for (element in devMap) {
     echo "${element.key} ${element.value}"
 }
 
 //  dev.each {devi -> echo "$devi.value : $devi.key "}
-/*
+
   for(devi in dev){
       println("$devi.value : $devi.key ");
     }
@@ -216,11 +225,3 @@ def buildDeployProdMap() {
 def buildDeployQaMap() {
   sh 'ls -la | grep qa'
 }
-
-def devMap = [
-  "releaseName" : { “javawebapp-dev2” },
-  "filePathToChart" : { “1234567/javawebapp-chart” },
-  "namespace" : { “dev” },
-  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
-  "imageTag" : { “1234567” }
-]
