@@ -44,10 +44,10 @@ stage('Checkout1') {
 
 dev = [
   "releaseName" : { “javawebapp-dev2” },
-  "filePathToChart" : “<ref>/javawebapp-chart”,
-  "namespace" : “dev”,
-  "valuesPath" : “dev/javawebapp-dev2.yaml”,
-  "imageTag" : “<shortCommit>”
+  "filePathToChart" : { “<ref>/javawebapp-chart” },
+  "namespace" : { “dev” },
+  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
+  "imageTag" : { “<shortCommit>” }
 ]
 
   for(devi in dev){
