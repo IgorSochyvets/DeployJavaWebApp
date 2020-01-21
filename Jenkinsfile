@@ -255,8 +255,7 @@ def buildDeployProdMap() {
 //  echo "varProdFolders output: $varProdFolders"
   echo varProdFolders
 
-  def listProdFolders = varProdFolders.replaceAll(~/^\[|\]$/, '').split('\n')
-// assert a == ['aa', 'bb', 'cc', 'dd']
+  listProdFolders = varProdFolders.split()
   return listProdFolders
 //  String varProdFolders = new File('/path/to/file').text
 }
