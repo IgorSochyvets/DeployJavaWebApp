@@ -259,12 +259,11 @@ def buildDeployProdMap() {
 //  String stringProdFolders
   def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
-  echo "test!!!"
-  stringDeployPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml')
   stringProdFolders.split('/\n').each { println(it) }
-  stringDeployPathes.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
 
+  stringDeployPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' 'find $PWD | grep qa | grep yaml' )
+  stringDeployPathes.split('/\n').each { println(it) }
 //  echo listProdFolders[0]  // test is list is working
 
 
