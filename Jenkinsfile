@@ -83,20 +83,20 @@ running_set = [
     },
     "prod-eu1": {
       stage('DeployProdEu1') {
-        if ( isChangeSet("prod-eu1/javawebapp.yaml")  ) {
-          def values = readYaml(file: 'prod-eu1/javawebapp.yaml')
+        if ( isChangeSet("prod-eu1/javawebapp-prod-eu1.yaml")  ) {
+          def values = readYaml(file: 'prod-eu1/javawebapp-prod-eu1.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deploy("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp-prod-eu1.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdEu1')
       }
     },
     "prod-ap1": {
       stage('DeployProdAp1') {
-        if ( isChangeSet("prod-ap1/javawebapp.yaml")  ) {
-          def values = readYaml(file: 'prod-ap1/javawebapp.yaml')
+        if ( isChangeSet("prod-ap1/javawebapp-prod-ap1.yaml")  ) {
+          def values = readYaml(file: 'prod-ap1/javawebapp-prod-ap1.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deploy("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp-prod-ap1.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdAp1')
       }
