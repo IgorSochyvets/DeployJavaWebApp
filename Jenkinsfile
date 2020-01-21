@@ -63,8 +63,8 @@ stage('Checkout1') {
 running_set = [
     "prod-us1": {
       stage('DeployProdUs1') {
-        if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
-          def values = readYaml(file: 'prod-us1/javawebapp.yaml')
+        if ( isChangeSet("prod-us1/javawebapp-prod-us1.yaml")  ) {
+          def values = readYaml(file: 'prod-us1/javawebapp-prod-us1.yaml')
           checkoutAppRepo("${values.image.tag}")
           deploy("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp-prod-us1.yaml","${values.image.tag}")
         }
