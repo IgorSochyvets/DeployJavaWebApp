@@ -257,15 +257,12 @@ def checkoutAppRepo(commitId) {
 // not used
 def buildDeployProdMap() {
   String stringProdFolders
-  def listProdFolders = []
-  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')
+  def listProdFolders = [] // this will be stages and Maps for deployment
+  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
+  stringProdFolders.tokenize('/\n').each { println(it) }           // print them
+  stringProdFolders.tokenize('/\n').each { listProdFolders << (it) }    // create list with folder names
+  echo "test"
+  echo listProdFolders  // test is list is working
 
-  stringProdFolders.tokenize('/\n').each { println(it) }
-  stringProdFolders.tokenize('/\n').each { listProdFolders << (it) }
-  echo "+++++++++"
-  echo listProdFolders[0]
-  echo listProdFolders[1]
 
-  // "[a,b,c]".tokenize(',[]')
-//  String varProdFolders = new File('/path/to/file').text
 }
