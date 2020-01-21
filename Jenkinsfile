@@ -51,11 +51,13 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
+  echo "devMap['releaseName']"
 
+/*
 for (element in devMap) {
     echo "${element.key} ${element.value}"
 }
-/*
+
 //  dev.each {devi -> echo "$devi.value : $devi.key "}
 
   for(devi in dev){
