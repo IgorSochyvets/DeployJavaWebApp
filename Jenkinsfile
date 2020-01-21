@@ -52,6 +52,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
+  println("Name " + devMap['releaseName'])
   echo "${devMap['releaseName']}"
 
 
