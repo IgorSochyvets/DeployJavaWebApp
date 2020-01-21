@@ -42,7 +42,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-devMap = [
+def devMap = [
   "releaseName" : { “javawebapp-dev2” },
   "filePathToChart" : { “1234567/javawebapp-chart” },
   "namespace" : { “dev” },
