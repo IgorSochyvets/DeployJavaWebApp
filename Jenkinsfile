@@ -41,17 +41,18 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  buildDeployProdMap()
-  buildDeployQaMap()
-  buildDeployDevMap()
 
-  list1 = ischangeSetList()
-  echo "*************************"
-  list1.each { println(it); }
-  echo "========================="
-  def folder = ".";
-  def baseDir = new File(folder);
-  files = baseDir.listFiles();
+  def dev = [
+      releaseName : “javawebapp-dev2”,
+      filePathToChart : “<ref>/javawebapp-chart”,
+      namespace : “dev”,
+      valuesPath : “dev/javawebapp-dev2.yaml”,
+      imageTag : “<shortCommit>”
+    ]
+
+  for(devi in dev){
+      println("$devi.value : $devi.key ");
+    }
 
 
 }
@@ -215,8 +216,4 @@ def buildDeployProdMap() {
 
 def buildDeployQaMap() {
   sh 'ls -la | grep qa'
-}
-
-def buildDeployDevMap() {
-  sh 'ls -la | grep dev'
 }
