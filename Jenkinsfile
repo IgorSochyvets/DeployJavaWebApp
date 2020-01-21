@@ -58,8 +58,47 @@ stage('Checkout1') {
 }
 
 //
-// *** Deploy PROD /  parallel
+// *** Deploy PROD
 //
+      stage('DeployProdUs1') {
+        if ( isChangeSet("prod-us1/javawebapp-prod-us1.yaml")  ) {
+          def values = readYaml(file: 'prod-us1/javawebapp-prod-us1.yaml')
+          checkoutAppRepo("${values.image.tag}")
+          deploy("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp-prod-us1.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdUs1')
+      }
+
+      stage('DeployProdUs2') {
+        if ( isChangeSet("prod-us2/javawebapp-prod-us2.yaml")  ) {
+          def values = readYaml(file: 'prod-us2/javawebapp-prod-us2.yaml')
+          checkoutAppRepo("${values.image.tag}")
+          deploy("javawebapp-prod-us2","prod-us2","prod-us2/javawebapp-prod-us2.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdUs2')
+      }
+
+      stage('DeployProdEu1') {
+        if ( isChangeSet("prod-eu1/javawebapp-prod-eu1.yaml")  ) {
+          def values = readYaml(file: 'prod-eu1/javawebapp-prod-eu1.yaml')
+          checkoutAppRepo("${values.image.tag}")
+          deploy("javawebapp-prod-eu1","prod-eu1","prod-eu1/javawebapp-prod-eu1.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdEu1')
+      }
+
+      stage('DeployProdAp1') {
+        if ( isChangeSet("prod-ap1/javawebapp-prod-ap1.yaml")  ) {
+          def values = readYaml(file: 'prod-ap1/javawebapp-prod-ap1.yaml')
+          checkoutAppRepo("${values.image.tag}")
+          deploy("javawebapp-prod-ap1","prod-ap1","prod-ap1/javawebapp-prod-ap1.yaml","${values.image.tag}")
+        }
+        else Utils.markStageSkippedForConditional('DeployProdAp1')
+      }
+
+
+// Parallel - working code with issue (simulmaneuos checkout and creating same directory)
+/*
 running_set = [
     "prod-us1": {
       stage('DeployProdUs1') {
@@ -103,17 +142,19 @@ running_set = [
     }
 ]
 // next Stage starts Deploy Prod in parallel
+
+
 stage('DeployProd') {
   parallel(running_set)
 }
-
+*/
 
 
 //deploy DEV
 stage('DeployDev') {
   if ( isMaster() ) {
     checkoutAppRepo("${params.deployTag}")
-    deploy("javawebapp-dev2","dev","dev/javawebapp.yaml","${params.deployTag}")
+    deploy("javawebapp-dev2","dev","dev/javawebapp-dev2.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployDev')
 }
@@ -122,7 +163,7 @@ stage('DeployDev') {
 stage('DeployQa') {
   if ( isBuildingTag() ) {
     checkoutAppRepo("${params.deployTag}")
-    deploy("javawebapp-qa2","qa","qa/javawebapp.yaml","${params.deployTag}")
+    deploy("javawebapp-qa2","qa","qa/javawebapp-qa2.yaml","${params.deployTag}")
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
