@@ -264,6 +264,7 @@ def buildDeployProdMap() {
   stringProdFolders.split('/\n').each { listProdFolders.add.(it) }
   echo "+++++++++"
   echo listProdFolders[0]
+  echo listProdFolders[1]
 
   // "[a,b,c]".tokenize(',[]')
 //  String varProdFolders = new File('/path/to/file').text
