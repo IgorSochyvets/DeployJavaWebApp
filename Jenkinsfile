@@ -261,18 +261,12 @@ def buildDeployProdMap() {
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
   stringProdFolders.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
-
-  stringProdPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringProdPathes.split('/\n').each { println(it) }
-
-  stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
-  stringQaPathes.split('/\n').each { println(it) }
-
-  stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
-  stringDevPathes.split('/\n').each { println(it) }
   echo listProdFolders[0]  // test is list is working
 
-  echo "concut !!!"
+  stringProdPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
+  stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
+  stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
+  echo "Result String with File Pathes to deploy"
   stringDeployPathes = stringProdPathes + stringQaPathes + stringDevPathes
   stringDeployPathes.split('/\n').each { println(it) }
 
@@ -285,9 +279,5 @@ def buildDeployProdMap() {
   ]
 
   echo deployMap.releaseName
-
-
-
-
 
 }
