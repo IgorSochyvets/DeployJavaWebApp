@@ -36,7 +36,7 @@ node(label) {
 
 def tagDockerImage
 
-
+/* working code
 def devMap = [
   releaseName : 'javawebapp-dev2',
   filePathToChart : '1234567/javawebapp-chart',
@@ -44,8 +44,9 @@ def devMap = [
   valuesPath : 'dev/javawebapp-dev2.yaml',
   imageTag : '1234567'
 ]
-
-
+print "releaseName is: $devMap.releaseName \n"
+println "releaseName is: $devMap "
+*/
 
 
 // checkout Config repo
@@ -53,46 +54,6 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-
-      print "releaseName is: $devMap.releaseName \n"
-
-      println "releaseName is: $devMap "
-
-
-
-/*
-  def groovyApps = [
-          names: [ 'first', 'second', 'third' ],
-          envs: [
-              first: [ 'dev', 'prod' ],
-              second: [ 'dev', 'prod' ],
-              third: ['dev', 'stage', 'live']
-          ]
-      ]
-
-  for (i in groovyApps.names) {
-      print "App is: $i \n"
-
-      for (j in groovyApps.envs."$i") {
-          print "Brand for App is: $j \n"
-      }
-
-      print "========\n\n"
-  }
-
-*/
-
-/*
-for (element in devMap) {
-    echo "${element.key} ${element.value}"
-}
-
-//  dev.each {devi -> echo "$devi.value : $devi.key "}
-
-  for(devi in dev){
-      println("$devi.value : $devi.key ");
-    }
-*/
 
 }
 
@@ -105,7 +66,7 @@ running_set = [
         if ( isChangeSet("prod-us1/javawebapp.yaml")  ) {
           def values = readYaml(file: 'prod-us1/javawebapp.yaml')
           checkoutAppRepo("${values.image.tag}")
-          deploy("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp.yaml","${values.image.tag}")
+          deploy("javawebapp-prod-us1","prod-us1","prod-us1/javawebapp-prod-us1.yaml","${values.image.tag}")
         }
         else Utils.markStageSkippedForConditional('DeployProdUs1')
       }
@@ -246,20 +207,11 @@ def checkoutAppRepo(commitId) {
 // prod-us1/javawebapp.yaml: true
 // prod-us2/javawebapp.yaml: false
 
+
+// not used
 def buildDeployProdMap() {
   varProdFolders = sh(returnStdout: true, script: "ls | grep prod-") // varProdFolders - string, contains all names of prod
   echo "varProdFolders output: $varProdFolders"
 
 //  String varProdFolders = new File('/path/to/file').text
-}
-
-def buildDeployQaMap() {
-  sh 'ls -la | grep qa'
-}
-
-@NonCPS
-List<List<?>> mapToList(Map map) {
-  return map.collect { it ->
-    [it.key, it.value]
-  }
 }
