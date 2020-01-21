@@ -43,12 +43,12 @@ stage('Checkout1') {
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
 dev = [
-      "releaseName" : “javawebapp-dev2”,
-      "filePathToChart" : “<ref>/javawebapp-chart”,
-      "namespace" : “dev”,
-      "valuesPath" : “dev/javawebapp-dev2.yaml”,
-      "imageTag" : “<shortCommit>”
-    ]
+  "releaseName" : { “javawebapp-dev2” },
+  "filePathToChart" : “<ref>/javawebapp-chart”,
+  "namespace" : “dev”,
+  "valuesPath" : “dev/javawebapp-dev2.yaml”,
+  "imageTag" : “<shortCommit>”
+]
 
   for(devi in dev){
       println("$devi.value : $devi.key ");
