@@ -42,7 +42,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-dev = [
+devMap = [
   "releaseName" : { “javawebapp-dev2” },
   "filePathToChart" : { “1234567/javawebapp-chart” },
   "namespace" : { “dev” },
@@ -50,6 +50,10 @@ dev = [
   "imageTag" : { “1234567” }
 ]
 
+
+for (element in devMap) {
+    echo "${element.key} ${element.value}"
+}
 
   dev.each {devi -> echo "$devi.value : $devi.key "}
 /*
