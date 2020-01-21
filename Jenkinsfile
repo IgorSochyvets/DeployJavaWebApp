@@ -54,12 +54,9 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-  for (i in devMap.releaseName) {
-      print "releaseName is: $i \n"
-  }
-  for (i in devMap.filePathToChart) {
-      print "filePathToChart is: $i \n"
-  }
+      print "releaseName is: $devMap.releaseName \n"
+
+
 
 /*
   def groovyApps = [
