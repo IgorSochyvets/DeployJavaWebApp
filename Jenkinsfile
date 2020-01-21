@@ -56,7 +56,7 @@ stage('Checkout1') {
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 //  echo buildDeployProdMap()
   def sampleText = "Groovy is Cool"
-  println sampleText.split()
+  println sampleText.split(' ')
 }
 
 //
