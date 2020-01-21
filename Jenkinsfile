@@ -262,7 +262,10 @@ def buildDeployProdMap() {
   stringProdFolders.tokenize('/\n').each { println(it) }           // print them
   stringProdFolders.tokenize('/\n').each { listProdFolders << (it) }    // create list with folder names
   echo "test"
-  echo listProdFolders  // test is list is working
+
+  echo listProdFolders[0]  // test is list is working
+
+  listProdFolders.each { println(it) } 
 
 
 }
