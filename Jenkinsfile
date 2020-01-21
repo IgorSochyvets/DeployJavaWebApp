@@ -38,8 +38,8 @@ def tagDockerImage
 
 
 def devMap = [
-  "releaseName" :  “javawebapp-dev2” ,
-  "filePathToChart" : “1234567/javawebapp-chart” ,
+  "releaseName" : { “javawebapp-dev2”} ,
+  "filePathToChart" : { “1234567/javawebapp-chart” },
   "namespace" : { “dev” },
   "valuesPath" : { “dev/javawebapp-dev2.yaml” },
   "imageTag" : { “1234567” }
@@ -52,7 +52,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-  // echo devMap["releaseName"]
+echo devMap["releaseName"]
 
 /*
 for (element in devMap) {
