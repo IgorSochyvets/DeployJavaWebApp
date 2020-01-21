@@ -259,7 +259,8 @@ def buildDeployProdMap() {
   String varProdFolders
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
 //  echo "varProdFolders output: $varProdFolders"
-  def listProdFolders = sampleText.tokenize('\n')
-  return listProdFolders
+  stringProdFolders.split().each { println it }
+//  def listProdFolders = sampleText.tokenize('\n')
+  return stringProdFolders
 //  String varProdFolders = new File('/path/to/file').text
 }
