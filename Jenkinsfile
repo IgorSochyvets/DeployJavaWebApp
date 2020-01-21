@@ -36,15 +36,15 @@ node(label) {
 
 def tagDockerImage
 
-/*
+
 def devMap = [
-  'releaseName' : { “javawebapp-dev2”} ,
-  "filePathToChart" : { “1234567/javawebapp-chart” },
-  "namespace" : { “dev” },
-  "valuesPath" : { “dev/javawebapp-dev2.yaml” },
-  "imageTag" : { “1234567” }
+  releaseName : 'javawebapp-dev2',
+  filePathToChart : '1234567/javawebapp-chart' },
+  namespace : 'dev',
+  valuesPath : 'dev/javawebapp-dev2.yaml',
+  imageTag : '1234567'
 ]
-*/
+
 
 
 
@@ -54,6 +54,14 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
+  for (i in devMap.releaseName) {
+      print "releaseName is: $i \n"
+  }
+  for (i in devMap.filePathToChart) {
+      print "filePathToChart is: $i \n"
+  }
+
+/*
   def groovyApps = [
           names: [ 'first', 'second', 'third' ],
           envs: [
@@ -73,7 +81,7 @@ stage('Checkout1') {
       print "========\n\n"
   }
 
-
+*/
 
 /*
 for (element in devMap) {
