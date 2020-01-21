@@ -259,11 +259,11 @@ def buildDeployProdMap() {
   String stringProdFolders
   def listProdFolders = []
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')
-  echo stringProdFolders
+
   stringProdFolders.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders.add.(it) }
   echo "+++++++++"
-  listProdFolders.each {print(it)}
+  echo listProdFolders[0]
 
   // "[a,b,c]".tokenize(',[]')
 //  String varProdFolders = new File('/path/to/file').text
