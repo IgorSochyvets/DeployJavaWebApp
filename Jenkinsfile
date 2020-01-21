@@ -45,8 +45,8 @@ def devMap = [
   "imageTag" : { “1234567” }
 ]
 
-  echo devMap["releaseName"]
-  
+
+
 
 // checkout Config repo
 stage('Checkout1') {
@@ -54,7 +54,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 
-
+  // echo devMap["releaseName"]
 
 /*
 for (element in devMap) {
