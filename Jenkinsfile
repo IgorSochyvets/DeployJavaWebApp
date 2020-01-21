@@ -260,11 +260,19 @@ def buildDeployProdMap() {
   def listProdFolders = [] // this will be stages and Maps for deployment
   stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
   stringProdFolders.tokenize('/\n').each { println(it) }           // print them
-  stringProdFolders.tokenize('/\n').each { listProdFolders << {it} }    // create list with folder names
+  stringProdFolders.tokenize('/\n').each { listProdFolders << it }    // create list with folder names
 
 //  echo listProdFolders[0]  // test is list is working
 
-  listProdFolders.each { println(it) }
+  listProdFolders.each {
+    def it = [
+      releaseName : 'javawebapp-dev2',
+      filePathToChart : '1234567/javawebapp-chart',
+      namespace : 'dev',
+      valuesPath : 'dev/javawebapp-dev2.yaml',
+      imageTag : '1234567'
+    ]
 
+}
 
 }
