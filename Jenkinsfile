@@ -253,7 +253,7 @@ def checkoutAppRepo(commitId) {
 def buildDeployProdMap() {
   varProdFolders = sh(returnStdout: true, script: 'ls -d */') // varProdFolders - string, contains all names of prod
 //  echo "varProdFolders output: $varProdFolders"
-
+  echo varProdFolders
 
   def listProdFolders = varProdFolders.replaceAll(~/^\[|\]$/, '').split('\n')
 // assert a == ['aa', 'bb', 'cc', 'dd']
