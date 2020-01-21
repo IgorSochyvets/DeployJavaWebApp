@@ -262,16 +262,18 @@ def buildDeployProdMap() {
   stringProdFolders.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
 
-  stringDeployPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringDeployPathes.split('/\n').each { println(it) }
+  stringProdPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
+//  stringProdPathes.each { println(it) }
 
   stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
-  stringQaPathes.split('/\n').each { println(it) }
+//  stringQaPathes.each { println(it) }
 
   stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
-  stringDevPathes.split('/\n').each { println(it) }
+//  stringDevPathes.each { println(it) }
 //  echo listProdFolders[0]  // test is list is working
 
+  stringDeployPathes = stringProdPathes + stringQaPathes + stringDevPathes
+  stringDeploy Pathes.each { println(it) }
 
   def deployMap = [
     releaseName : 'javawebapp-dev2',
