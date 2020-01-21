@@ -262,8 +262,14 @@ def buildDeployProdMap() {
   stringProdFolders.split('/\n').each { println(it) }
   stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
 
-  stringDeployPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' 'find $PWD | grep qa | grep yaml' )
+  stringDeployPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
   stringDeployPathes.split('/\n').each { println(it) }
+
+  stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
+  stringQaPathes.split('/\n').each { println(it) }
+
+  stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
+  stringDevPathes.split('/\n').each { println(it) }
 //  echo listProdFolders[0]  // test is list is working
 
 
