@@ -259,9 +259,10 @@ def buildDeployMap() {
   }
 
   echo "deployMap -  key : value :"
-  deployMap.each{
-      key, value -> print key, value
-  }
+
+  //deployMap.each{key, value -> print key, value }
+
+  deployMap.each{ k, v -> println "${k}:${v}" }
 
 
   //  working code example TMP
