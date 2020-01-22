@@ -244,13 +244,8 @@ def buildDeployMap() {
   // dev if isMaster()
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
-
-  if (isChangeSet('prod-us1/javawebapp-prod-us1.yaml')) {
-    echo "true!!!"
-  }
-
   for ( k in deployMap ) {
-    if  (isChangeSet(k.key)) {
+    if  ( (isBuildingTag()) || (isMaster()) || (isChangeSet(k.key)) ) {
       echo k.key
       k.value = 'true'
     }
