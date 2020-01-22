@@ -258,18 +258,23 @@ def checkoutAppRepo(commitId) {
 def buildDeployProdMap() {
 //  String stringProdFolders
   def listProdFolders = [] // this will be stages and Maps for deployment
-  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
-  stringProdFolders.split('/\n').each { println(it) }
-  stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
+
+//  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
+//  stringProdFolders.split('/\n').each { println(it) }
+//  stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
+
   echo listProdFolders[0]  // test is list is working
 
   stringProdPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
   stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
   stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
   echo "Result String with File Pathes to deploy"
-  stringDeployPathes = stringProdPathes + stringQaPathes + stringDevPathes
+  stringDeployPathes = stringDevPathes + stringQaPathes + stringProdPathes
   stringDeployPathes.split('/\n').each { println(it) }
-
+  stringDeployPathes.split('/\n').each { listProdFolders << it }
+  echo "Result List with File Pathes to deploy"
+  listProdFolders.each {println(listProdFolders[it])}
+/*
   def deployMap = [
     releaseName : 'javawebapp-dev2',
     filePathToChart : '1234567/javawebapp-chart',
@@ -277,7 +282,7 @@ def buildDeployProdMap() {
     valuesPath : 'dev/javawebapp-dev2.yaml',
     imageTag : '1234567'
   ]
-
   echo deployMap.releaseName
+*/
 
 }
