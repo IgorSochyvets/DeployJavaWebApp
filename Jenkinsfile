@@ -250,7 +250,9 @@ def buildDeployMap() {
   //deployMap.each{ k, v -> [k, v = "true"] }
   //map3.'abc'= list3
 
-  for ( k in deployMap ) { k.value = 'true' }
+  for ( k in deployMap ) {
+    if (isMaster() || isBuildingTag() || isChangeSet(k)) k.value = 'true' 
+  }
 
   echo " Modified Map here --->>> "
   deployMap.each{ k, v -> println "${k}:${v}" }
