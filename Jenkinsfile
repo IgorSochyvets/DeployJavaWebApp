@@ -250,8 +250,9 @@ def buildDeployMap() {
   //deployMap.each{ k, v -> [k, v = "true"] }
   //map3.'abc'= list3
 
-  if isChangeSet("/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml") echo "true!!!"
-
+  if (isChangeSet("/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml")) {
+    echo "true!!!"
+  }
 /*
   for ( k in deployMap ) {
     if (isChangeSet("/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml")) k.value = 'true'
