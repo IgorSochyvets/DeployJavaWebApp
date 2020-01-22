@@ -251,7 +251,7 @@ def buildDeployMap() {
   //map3.'abc'= list3
 
   // sh 'cat /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml'
-  if (isChangeSet(/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml)) {
+  if (isChangeSet('/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml')) {
     echo "true!!!"
   }
 
