@@ -231,7 +231,7 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringDeploypaths.split('\n').each { (listFilePaths - - "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/") << it }
+  stringDeploypaths.split('\n').each { (listFilePaths - "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/") << it }
   listFilePaths.each{ i -> println "${i}" }
 
   // initializing deployMap from listFilePaths
@@ -275,13 +275,13 @@ def buildDeployMap() {
 
 // get folder name = namespace from file path
 def getNameSpace (filePath){
-  def nameSpace = filePath.split('/')[6]
+  def nameSpace = filePath.split('/')[1]
   return nameSpace
 }
 // get file name = release name from file path
 def getReleaseName (filePath){
   def releaseName = ""
-  def file2 = filePath.split('/')[7]
+  def file2 = filePath.split('/')[2]
   releaseName=file2.take(file2.lastIndexOf('.'))
   return releaseName
 }
