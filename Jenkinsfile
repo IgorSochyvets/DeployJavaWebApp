@@ -251,7 +251,7 @@ def buildDeployMap() {
   //map3.'abc'= list3
 
   for ( k in deployMap ) {
-    if (isMaster() || isBuildingTag() || isChangeSet(k)) k.value = 'true' 
+    if (isMaster() || isBuildingTag() || isChangeSet(k.key)) k.value = 'true'
   }
 
   echo " Modified Map here --->>> "
