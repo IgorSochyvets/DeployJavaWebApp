@@ -278,10 +278,17 @@ def buildDeployProdMap() {
       println(i)
     }
 
-def file = listProdFolders[0].split('/')[1]
-releaseName=file.take(file.lastIndexOf('.'))
+//def filePath = "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml"
+def releaseName = ""
+def nameSpace = listProdFolders[0].split('/')[6]
+def file2 = listProdFolders[0].split('/')[7]
+releaseName=file2.take(file2.lastIndexOf('.'))
+echo "Namespace:"
+echo nameSpace
 echo "Release name:"
 echo releaseName
+
+
 /*
   def deployMap = [
     releaseName : 'javawebapp-dev2',
