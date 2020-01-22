@@ -266,8 +266,7 @@ def file2 = listFilePaths[0].split('/')[7]
 releaseName=file2.take(file2.lastIndexOf('.'))
 echo "Namespace:"
 echo nameSpace
-echo "Release name:"
+echo "Release Name:"
 echo releaseName
-
 
 }
