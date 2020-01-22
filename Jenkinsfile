@@ -29,7 +29,7 @@ spec:
     - cat
     tty: true
 """
-  ){
+  )
 
 
 node(label) {
@@ -158,8 +158,8 @@ stage('DeployQa') {
 }
 */
 
-    } // node
-  } //podTemplate
+} // node
+
 
 def isMaster() {    // is it DEV release ?
   return ( (!isBuildingTag()) && (params.deployTag != 'Null') )
@@ -247,7 +247,7 @@ def buildDeployMap() {
   deployMap.each{ k, v -> {
     println "${k}:${v}"
     if  isMaster() deployMap.put(k, 'false')
-  }  
+  }
 */
 
   // stage = folder ?
