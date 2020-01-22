@@ -258,15 +258,14 @@ def buildDeployMap() {
     println (deployMap[i])
   }
 
+  // TMP testing
   echo "deployMap -  key : value :"
-
-  //deployMap.each{key, value -> print key, value }
-
   deployMap.each{ k, v -> println "${k}:${v}" }
 
 
   //  working code example TMP
   //def filePath = "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml"
+/*
   def releaseName = ""
   def nameSpace = listFilePaths[0].split('/')[6]
   def file2 = listFilePaths[0].split('/')[7]
@@ -275,5 +274,21 @@ def buildDeployMap() {
   echo nameSpace
   echo "Release Name:"
   echo releaseName
+*/
+  echo "New Functions tested here -> "
+  echo getNameSpace(listFilePaths[0])
+  echo releaseName(listFilePaths[0])
+}
 
+// get folder name = namespace from file path
+def getNameSpace (filePath){
+  def nameSpace = filePath.split('/')[6]
+  return nameSpace
+}
+// get file name = release name from file path
+def getReleaseName (filePath){
+  def releaseName = ""
+  def file2 = filePath.split('/')[7]
+  releaseName=file2.take(file2.lastIndexOf('.'))
+  return releaseName
 }
