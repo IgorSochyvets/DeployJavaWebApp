@@ -272,7 +272,7 @@ def buildDeployProdMap() {
   stringDeployPathes = stringDevPathes + stringQaPathes + stringProdPathes
   stringDeployPathes.split('/\n').each { println(it) }
   stringDeployPathes.split('/\n').each { listProdFolders << it }
-  echo "Result List with File Pathes to deploy"
+  echo "Result List with File Pathes to deploy:"
 //  listProdFolders.each {println(listProdFolders[it])}
 
   for(i in listProdFolders){
