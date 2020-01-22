@@ -246,19 +246,15 @@ def buildDeployMap() {
       k.value = 'true'
     }
     else if (isMaster()) {
-        if ( k.key == dev ) k.value = 'true'
+        if ( getNameSpace(k.key) == dev ) k.value = 'true'
     }
     else if (isBuildingTag()) {
-        if ( k.key == qa ) k.value = 'true'
+        if ( getNameSpace(k.key) == qa ) k.value = 'true'
     }
   }
 
   echo " Modified Map here --->>> "
   deployMap.each{ k, v -> println "${k}:${v}" }
-
-  // stage = folder ?
-
-  // parallel ?
 
   // TMP testing
   echo "Namespace"
