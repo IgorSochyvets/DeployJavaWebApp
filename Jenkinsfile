@@ -250,7 +250,7 @@ def buildDeployMap() {
   for(i in listFilePaths){
     println(i)
   }
-  println(listFilePaths[2])
+  echo listFilePaths[2]
   // initializing deployMap from listFilePaths
   def deployMap = [:]
   for(i in listFilePaths){
