@@ -231,7 +231,6 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml | cut -c 64-' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml | cut -c 64-' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml | cut -c 64-' )
-  echo stringDeploypaths
   stringDeploypaths.split('\n').each { listFilePaths << it }
   listFilePaths.each{ i -> println "${i}" }
 
@@ -269,20 +268,21 @@ def buildDeployMap() {
   // parallel ?
 
   // TMP testing
-  echo "Namespace add Release Name"
+  echo "Namespace"
   echo getNameSpace(listFilePaths[0])
+  echo "Release Name"
   echo getReleaseName(listFilePaths[0])
 }
 
 // get folder name = namespace from file path
 def getNameSpace (filePath){
-  def nameSpace = filePath.split('/')[1]
+  def nameSpace = filePath.split('/')[0]
   return nameSpace
 }
 // get file name = release name from file path
 def getReleaseName (filePath){
   def releaseName = ""
-  def file2 = filePath.split('/')[2]
+  def file2 = filePath.split('/')[1]
   releaseName=file2.take(file2.lastIndexOf('.'))
   return releaseName
 }
