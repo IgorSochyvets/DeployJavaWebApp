@@ -250,7 +250,7 @@ def buildDeployMap() {
   }
 
   for ( k in deployMap ) {
-    if  ( isMaster() || isBuildingTag() || isChangeSet(k.key) ) {
+    if  isChangeSet(k.key) {
       echo k.key
       k.value = 'true'
     }
