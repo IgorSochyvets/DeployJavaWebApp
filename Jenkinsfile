@@ -229,14 +229,20 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
   stringDeploypaths.split('\n').each { listFilePaths << it }
-  echo "Result List with File paths to deploy:"
-  listFilePaths.each{ k -> println "${k}" }
+  listFilePaths.each{ i -> println "${i}" }
 
   // initializing deployMap from listFilePaths
   def deployMap = [:]
-
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
+  deployMap.each{ k, v -> println "${k}:${v}" } // test output
 
+  // test key output
+  // deployMap.${0.key}
+
+  // test value output
+  for ( e in deployMap ) {
+    print "key = ${e.key}, value = ${e.value}"
+}
 
   // check keys in map and mark 'true' if it needs to be deployed
   // dev if isMaster()
@@ -248,8 +254,6 @@ def buildDeployMap() {
   // parallel ?
 
   // TMP testing
-  echo "deployMap -  key:value "
-  deployMap.each{ k, v -> println "${k}:${v}" }
   echo "Namespace add Release Name"
   echo getNameSpace(listFilePaths[0])
   echo getReleaseName(listFilePaths[0])
