@@ -161,16 +161,16 @@ stage('DeployQa') {
 } // node
 } //podTemplate
 
-
-def isMaster() {    // is it DEV release ?
+// is it DEV release ?
+def isMaster() {
   return ( (!isBuildingTag()) && (params.deployTag != 'Null') )
 }
-
+// is it QA release ?
 def isBuildingTag() {
-  return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ ) // // QA release has tag as paramete
+  return ( params.deployTag ==~ /^\d+\.\d+\.\d+$/ )
 }
 
-
+// check if file was changed
 def isChangeSet(filePath) {
   def varBooleanResult=false
   currentBuild.changeSets.each { changeSet ->
@@ -185,11 +185,9 @@ def isChangeSet(filePath) {
   return varBooleanResult
 }
 
-
 //
 // deployment function for PROD releases
 // name - app's name; ns - namespace; filePath - path to values.yaml, refName - name of dir where App Repo is stored;
-
 def deploy(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -223,7 +221,6 @@ def checkoutAppRepo(commitId) {
 // /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-qa2.yaml:true
 
 
-
 def buildDeployMap() {
   // creating List list with all file paths with config yaml (dev/qa/prod-*)
   def listFilePaths = []
@@ -239,15 +236,20 @@ def buildDeployMap() {
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
   // deployMap.each{ k, v -> println "${k}:${v}" } // test output
 
-
   // check keys in map and mark 'true' if it needs to be deployed
   // dev if isMaster()
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
   for ( k in deployMap ) {
-    if  ( (isBuildingTag()) || (isMaster()) || (isChangeSet(k.key)) ) {
+    if (isChangeSet(k.key))  {
       echo k.key
       k.value = 'true'
+    }
+    else if (isMaster()) {
+        if k.key == dev k.value = 'true'
+    }
+    else if (isBuildingTag()) {
+        if k.key == qa k.value = 'true'
     }
   }
 
