@@ -258,24 +258,13 @@ def buildDeployMap() {
     println (deployMap[i])
   }
 
+  // check keys in map and mark 'true' if it needs to be deployed
+   
+
   // TMP testing
   echo "deployMap -  key : value :"
   deployMap.each{ k, v -> println "${k}:${v}" }
-
-
-  //  working code example TMP
-  //def filePath = "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml"
-/*
-  def releaseName = ""
-  def nameSpace = listFilePaths[0].split('/')[6]
-  def file2 = listFilePaths[0].split('/')[7]
-  releaseName=file2.take(file2.lastIndexOf('.'))
-  echo "Namespace:"
-  echo nameSpace
-  echo "Release Name:"
-  echo releaseName
-*/
-  echo "New Functions tested here -> "
+  echo "Namespace add Release Name"
   echo getNameSpace(listFilePaths[0])
   echo getReleaseName(listFilePaths[0])
 }
