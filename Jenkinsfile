@@ -277,6 +277,11 @@ def buildDeployProdMap() {
   for(i in listProdFolders){
       println(i)
     }
+
+def file = listProdFolders[0].split('/')[1]
+releaseName=file.take(file.lastIndexOf('.'))
+echo "Release name:"
+echo releaseName
 /*
   def deployMap = [
     releaseName : 'javawebapp-dev2',
