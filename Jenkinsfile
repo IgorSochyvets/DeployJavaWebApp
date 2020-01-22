@@ -31,7 +31,7 @@ spec:
 """
   )
 
-
+{ //pod template
 node(label) {
 
 def tagDockerImage
@@ -159,6 +159,7 @@ stage('DeployQa') {
 */
 
 } // node
+} //podTemplate
 
 
 def isMaster() {    // is it DEV release ?
