@@ -247,7 +247,7 @@ def buildDeployMap() {
 
   // isMaster() || isBuildingTag() || isChangeSet(k)
 
-  deployMap.each{ k, v -> [k, v = 'true'] }
+  deployMap.each{ k, v -> [k, v = "true"] }
   echo " Modified Map here --->>> "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
