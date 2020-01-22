@@ -228,11 +228,11 @@ def buildDeployMap() {
   // creating List list with all file paths with config yaml (dev/qa/prod-*)
   def listFilePaths = []
   stringDeploypaths = \
-    sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
-    sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
-    sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
+    sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml | cut -c 56-' ) + \
+    sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml | cut -c 56-' ) + \
+    sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml | cut -c 56-' )
   echo stringDeploypaths
-  stringDeploypaths.split('\n').each { (listFilePaths << it }
+  stringDeploypaths.split('\n').each { listFilePaths << it }
   listFilePaths.each{ i -> println "${i}" }
 
   // initializing deployMap from listFilePaths
