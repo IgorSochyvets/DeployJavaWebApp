@@ -260,7 +260,7 @@ def buildDeployMap() {
 
   echo "deployMap -  key : value :"
   deployMap.each{
-      key, value -> { println (key " : "value ) }
+      key, value -> print key
   }
 
 
