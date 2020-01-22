@@ -237,7 +237,7 @@ def buildDeployMap() {
   // initializing deployMap from listFilePaths
   def deployMap = [:]
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
-  deployMap.each{ k, v -> println "${k}:${v}" } // test output
+  // deployMap.each{ k, v -> println "${k}:${v}" } // test output
 
 
   // check keys in map and mark 'true' if it needs to be deployed
@@ -245,10 +245,10 @@ def buildDeployMap() {
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
 
-  // isMaster() || isBuildingTag() || isChangeSet(k)
+  if  ( isMaster() || isBuildingTag() || isChangeSet(k) )
 
-  //deployMap.each{ k, v -> [k, v = "true"] }
-  //map3.'abc'= list3
+  // deployMap.each{ k, v -> [k, v = "true"] }
+
 
   // sh 'cat /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml'
   if (isChangeSet('prod-us1/javawebapp-prod-us1.yaml')) {
@@ -256,8 +256,10 @@ def buildDeployMap() {
   }
 
   for ( k in deployMap ) {
-    echo k.value
-    k.value = 'true'
+    if  ( isMaster() || isBuildingTag() || isChangeSet(k.key) ) {
+      echo k.key
+      k.value = 'true'
+    }
   }
 
   echo " Modified Map here --->>> "
