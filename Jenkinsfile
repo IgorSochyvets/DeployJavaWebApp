@@ -243,11 +243,12 @@ def buildDeployMap() {
   // dev if isMaster()
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
+/*
   deployMap.each{ k, v -> {
     println "${k}:${v}"
     if  isMaster() deployMap.put(k, 'false')
-  }
-  }
+  }  
+*/
 
   // stage = folder ?
 
