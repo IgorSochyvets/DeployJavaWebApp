@@ -247,6 +247,11 @@ def buildDeployMap() {
 
   deployMap.each{ k, v -> if  ( isMaster() || isBuildingTag() || isChangeSet(k) ) deployMap.put(k, 'true') }
 
+  echo "\
+  \
+  Modified Map here --->>> \
+  \
+  \"
   deployMap.each{ k, v -> println "${k}:${v}" }
 
   // stage = folder ?
