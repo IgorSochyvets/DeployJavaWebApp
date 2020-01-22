@@ -245,7 +245,7 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringDeploypaths.split('/\n').each { listFilePaths << it }
+  stringDeploypaths.split('\n').each { listFilePaths << it }
   echo "Result List with File paths to deploy:"
   for(i in listFilePaths){
     println(i)
