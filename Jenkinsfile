@@ -246,10 +246,10 @@ def buildDeployMap() {
       k.value = 'true'
     }
     else if (isMaster()) {
-        if k.key == dev k.value = 'true'
+        if ( k.key == dev ) k.value = 'true'
     }
     else if (isBuildingTag()) {
-        if k.key == qa k.value = 'true'
+        if ( k.key == qa ) k.value = 'true'
     }
   }
 
