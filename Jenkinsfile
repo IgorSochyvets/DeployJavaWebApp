@@ -273,7 +273,11 @@ def buildDeployProdMap() {
   stringDeployPathes.split('/\n').each { println(it) }
   stringDeployPathes.split('/\n').each { listProdFolders << it }
   echo "Result List with File Pathes to deploy"
-  listProdFolders.each {println(listProdFolders[it])}
+//  listProdFolders.each {println(listProdFolders[it])}
+
+  for(i in listProdFolders){
+      println(listProdFolders[i]);
+    }
 /*
   def deployMap = [
     releaseName : 'javawebapp-dev2',
