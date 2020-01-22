@@ -182,30 +182,13 @@ def isChangeSet(filePath) {
   return varBooleanResult
 }
 
-///////// it creates list fir file paths to files which were changed
-def ischangeSetList() {
-  def list = []
-  currentBuild.changeSets.each { changeSet ->
-    changeSet.items.each { entry ->
-      entry.affectedFiles.each { file ->
-        if (file.path ==~ /^prod-(ap1|eu1|us1|us2)\/\w+.yaml$/) {
-          list.add(file.path)
-        }
-      }
-    }
-  }
-  return list.toSet()
-}
-
-
-////////
 
 //
 // deployment function for PROD releases
 // name - app's name; ns - namespace; filePath - path to values.yaml, refName - name of dir where App Repo is stored;
 
 def deploy(name, ns, filePath, refName) {
- container('helm') {
+  container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
         echo appVersion: \"$refName\" >> '$refName/javawebapp-chart/Chart.yaml'
@@ -218,7 +201,7 @@ def deploy(name, ns, filePath, refName) {
         helm ls
     """
     }
-}
+  }
 }
 
 // checkout App repo to commit function
@@ -231,10 +214,10 @@ def checkoutAppRepo(commitId) {
 }
 
 // Build MAP key : values   - which contains information which Prod app to deploy
-// key: path to file with confug_app; value: true/false (true - deploy; false - skip)
+// key: path to file with config_app; value: true/false (true - deploy; false - skip)
 // example:
-// prod-us1/javawebapp.yaml: true
-// prod-us2/javawebapp.yaml: false
+// /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml:false
+// /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-qa2.yaml:true
 
 
 
@@ -253,13 +236,18 @@ def buildDeployMap() {
 
   // initializing deployMap from listFilePaths
   def deployMap = [:]
-  for(i in listFilePaths){
-    deployMap.put(i, 'false')
-    println (deployMap[i])
-  }
+
+  listFilePaths.each{ i -> deployMap.put(i, 'false')}
+
 
   // check keys in map and mark 'true' if it needs to be deployed
-   
+  // dev if isMaster()
+  // qa if isBuildingTag()
+  // prod-  if isChangeSet(filePath)
+
+  // stage = folder ?
+
+  // parallel ?
 
   // TMP testing
   echo "deployMap -  key : value :"
