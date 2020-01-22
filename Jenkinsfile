@@ -276,7 +276,7 @@ def buildDeployProdMap() {
 //  listProdFolders.each {println(listProdFolders[it])}
 
   for(i in listProdFolders){
-      println(listProdFolders[i]);
+      println(i);
     }
 /*
   def deployMap = [
