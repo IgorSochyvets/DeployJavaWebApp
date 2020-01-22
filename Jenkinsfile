@@ -45,6 +45,7 @@ stage('Checkout1') {
 
 }
 
+/*
 //
 // *** Deploy PROD
 //
@@ -83,7 +84,7 @@ stage('Checkout1') {
         }
         else Utils.markStageSkippedForConditional('DeployProdAp1')
       }
-
+*/
 
 // Parallel - working code with issue (simulmaneuos checkout and creating same directory)
 /*
@@ -137,7 +138,7 @@ stage('DeployProd') {
 }
 */
 
-
+/*
 //deploy DEV
 stage('DeployDev') {
   if ( isMaster() ) {
@@ -155,6 +156,7 @@ stage('DeployQa') {
   }
   else Utils.markStageSkippedForConditional('DeployQa')
 }
+*/
 
     } // node
   } //podTemplate
@@ -236,18 +238,16 @@ def buildDeployMap() {
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
   deployMap.each{ k, v -> println "${k}:${v}" } // test output
 
-  // test key output
-  // deployMap.${0.key}
-
-  // test value output
-  for ( e in deployMap ) {
-    print "key = ${e.key}, value = ${e.value}"
-}
 
   // check keys in map and mark 'true' if it needs to be deployed
   // dev if isMaster()
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
+  deployMap.each{ k, v -> {
+    println "${k}:${v}"
+    if  isMaster() deployMap.put(k, 'false')
+  }
+  }
 
   // stage = folder ?
 
