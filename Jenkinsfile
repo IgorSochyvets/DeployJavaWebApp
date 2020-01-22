@@ -245,12 +245,6 @@ def buildDeployMap() {
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
 
-  if  ( isMaster() || isBuildingTag() || isChangeSet(k) )
-
-  // deployMap.each{ k, v -> [k, v = "true"] }
-
-
-  // sh 'cat /home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml'
   if (isChangeSet('prod-us1/javawebapp-prod-us1.yaml')) {
     echo "true!!!"
   }
