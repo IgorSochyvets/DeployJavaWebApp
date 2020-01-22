@@ -235,8 +235,6 @@ def buildDeployMap() {
   stringDeploypaths.split('\n').each { (listFilePaths << it }
   listFilePaths.each{ i -> println "${i}" }
 
-filePath.split('/')[6] +"/"+filePath.split('/')[7]
-
   // initializing deployMap from listFilePaths
   def deployMap = [:]
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
