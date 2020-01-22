@@ -245,7 +245,7 @@ def buildDeployMap() {
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
 
-  deployMap.each{ k, v -> if  ( isMaster() || isBuildingTag() || isChangeSet(k) ) [k, 'true'] }
+  deployMap.each{ k, v -> if  ( isMaster() || isBuildingTag() || isChangeSet(k) ) [k, v + 'true'] }
   echo " Modified Map here --->>> "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
