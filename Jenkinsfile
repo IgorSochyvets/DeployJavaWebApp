@@ -41,7 +41,7 @@ stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  buildDeployProdMap()
+  buildDeployMap()
 
 }
 
@@ -238,31 +238,25 @@ def checkoutAppRepo(commitId) {
 
 
 
-def buildDeployProdMap() {
-  def listProdFolders = [] // for list with all file paths with config yaml (dev/qa/prod-*)
-  /*
-  stringProdpaths = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringQapaths = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
-  stringDevpaths = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
+def buildDeployMap() {
+  def listFilePaths = [] // for list with all file paths with config yaml (dev/qa/prod-*)
 
-  stringDeploypaths = stringDevpaths + stringQapaths + stringProdpaths
-*/
   stringDeploypaths = \
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
 //  stringDeploypaths.split('/\n').each { println(it) }
-  stringDeploypaths.split('/\n').each { listProdFolders << it }
+  stringDeploypaths.split('/\n').each { listFilePaths << it }
   echo "Result List with File paths to deploy:"
-//  listProdFolders.each {println(listProdFolders[it])}
-  for(i in listProdFolders){
+//  listFilePaths.each {println(listFilePaths[it])}
+  for(i in listFilePaths){
       println(i)
     }
 
 //def filePath = "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml"
 def releaseName = ""
-def nameSpace = listProdFolders[0].split('/')[6]
-def file2 = listProdFolders[0].split('/')[7]
+def nameSpace = listFilePaths[0].split('/')[6]
+def file2 = listFilePaths[0].split('/')[7]
 releaseName=file2.take(file2.lastIndexOf('.'))
 echo "Namespace:"
 echo nameSpace
