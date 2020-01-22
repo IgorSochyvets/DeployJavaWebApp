@@ -231,8 +231,11 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringDeploypaths.split('\n').each { (listFilePaths - "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/") << it }
+  echo stringDeploypaths
+  stringDeploypaths.split('\n').each { (listFilePaths << it }
   listFilePaths.each{ i -> println "${i}" }
+
+filePath.split('/')[6] +"/"+filePath.split('/')[7]
 
   // initializing deployMap from listFilePaths
   def deployMap = [:]
