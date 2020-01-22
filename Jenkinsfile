@@ -246,7 +246,7 @@ def buildDeployMap() {
       k.value = 'true'
     }
     else if (isMaster()) {
-        if ( getNameSpace(k.key) == dev ) k.value = 'true'
+        if ( getNameSpace(k.key) == "dev" ) k.value = 'true'
     }
     else if (isBuildingTag()) {
         if ( getNameSpace(k.key) == 'qa' ) k.value = 'true'
