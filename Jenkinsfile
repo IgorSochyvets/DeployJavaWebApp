@@ -277,7 +277,7 @@ def buildDeployMap() {
 */
   echo "New Functions tested here -> "
   echo getNameSpace(listFilePaths[0])
-  echo releaseName(listFilePaths[0])
+  echo getReleaseName(listFilePaths[0])
 }
 
 // get folder name = namespace from file path
