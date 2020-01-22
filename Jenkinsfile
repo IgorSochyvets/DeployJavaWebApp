@@ -36,30 +36,13 @@ node(label) {
 
 def tagDockerImage
 
-/* working code
-def devMap = [
-  releaseName : 'javawebapp-dev2',
-  filePathToChart : '1234567/javawebapp-chart',
-  namespace : 'dev',
-  valuesPath : 'dev/javawebapp-dev2.yaml',
-  imageTag : '1234567'
-]
-print "releaseName is: $devMap.releaseName \n"
-println "releaseName is: $devMap "
-*/
-
-
 // checkout Config repo
 stage('Checkout1') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
   buildDeployProdMap()
-/*
-  def sampleText = "Groovy is Cool"
-  def values = sampleText.tokenize(' ')
-  println values
-  */
+
 }
 
 //
@@ -199,7 +182,7 @@ def isChangeSet(filePath) {
   return varBooleanResult
 }
 
-///////// it creates list fir file pathes to files which were changed
+///////// it creates list fir file paths to files which were changed
 def ischangeSetList() {
   def list = []
   currentBuild.changeSets.each { changeSet ->
@@ -254,25 +237,20 @@ def checkoutAppRepo(commitId) {
 // prod-us2/javawebapp.yaml: false
 
 
-// not used
+
 def buildDeployProdMap() {
-//  String stringProdFolders
-  def listProdFolders = [] // this will be stages and Maps for deployment
+  def listProdFolders = [] // for list with all file paths with config yaml (dev/qa/prod-*)
+  /*
+  stringProdpaths = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
+  stringQapaths = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
+  stringDevpaths = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
 
-//  stringProdFolders = sh(returnStdout: true, script: 'ls -d */')   // list folders
-//  stringProdFolders.split('/\n').each { println(it) }
-//  stringProdFolders.split('/\n').each { listProdFolders << it }    // create list with folder names
-
-  echo listProdFolders[0]  // test is list is working
-
-  stringProdPathes = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-  stringQaPathes = sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' )
-  stringDevPathes = sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
-
-  stringDeployPathes = stringDevPathes + stringQaPathes + stringProdPathes
-//  stringDeployPathes.split('/\n').each { println(it) }
-  stringDeployPathes.split('/\n').each { listProdFolders << it }
-  echo "Result List with File Pathes to deploy:"
+  stringDeploypaths = stringDevpaths + stringQapaths + stringProdpaths
+*/
+  stringDeploypaths = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' ) + sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
+//  stringDeploypaths.split('/\n').each { println(it) }
+  stringDeploypaths.split('/\n').each { listProdFolders << it }
+  echo "Result List with File paths to deploy:"
 //  listProdFolders.each {println(listProdFolders[it])}
   for(i in listProdFolders){
       println(i)
