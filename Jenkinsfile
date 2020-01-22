@@ -251,7 +251,7 @@ def buildDeployMap() {
   //map3.'abc'= list3
 
   for ( k in deployMap ) {
-    if (isMaster() || isBuildingTag() || isChangeSet(k.key)) k.value = 'true'
+    if (isChangeSet("/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/prod-us1/javawebapp-prod-us1.yaml")) k.value = 'true'
   }
 
   echo " Modified Map here --->>> "
