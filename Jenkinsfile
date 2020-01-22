@@ -245,13 +245,10 @@ def buildDeployMap() {
   // qa if isBuildingTag()
   // prod-  if isChangeSet(filePath)
 
-  deployMap.each{ k, v -> {
-    if  ( isMaster() || isBuildingTag() || isChangeSet(k) ) deployMap.put(k, 'true')
-  }
-  echo "Map with true values"
+  deployMap.each{ k, v -> if  ( isMaster() || isBuildingTag() || isChangeSet(k) ) deployMap.put(k, 'true')  deployMap.each{ k, v -> println "${k}:${v}" }
+
   deployMap.each{ k, v -> println "${k}:${v}" }
-
-
+  
   // stage = folder ?
 
   // parallel ?
