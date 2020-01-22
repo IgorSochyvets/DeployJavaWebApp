@@ -247,7 +247,10 @@ def buildDeployProdMap() {
 
   stringDeploypaths = stringDevpaths + stringQapaths + stringProdpaths
 */
-  stringDeploypaths = sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' ) + sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' )
+  stringDeploypaths = \
+    sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
+    sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
+    sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
 //  stringDeploypaths.split('/\n').each { println(it) }
   stringDeploypaths.split('/\n').each { listProdFolders << it }
   echo "Result List with File paths to deploy:"
