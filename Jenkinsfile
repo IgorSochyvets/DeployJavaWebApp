@@ -239,20 +239,26 @@ def checkoutAppRepo(commitId) {
 
 
 def buildDeployMap() {
-  def listFilePaths = [] // for list with all file paths with config yaml (dev/qa/prod-*)
-
+  // creating List list with all file paths with config yaml (dev/qa/prod-*)
+  def listFilePaths = []
   stringDeploypaths = \
     sh(returnStdout: true, script: 'find $PWD | grep dev | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
-//  stringDeploypaths.split('/\n').each { println(it) }
   stringDeploypaths.split('/\n').each { listFilePaths << it }
   echo "Result List with File paths to deploy:"
-//  listFilePaths.each {println(listFilePaths[it])}
   for(i in listFilePaths){
-      println(i)
-    }
+    println(i)
+  }
+  // initializing deployMap from listFilePaths
+  def deployMap = [:]
+  for(i in listFilePaths){
+    deployMap.put('i', 'false')
+    println (deployMap['i'])
+  }
 
+
+//  working code example TMP
 //def filePath = "/home/jenkins/agent/workspace/_Project_DeployJavaWebApp_master/dev/javawebapp-dev2.yaml"
 def releaseName = ""
 def nameSpace = listFilePaths[0].split('/')[6]
@@ -263,16 +269,5 @@ echo nameSpace
 echo "Release name:"
 echo releaseName
 
-
-/*
-  def deployMap = [
-    releaseName : 'javawebapp-dev2',
-    filePathToChart : '1234567/javawebapp-chart',
-    namespace : 'dev',
-    valuesPath : 'dev/javawebapp-dev2.yaml',
-    imageTag : '1234567'
-  ]
-  echo deployMap.releaseName
-*/
 
 }
