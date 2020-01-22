@@ -230,9 +230,7 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml' )
   stringDeploypaths.split('\n').each { listFilePaths << it }
   echo "Result List with File paths to deploy:"
-  for(i in listFilePaths){
-    println(i)
-  }
+  listFilePaths.each{ k -> println "${k}" }
 
   // initializing deployMap from listFilePaths
   def deployMap = [:]
@@ -250,7 +248,7 @@ def buildDeployMap() {
   // parallel ?
 
   // TMP testing
-  echo "deployMap -  key : value :"
+  echo "deployMap -  key:value "
   deployMap.each{ k, v -> println "${k}:${v}" }
   echo "Namespace add Release Name"
   echo getNameSpace(listFilePaths[0])
