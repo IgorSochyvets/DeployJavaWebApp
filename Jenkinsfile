@@ -275,3 +275,10 @@ def getReleaseName (filePath){
   releaseName=file2.take(file2.lastIndexOf('.'))
   return releaseName
 }
+
+def makeStagesFromFolders () {
+  // take Folders/Namespaces from deployMap and create stages dynamically
+  for ( k in deployMap ) {
+    echo getNameSpace(k.key)
+  }
+}
