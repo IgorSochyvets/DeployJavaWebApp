@@ -153,8 +153,8 @@ def buildDeployMap() {
 
 
     deployMap.each {
-      runningMap = [:]
-      runningMap.put(getNameSpace(it.key), makeStages(it))
+      runningMap = [ : ]
+      runningMap.put(getNameSpace(it.key)+"-"getReleaseName(it.key), makeStages(it))
     }
 
     stage('Parallel') {
