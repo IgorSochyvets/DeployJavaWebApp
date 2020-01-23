@@ -117,6 +117,7 @@ def buildDeployMap() {
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
+/*
   // every deployMap element - stage (deploy or skip)
   deployMap.each {
     stage("Deploy:" + getNameSpace(it.key)) {
@@ -142,7 +143,7 @@ def buildDeployMap() {
       }
     }
   }
-
+*/
 
 /////////////////////////
 /////////////////////////
@@ -183,7 +184,7 @@ def buildDeployMap() {
     stage('Parallel') {
       parallel(runningMap)
     }
-    
+
     /////////////////////////
     /////////////////////////
     //testing with parallel
