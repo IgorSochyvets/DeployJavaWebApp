@@ -154,10 +154,7 @@ def buildDeployMap() {
 // do checkout successively and Create Folders
   deployMap.each {
       if (it.value == 'true') {
-        if (isMaster()) {
-          checkoutAppRepo("${params.deployTag}")
-        }
-        else if (isBuildingTag()) {
+        if ( isMaster() || isBuildingTag() ) {
           checkoutAppRepo("${params.deployTag}")
         }
         else if (isChangeSet(it.key))  {
@@ -175,11 +172,7 @@ def buildDeployMap() {
       runningMap.put(it.key, { stage("Deploy:"+it.key) {
             if (it.value == 'true') {
               echo "Deploying " + it.key
-              if (isMaster()) {
-                //checkoutAppRepo("${params.deployTag}")
-                deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-              }
-              else if (isBuildingTag()) {
+              if (isMaster() || isBuildingTag()) {
                 //checkoutAppRepo("${params.deployTag}")
                 deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
               }
