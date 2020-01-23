@@ -268,37 +268,26 @@ def buildDeployMap() {
       // deploy or skip DEV
       echo "Deploying " + it.key
 
-      if (it.value == 'false') echo "Value = False!!!"
-      if (isMaster()) {
-        checkoutAppRepo("${params.deployTag}")
-        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+      if (it.value == 'true') {
+        if (isMaster()) {
+          checkoutAppRepo("${params.deployTag}")
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+        }
+        else if (isBuildingTag()) {
+          checkoutAppRepo("${params.deployTag}")
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+        }
+        else if (isChangeSet(it.key))  {
+          def values = readYaml(file: it.key)
+          checkoutAppRepo("${values.image.tag}")
+                echo "ReleaseName:" + getReleaseName(it.key)
+                echo "NameSpace:" + getNameSpace(it.key)
+                echo "FilePath:" + it.key
+                echo "refName:" + "${values.image.tag}"
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+        }
       }
-  //      else echo "Skipping " + getNameSpace(it.key)
-
-      // deploy or skip QA
-
-      else if (isBuildingTag()) {
-        checkoutAppRepo("${params.deployTag}")
-        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-      }
-  //    else echo "Skipping " + getNameSpace(it.key)
-
-      else if (isChangeSet(it.key))  {
-        def values = readYaml(file: it.key)
-        checkoutAppRepo("${values.image.tag}")
-              echo "ReleaseName:" + getReleaseName(it.key)
-              echo "NameSpace:" + getNameSpace(it.key)
-              echo "FilePath:" + it.key
-              echo "refName:" + "${values.image.tag}"
-        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
-      }
-  //    else echo "Skipping " + getNameSpace(it.key)
-
-
-      //deployHelm(name, ns, filePath, refName)
-      // if Dev -> deploy Dev
-      // else if QA -> deploy QA
-      // Else if -> deploy prod / Parse Yaml
+      else Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
     }
 
   }
