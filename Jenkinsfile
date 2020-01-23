@@ -263,12 +263,6 @@ def buildDeployMap() {
   echo getReleaseName(listFilePaths[0])
 
   // take Folders/Namespaces from deployMap and create stages dynamically
-  for ( k in deployMap ) {
-    stage("Deploy:"getNameSpace(k.key)) {
-      echo "This is Stage"
-      echo getNameSpace(k.key)
-    }
-  }
 
   deployMap.each {
       stage("Deploy: " + it.key) {
