@@ -41,8 +41,10 @@ stage('Checkout') {
   checkout scm
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
-  buildDeployMap()            // almost all magic started here !!!
 }
+
+// build deployMap and start stages
+buildDeployMap()         
 
 } // node
 } //podTemplate
