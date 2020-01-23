@@ -265,8 +265,7 @@ def buildDeployMap() {
   // take Folders/Namespaces from deployMap and create stages dynamically
 
   deployMap.each {
-      stage("Deploy: " + it.key) {
-            echo it.key
+      stage("Deploy:" + getNameSpace(it.key)) {
             echo getNameSpace(it.key)
     }
   }
