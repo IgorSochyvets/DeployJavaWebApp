@@ -80,8 +80,7 @@ def isChangeSet(filePath) {
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
   def stringIfRefDirExist=""
-  //stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep ${commitId}')
-  def stringIfRefDirExist = ("ls | grep ${commitId}").execute()
+  stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep "${commitId}"')
   echo "String Before Checkout -->"
   echo stringIfRefDirExist
   echo "<-- End of String"
@@ -92,8 +91,7 @@ def checkoutAppRepo(commitId) {
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
 
   sh 'ls -la'
-  //stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep ${commitId}')
-  def stringIfRefDirExist = ("ls | grep ${commitId}").execute()
+  stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep "${commitId}"')
   echo "String After Checkout -->"
   echo stringIfRefDirExist
   echo "<-- End of String"
