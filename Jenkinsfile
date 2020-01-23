@@ -150,35 +150,11 @@ def buildDeployMap() {
 //testing with parallel
 /////////////////////////
 
-  deployMap.each {
-    runningMap = [:]
-    runningMap.put(getNameSpace(it.key),
-    {
-      stage("Deploy:" + getNameSpace(it.key)) {
-        if (it.value == 'true') {
-          echo "Deploying " + it.key
-          if (isMaster()) {
-            checkoutAppRepo("${params.deployTag}")
-            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-          }
-          else if (isBuildingTag()) {
-            checkoutAppRepo("${params.deployTag}")
-            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-          }
-          else if (isChangeSet(it.key))  {
-            def values = readYaml(file: it.key)
-            checkoutAppRepo("${values.image.tag}")
-            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
-          }
-        }
-        else {
-          echo "Skipping " + it.key
-          Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
-        }
-      }
-    }
 
-    )
+
+    deployMap.each {
+      runningMap = [:]
+      runningMap.put(getNameSpace(it.key), makeStages(it))
     }
 
     stage('Parallel') {
@@ -192,6 +168,32 @@ def buildDeployMap() {
 
 
   } //end of  buildDeployMap
+
+// for parallel - make stages
+def makeStages(j) {
+  stage("Deploy:" + getNameSpace(j.key)) {
+    if (j.value == 'true') {
+      echo "Deploying " + j.key
+      if (isMaster()) {
+        checkoutAppRepo("${params.deployTag}")
+        deployHelm(getReleaseName(j.key), getNameSpace(j.key), j.key, "${params.deployTag}")
+      }
+      else if (isBuildingTag()) {
+        checkoutAppRepo("${params.deployTag}")
+        deployHelm(getReleaseName(j.key), getNameSpace(j.key), j.key, "${params.deployTag}")
+      }
+      else if (isChangeSet(j.key))  {
+        def values = readYaml(file: j.key)
+        checkoutAppRepo("${values.image.tag}")
+        deployHelm(getReleaseName(j.key), getNameSpace(j.key), j.key, "${values.image.tag}")
+      }
+    }
+    else {
+      echo "Skipping " + j.key
+      Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(j.key))
+    }
+  }
+}
 
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
