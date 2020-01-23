@@ -151,6 +151,23 @@ def buildDeployMap() {
 //testing with parallel
 /////////////////////////
 
+// do checkout successively and Create Folders
+  deployMap.each {
+      if (it.value == 'true') {
+        if (isMaster()) {
+          checkoutAppRepo("${params.deployTag}")
+        }
+        else if (isBuildingTag()) {
+          checkoutAppRepo("${params.deployTag}")
+        }
+        else if (isChangeSet(it.key))  {
+          def values = readYaml(file: it.key)
+          checkoutAppRepo("${values.image.tag}")
+        }
+      }
+  }
+
+
 // for parallel - make stages
 
     def runningMap = [ : ]
@@ -159,16 +176,16 @@ def buildDeployMap() {
             if (it.value == 'true') {
               echo "Deploying " + it.key
               if (isMaster()) {
-                checkoutAppRepo("${params.deployTag}")
+                //checkoutAppRepo("${params.deployTag}")
                 deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
               }
               else if (isBuildingTag()) {
-                checkoutAppRepo("${params.deployTag}")
+                //checkoutAppRepo("${params.deployTag}")
                 deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
               }
               else if (isChangeSet(it.key))  {
                 def values = readYaml(file: it.key)
-                checkoutAppRepo("${values.image.tag}")
+                //checkoutAppRepo("${values.image.tag}")
                 deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
               }
             }
