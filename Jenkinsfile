@@ -79,11 +79,16 @@ def isChangeSet(filePath) {
 
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
+  def stringIfRefDirExist=""
+  stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep "${commitId}"')
+  echo "String: " + stringIfRefDirExist
   checkout([$class: 'GitSCM',
   branches: [[name: "${commitId}"]],
   extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${commitId}"]],
   userRemoteConfigs: [[credentialsId: 'github_key', url: 'https://github.com/IgorSochyvets/fizz-buzz.git']]])
   sh 'ls -la'
+  stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep "${commitId}"')
+  echo "String: " + stringIfRefDirExist
 }
 
 // Build MAP key : values   - which contains information which Dev/Qa/Prod release to deploy
@@ -139,7 +144,7 @@ def buildDeployMap() {
       }
       else {
         echo "Skipping " + it.key
-        Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
+        Utils.markStageSkippedForConditional("Deploy:" + it.key)
       }
     }
   }
@@ -190,8 +195,6 @@ def buildDeployMap() {
 
 
   } //end of  buildDeployMap
-
-
 
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
