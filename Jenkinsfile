@@ -264,13 +264,14 @@ def buildDeployMap() {
 
   // take Folders/Namespaces from deployMap and create stages dynamically
   for ( k in deployMap ) {
-    stage(getNameSpace(k.key)) {
-      echo "This is Stege"
+    stage("Deploy:"getNameSpace(k.key)) {
+      echo "This is Stage"
       echo getNameSpace(k.key)
     }
   }
 
 }
+
 
 // get folder name = namespace from file path
 def getNameSpace (filePath){
