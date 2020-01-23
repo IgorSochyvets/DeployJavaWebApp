@@ -148,7 +148,7 @@ def buildDeployMap() {
 /////////////////////////
 //testing with parallel
 /////////////////////////
-/*
+
   deployMap.each {
     runningMap = [:]
     runningMap.put("Deploy:" + getNameSpace(it.key), {
@@ -183,7 +183,7 @@ def buildDeployMap() {
     /////////////////////////
     //testing with parallel
     /////////////////////////
-*/
+
 
   } //end of  buildDeployMap
 
