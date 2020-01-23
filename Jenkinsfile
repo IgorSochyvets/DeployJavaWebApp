@@ -80,7 +80,7 @@ def isChangeSet(filePath) {
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
   def stringIfRefDirExist=""
-  stringIfRefDirExist = sh(returnStdout: true, script: "ls | grep ${commitId}")
+  stringIfRefDirExist = sh(returnStdout: true, script: 'ls | grep ${commitId}')
   echo "String Before Checkout -->"
   echo stringIfRefDirExist
   echo "<-- End of String"
