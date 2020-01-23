@@ -173,7 +173,7 @@ def buildDeployMap() {
             }
             else {
               echo "Skipping " + it.key
-              Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
+              Utils.markStageSkippedForConditional("Deploy:"+it.key)
             }
           }
           })
