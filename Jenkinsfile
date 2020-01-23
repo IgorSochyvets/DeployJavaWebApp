@@ -270,6 +270,7 @@ def buildDeployMap() {
     }
   }
 
+}
 
 // get folder name = namespace from file path
 def getNameSpace (filePath){
