@@ -151,34 +151,39 @@ def buildDeployMap() {
 
   deployMap.each {
     runningMap = [:]
-    runningMap.put("Deploy:" + getNameSpace(it.key), {
-      if (it.value == 'true') {
-        echo "Deploying " + it.key
-        if (isMaster()) {
-          checkoutAppRepo("${params.deployTag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+    runningMap.put(getNameSpace(it.key),
+    {
+      stage("Deploy:" + getNameSpace(it.key)) {
+        if (it.value == 'true') {
+          echo "Deploying " + it.key
+          if (isMaster()) {
+            checkoutAppRepo("${params.deployTag}")
+            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+          }
+          else if (isBuildingTag()) {
+            checkoutAppRepo("${params.deployTag}")
+            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+          }
+          else if (isChangeSet(it.key))  {
+            def values = readYaml(file: it.key)
+            checkoutAppRepo("${values.image.tag}")
+            deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+          }
         }
-        else if (isBuildingTag()) {
-          checkoutAppRepo("${params.deployTag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-        }
-        else if (isChangeSet(it.key))  {
-          def values = readYaml(file: it.key)
-          checkoutAppRepo("${values.image.tag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+        else {
+          echo "Skipping " + it.key
+          Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
         }
       }
-      else {
-        echo "Skipping " + it.key
-        Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
-      }
-    })
+    }
+
+    )
     }
 
     stage('Parallel') {
       parallel(runningMap)
     }
-
+    
     /////////////////////////
     /////////////////////////
     //testing with parallel
