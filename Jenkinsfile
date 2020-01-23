@@ -266,8 +266,9 @@ def buildDeployMap() {
 //      echo "refName:" + params.deployTag
 
       // deploy or skip DEV
-      echo "Deploying " + getNameSpace(it.key)
+      echo "Deploying " + it.key
 
+      if it.value == 'false' echo "Value = False!!!"
       if (isMaster()) {
         checkoutAppRepo("${params.deployTag}")
         deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
