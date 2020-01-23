@@ -120,7 +120,7 @@ def buildDeployMap() {
 /*
   // every deployMap element - stage (deploy or skip)
   deployMap.each {
-    stage("Deploy:" + getNameSpace(it.key)) {
+    stage("Deploy:" + it.key) {
       if (it.value == 'true') {
         echo "Deploying " + it.key
         if (isMaster()) {
@@ -155,7 +155,7 @@ def buildDeployMap() {
 
     deployMap.each {
       runningMap = [ : ]
-      runningMap.put(it.key, stage("Deploy:"+getNameSpace(it.key)+releaseName(it.key)) {
+      runningMap.put(it.key, stage("Deploy:"+it.key) {
             if (it.value == 'true') {
               echo "Deploying " + it.key
               if (isMaster()) {
