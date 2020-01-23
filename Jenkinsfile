@@ -265,7 +265,8 @@ def buildDeployMap() {
   // take Folders/Namespaces from deployMap and create stages dynamically
   for ( k in deployMap ) {
     stage getNameSpace(k.key) {
-      echo "This is Stege getNameSpace(k.key)"
+      echo "This is Stege"
+      echo getNameSpace(k.key)
     }
   }
 
