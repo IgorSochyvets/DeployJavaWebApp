@@ -155,9 +155,7 @@ def buildDeployMap() {
 
     deployMap.each {
       runningMap = [ : ]
-      runningMap.put(it.key,
-        {
-          stage("Deploy:" + getNameSpace(it.key)) {
+      runningMap.put(it.key, stage("Deploy:"+getNameSpace(it.key)+releaseName(it.key)) {
             if (it.value == 'true') {
               echo "Deploying " + it.key
               if (isMaster()) {
@@ -178,11 +176,7 @@ def buildDeployMap() {
               echo "Skipping " + it.key
               Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
             }
-          }
-        }
-
-
-      )
+          })
     }
 
     stage('Parallel') {
