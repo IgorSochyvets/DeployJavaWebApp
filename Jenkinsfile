@@ -267,23 +267,24 @@ def buildDeployMap() {
 
       // deploy or skip DEV
       if (isMaster()) {
-        echo "Deploying DEV"
+        echo "Deploy:" + getNameSpace(it.key)
       }
-      else echo "Skipping " + getNameSpace(it.key)
+  //      else echo "Skipping " + getNameSpace(it.key)
 
       // deploy or skip QA
 
       else if (isBuildingTag()) {
-        echo "Deploying QA"
+        echo "Deploy:" + getNameSpace(it.key)
       }
-      else echo "Skipping " + getNameSpace(it.key)
+  //    else echo "Skipping " + getNameSpace(it.key)
 
       else if (isChangeSet(it.key))  {
+        echo "Deploy:" + getNameSpace(it.key)
         def values = readYaml(file: it.key)
         checkoutAppRepo("${values.image.tag}")
         deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
       }
-      else echo "Skipping " + getNameSpace(it.key)
+  //    else echo "Skipping " + getNameSpace(it.key)
 
 
       //deployHelm(name, ns, filePath, refName)
