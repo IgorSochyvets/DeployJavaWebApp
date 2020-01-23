@@ -188,6 +188,7 @@ def isChangeSet(filePath) {
 //
 // deployment function for PROD releases
 // name - app's name; ns - namespace; filePath - path to values.yaml, refName - name of dir where App Repo is stored;
+/* OLD deploy method
 def deploy(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -204,6 +205,7 @@ def deploy(name, ns, filePath, refName) {
     }
   }
 }
+*/
 
 // checkout App repo to commit function
 def checkoutAppRepo(commitId) {
@@ -234,7 +236,6 @@ def buildDeployMap() {
   // initializing deployMap from listFilePaths
   def deployMap = [:]
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
-  // deployMap.each{ k, v -> println "${k}:${v}" } // test output
 
   // check keys in map and mark 'true' if it needs to be deployed
   // dev if isMaster()
@@ -253,23 +254,38 @@ def buildDeployMap() {
     }
   }
 
-  echo " Modified Map here --->>> "
+  echo "Map to be deployed: "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
-  // TMP testing
-  echo "Namespace"
-  echo getNameSpace(listFilePaths[0])
-  echo "Release Name"
-  echo getReleaseName(listFilePaths[0])
-
   // take Folders/Namespaces from deployMap and create stages dynamically
-
   deployMap.each {
-      stage("Deploy:" + getNameSpace(it.key)) {
-            echo getNameSpace(it.key)
+    stage("Deploy:" + getNameSpace(it.key)) {
+      // echo getNameSpace(it.key)
+      echo "ReleaseName:" + getReleaseName(it.key)
+      echo "NameSpace:" + getNameSpace(it.key)
+      echo "FilePath:" + it.key
+      echo "refName:" + params.deployTag
+      //deployHelm(name, ns, filePath, refName)
     }
   }
 
+}
+
+def deployHelm(name, ns, filePath, refName) {
+  container('helm') {
+    withKubeConfig([credentialsId: 'kubeconfig']) {
+    sh """
+        echo appVersion: \"$refName\" >> '$refName/javawebapp-chart/Chart.yaml'
+        helm upgrade --install $name --debug '$refName/javawebapp-chart' \
+        --force \
+        --wait \
+        --namespace $ns \
+        --values $filePath \
+        --set image.tag=$refName
+        helm ls
+    """
+    }
+  }
 }
 
 // get folder name = namespace from file path
