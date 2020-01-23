@@ -285,7 +285,7 @@ def buildDeployMap() {
       else if (isChangeSet(it.key))  {
         def values = readYaml(file: it.key)
         checkoutAppRepo("${values.image.tag}")
-        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+    //    deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
       }
   //    else echo "Skipping " + getNameSpace(it.key)
 
