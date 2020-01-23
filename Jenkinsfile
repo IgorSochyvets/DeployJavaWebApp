@@ -308,7 +308,6 @@ def deployHelm(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
-        echo appVersion: \"$refName\" >> '$refName/$filePath'
         helm upgrade --install $name --debug '$refName/$name' \
         --force \
         --wait \
@@ -320,6 +319,8 @@ def deployHelm(name, ns, filePath, refName) {
     }
   }
 }
+
+//         echo appVersion: \"$refName\" >> '$refName/$filePath'
 
 // get folder name = namespace from file path
 def getNameSpace (filePath){
