@@ -150,25 +150,6 @@ def buildDeployMap() {
 //testing with parallel
 /////////////////////////
 
-
-
-    deployMap.each {
-      runningMap = [ : ]
-      runningMap.put(it.key, makeStages(it))
-    }
-
-    stage('Parallel') {
-      parallel(runningMap)
-    }
-
-    /////////////////////////
-    /////////////////////////
-    //testing with parallel
-    /////////////////////////
-
-
-  } //end of  buildDeployMap
-
 // for parallel - make stages
 def makeStages(j) {
   stage("Deploy:" + getNameSpace(j.key)) {
@@ -194,6 +175,25 @@ def makeStages(j) {
     }
   }
 }
+
+    deployMap.each {
+      runningMap = [ : ]
+      runningMap.put(it.key, makeStages(it))
+    }
+
+    stage('Parallel') {
+      parallel(runningMap)
+    }
+
+    /////////////////////////
+    /////////////////////////
+    //testing with parallel
+    /////////////////////////
+
+
+  } //end of  buildDeployMap
+
+
 
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
