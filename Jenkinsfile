@@ -42,7 +42,7 @@ stage('Checkout1') {
   sh "ls -la"
   echo "${params.deployTag}"  // parameters from upstream job - short commit
   buildDeployMap()
-  makeStagesFromFolders()
+
 }
 
 /*
@@ -261,6 +261,11 @@ def buildDeployMap() {
   echo getNameSpace(listFilePaths[0])
   echo "Release Name"
   echo getReleaseName(listFilePaths[0])
+
+  for ( k in deployMap ) {
+    echo getNameSpace(k.key)
+  }
+  
 }
 
 // get folder name = namespace from file path
@@ -276,9 +281,11 @@ def getReleaseName (filePath){
   return releaseName
 }
 
+/*
 def makeStagesFromFolders () {
   // take Folders/Namespaces from deployMap and create stages dynamically
   for ( k in deployMap ) {
     echo getNameSpace(k.key)
   }
 }
+*/
