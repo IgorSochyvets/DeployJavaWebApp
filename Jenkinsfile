@@ -270,7 +270,11 @@ def buildDeployMap() {
     }
   }
 
-}
+  deployMap.each {
+      stage("Deploy: " + it.key) {
+            echo it.key
+    }
+  }
 
 
 // get folder name = namespace from file path
