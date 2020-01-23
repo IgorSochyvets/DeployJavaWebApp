@@ -267,7 +267,7 @@ def buildDeployMap() {
   deployMap.each {
       stage("Deploy: " + it.key) {
             echo it.key
-            echo getNameSpace(k.key)
+            echo getNameSpace(it.key)
     }
   }
 
