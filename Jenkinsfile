@@ -304,7 +304,7 @@ def deployHelm(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
-        echo appVersion: \"$refName\" >> '$refName/\"$filePath\"'
+        echo appVersion: \"$refName\" >> '$refName/$filePath'
         helm upgrade --install $name --debug '$refName/javawebapp-chart' \
         --force \
         --wait \
