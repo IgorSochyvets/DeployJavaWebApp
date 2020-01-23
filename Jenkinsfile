@@ -260,13 +260,38 @@ def buildDeployMap() {
   // take Folders/Namespaces from deployMap and create stages dynamically
   deployMap.each {
     stage("Deploy:" + getNameSpace(it.key)) {
-      // echo getNameSpace(it.key)
-      echo "ReleaseName:" + getReleaseName(it.key)
-      echo "NameSpace:" + getNameSpace(it.key)
-      echo "FilePath:" + it.key
-      echo "refName:" + params.deployTag
+//      echo "ReleaseName:" + getReleaseName(it.key)
+//      echo "NameSpace:" + getNameSpace(it.key)
+//      echo "FilePath:" + it.key
+//      echo "refName:" + params.deployTag
+
+      // deploy or skip DEV
+      if (isMaster()) {
+        echo "Deploying DEV"
+      }
+      else echo "Skipping DEV"
+
+      // deploy or skip QA
+
+      if (isBuildingTag()) {
+        echo "Deploying QA"
+      }
+      else echo "Skipping QA"
+
+      if (isChangeSet(it.key))  {
+        def values = readYaml(file: it.key)
+        checkoutAppRepo("${values.image.tag}")
+        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+      }
+      else echo "Skipping " + getNameSpace(it.key)
+
+
       //deployHelm(name, ns, filePath, refName)
+      // if Dev -> deploy Dev
+      // else if QA -> deploy QA
+      // Else if -> deploy prod / Parse Yaml
     }
+
   }
 
 }
