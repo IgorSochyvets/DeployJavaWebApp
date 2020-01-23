@@ -266,9 +266,9 @@ def buildDeployMap() {
 //      echo "refName:" + params.deployTag
 
       // deploy or skip DEV
-      echo "Deploying " + it.key
 
       if (it.value == 'true') {
+        echo "Deploying " + it.key
         if (isMaster()) {
           checkoutAppRepo("${params.deployTag}")
           deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
@@ -287,7 +287,10 @@ def buildDeployMap() {
           deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
         }
       }
-      else Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
+      else {
+        echo "Skipping " + it.key
+        Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
+      }
     }
 
   }
