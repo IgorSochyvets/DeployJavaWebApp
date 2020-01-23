@@ -203,7 +203,7 @@ def deployHelm(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
-        echo appVersion: \"$refName\" >> '$refName/itavawebapp-chart/Chart.yaml'
+        echo appVersion: \"$refName\" >> '$refName/javawebapp-chart/Chart.yaml'
         helm upgrade --install $name --debug '$refName/javawebapp-chart' \
         --force \
         --wait \
