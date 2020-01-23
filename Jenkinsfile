@@ -289,7 +289,7 @@ def buildDeployMap() {
               echo "NameSpace:" + getNameSpace(it.key)
               echo "FilePath:" + it.key
               echo "refName:" + "${values.image.tag}"
-        //deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
       }
   //    else echo "Skipping " + getNameSpace(it.key)
 
@@ -309,7 +309,7 @@ def deployHelm(name, ns, filePath, refName) {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
         echo appVersion: \"$refName\" >> '$refName/$filePath'
-        helm upgrade --install $name --debug '$refName/javawebapp-chart' \
+        helm upgrade --install $name --debug '$refName/$name' \
         --force \
         --wait \
         --namespace $ns \
