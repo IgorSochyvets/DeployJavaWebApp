@@ -266,20 +266,23 @@ def buildDeployMap() {
 //      echo "refName:" + params.deployTag
 
       // deploy or skip DEV
+      echo "Deploying " + getNameSpace(it.key)
+
       if (isMaster()) {
-        echo "Deploy:" + getNameSpace(it.key)
+        checkoutAppRepo("${params.deployTag}")
+        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
       }
   //      else echo "Skipping " + getNameSpace(it.key)
 
       // deploy or skip QA
 
       else if (isBuildingTag()) {
-        echo "Deploy:" + getNameSpace(it.key)
+        checkoutAppRepo("${params.deployTag}")
+        deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
       }
   //    else echo "Skipping " + getNameSpace(it.key)
 
       else if (isChangeSet(it.key))  {
-        echo "Deploy:" + getNameSpace(it.key)
         def values = readYaml(file: it.key)
         checkoutAppRepo("${values.image.tag}")
         deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
@@ -301,7 +304,7 @@ def deployHelm(name, ns, filePath, refName) {
   container('helm') {
     withKubeConfig([credentialsId: 'kubeconfig']) {
     sh """
-        echo appVersion: \"$refName\" >> '$refName/javawebapp-chart/Chart.yaml'
+        echo appVersion: \"$refName\" >> '$refName/\"$filePath\"'
         helm upgrade --install $name --debug '$refName/javawebapp-chart' \
         --force \
         --wait \
