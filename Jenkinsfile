@@ -269,16 +269,16 @@ def buildDeployMap() {
       if (isMaster()) {
         echo "Deploying DEV"
       }
-      else echo "Skipping DEV"
+      else echo "Skipping " + getNameSpace(it.key)
 
       // deploy or skip QA
 
-      if (isBuildingTag()) {
+      else if (isBuildingTag()) {
         echo "Deploying QA"
       }
-      else echo "Skipping QA"
+      else echo "Skipping " + getNameSpace(it.key)
 
-      if (isChangeSet(it.key))  {
+      else if (isChangeSet(it.key))  {
         def values = readYaml(file: it.key)
         checkoutAppRepo("${values.image.tag}")
         deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
