@@ -262,10 +262,13 @@ def buildDeployMap() {
   echo "Release Name"
   echo getReleaseName(listFilePaths[0])
 
+  // take Folders/Namespaces from deployMap and create stages dynamically
   for ( k in deployMap ) {
-    echo getNameSpace(k.key)
+    stage getNameSpace(k.key) {
+      echo "This is Stege $getNameSpace(k.key)"
+    }
   }
-  
+
 }
 
 // get folder name = namespace from file path
@@ -283,7 +286,7 @@ def getReleaseName (filePath){
 
 /*
 def makeStagesFromFolders () {
-  // take Folders/Namespaces from deployMap and create stages dynamically
+
   for ( k in deployMap ) {
     echo getNameSpace(k.key)
   }
