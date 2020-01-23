@@ -152,9 +152,8 @@ def buildDeployMap() {
 
 // for parallel - make stages
 
-
+    def runningMap = [ : ]
     deployMap.each {
-      runningMap = [ : ]
       runningMap.put(it.key, { stage("Deploy:"+it.key) {
             if (it.value == 'true') {
               echo "Deploying " + it.key
