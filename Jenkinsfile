@@ -49,6 +49,10 @@ buildDeployMap()
 } // node
 } //podTemplate
 
+//
+// Methods
+//
+
 // is it DEV release ?
 def isMaster() {
   return ( (!isBuildingTag()) && (params.deployTag != 'Null') )
@@ -92,7 +96,6 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | grep qa | grep yaml | cut -c 64-' ) + \
     sh(returnStdout: true, script: 'find $PWD | grep prod- | grep yaml | cut -c 64-' )
   stringDeploypaths.split('\n').each { listFilePaths << it }
-  listFilePaths.each{ i -> println "${i}" }
 
   // initializing deployMap from listFilePaths with all values = 'false'
   def deployMap = [:]
@@ -139,7 +142,51 @@ def buildDeployMap() {
       }
     }
   }
-}
+
+
+/////////////////////////
+/////////////////////////
+//testing with parallel
+/////////////////////////
+/*
+  deployMap.each {
+    runningMap = [:]
+    runningMap.put("Deploy:" + getNameSpace(it.key), {
+      if (it.value == 'true') {
+        echo "Deploying " + it.key
+        if (isMaster()) {
+          checkoutAppRepo("${params.deployTag}")
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+        }
+        else if (isBuildingTag()) {
+          checkoutAppRepo("${params.deployTag}")
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+        }
+        else if (isChangeSet(it.key))  {
+          def values = readYaml(file: it.key)
+          checkoutAppRepo("${values.image.tag}")
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+        }
+      }
+      else {
+        echo "Skipping " + it.key
+        Utils.markStageSkippedForConditional("Deploy:" + getNameSpace(it.key))
+      }
+    })
+    }
+
+    stage('Parallel') {
+      parallel(runningMap)
+    }
+
+    /////////////////////////
+    /////////////////////////
+    //testing with parallel
+    /////////////////////////
+*/
+
+  } //end of  buildDeployMap
+
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
 // name - release name; ns - namespace; filePath - path to config file releaseName.yaml, refName - name of dir where App Repo is stored;
