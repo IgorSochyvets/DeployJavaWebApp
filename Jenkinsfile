@@ -157,7 +157,7 @@ def buildDeployMap() {
         }
       }
   }
-  // do checkout (tag) ( once for each tag )
+  // do checkout (tag) ( once for each unique tag )
   listTags.toSet().each { println checkoutAppRepo(it)}
 
   // return list.toSet()
