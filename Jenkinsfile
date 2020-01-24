@@ -118,17 +118,13 @@ def buildDeployMap() {
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
-/*
+  /* do deploy stages successively
   // every deployMap element - stage (deploy or skip)
   deployMap.each {
     stage("Deploy:" + it.key) {
       if (it.value == 'true') {
         echo "Deploying " + it.key
-        if (isMaster()) {
-          checkoutAppRepo("${params.deployTag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-        }
-        else if (isBuildingTag()) {
+        if ( isMaster() || isBuildingTag() ) {
           checkoutAppRepo("${params.deployTag}")
           deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
         }
@@ -146,12 +142,8 @@ def buildDeployMap() {
   }
 */
 
-/////////////////////////
-/////////////////////////
-//testing with parallel
-/////////////////////////
 
-// do checkout successively and Create Folders
+  // do checkout successively and Create Folders
   deployMap.each {
       if (it.value == 'true') {
         if ( isMaster() || isBuildingTag() ) {
@@ -165,8 +157,7 @@ def buildDeployMap() {
   }
 
 
-// for parallel - make stages
-
+    //do deploy stages in parallel
     def runningMap = [ : ]
     deployMap.each {
       runningMap.put(it.key, { stage("Deploy:"+it.key) {
@@ -230,7 +221,7 @@ def getNameSpace (filePath){
 // get file name = release name from file path
 def getReleaseName (filePath){
   def releaseName = ""
-  def file2 = filePath.split('/')[1]
-  releaseName=file2.take(file2.lastIndexOf('.'))
+  // def file2 = filePath.split('/')[1]
+  releaseName=filePath.split('/')[1].take(file2.lastIndexOf('.'))
   return releaseName
 }
