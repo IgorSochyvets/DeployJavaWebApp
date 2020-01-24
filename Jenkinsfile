@@ -158,7 +158,7 @@ def buildDeployMap() {
       }
   }
   echo "listTags --->>> "
-  listTags.each { println it}
+  listTags.toSet().each { println it}
 
   // return list.toSet()
 
