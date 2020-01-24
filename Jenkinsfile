@@ -142,7 +142,6 @@ def buildDeployMap() {
   }
 */
 
-
   // do checkout successively and Create Folders
   deployMap.each {
       if (it.value == 'true') {
@@ -156,42 +155,34 @@ def buildDeployMap() {
       }
   }
 
-
     //do deploy stages in parallel
-    def runningMap = [ : ]
-    deployMap.each {
-      runningMap.put(it.key, { stage("Deploy:"+it.key) {
-            if (it.value == 'true') {
-              echo "Deploying " + it.key
-              if (isMaster() || isBuildingTag()) {
-                //checkoutAppRepo("${params.deployTag}")
-                deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-              }
-              else if (isChangeSet(it.key))  {
-                def values = readYaml(file: it.key)
-                //checkoutAppRepo("${values.image.tag}")
-                deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
-              }
-            }
-            else {
-              echo "Skipping " + it.key
-              Utils.markStageSkippedForConditional("Deploy:"+it.key)
-            }
-          }
-          })
+  def runningMap = [ : ]
+  deployMap.each {
+    runningMap.put(it.key, { stage("Deploy:"+it.key) {
+      if (it.value == 'true') {
+        echo "Deploying " + it.key
+        if (isMaster() || isBuildingTag()) {
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
+        }
+        else if (isChangeSet(it.key))  {
+          def values = readYaml(file: it.key)
+          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
+        }
+      }
+      else {
+        echo "Skipping " + it.key
+        Utils.markStageSkippedForConditional("Deploy:"+it.key)
+      }
     }
+    })
+  }
 
-    stage('Parallel') {
-      parallel(runningMap)
-    }
+  stage('Parallel') {
+    parallel(runningMap)
+  }
+    //end of parallel block
 
-    /////////////////////////
-    /////////////////////////
-    //testing with parallel
-    /////////////////////////
-
-
-  } //end of  buildDeployMap
+} //end of  buildDeployMap
 
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
