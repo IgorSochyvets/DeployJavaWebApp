@@ -143,17 +143,24 @@ def buildDeployMap() {
 */
 
   // do checkout successively and Create Folders
+  def listTags = []
   deployMap.each {
       if (it.value == 'true') {
         if ( isMaster() || isBuildingTag() ) {
-          checkoutAppRepo("${params.deployTag}")
+          listTags << params.deployTag
+//          checkoutAppRepo("${params.deployTag}")
         }
         else if (isChangeSet(it.key))  {
           def values = readYaml(file: it.key)
-          checkoutAppRepo("${values.image.tag}")
+          listTags << values.image.tag
+//          checkoutAppRepo("${values.image.tag}")
         }
       }
   }
+  echo "listTags --->>> "
+  listTags.each { println it}
+
+  // return list.toSet()
 
     //do deploy stages in parallel
   def runningMap = [ : ]
