@@ -221,7 +221,6 @@ def getNameSpace (filePath){
 // get file name = release name from file path
 def getReleaseName (filePath){
   def releaseName = ""
-  // def file2 = filePath.split('/')[1]
   releaseName=filePath.split('/')[1].take(filePath.split('/')[1].lastIndexOf('.'))
   return releaseName
 }

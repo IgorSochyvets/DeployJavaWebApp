@@ -1,6 +1,6 @@
 image:
   repository: kongurua/fizz-buzz
-  tag: 2.4.8
+  tag: 2.4.9
 ingress:
   hosts:
   - host: prod-us1.ddns.net
