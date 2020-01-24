@@ -157,8 +157,8 @@ def buildDeployMap() {
         }
       }
   }
-  echo "listTags --->>> "
-  listTags.toSet().each { println it}
+  // do checkout (tag) ( once for each tag )
+  listTags.toSet().each { println checkoutAppRepo(it)}
 
   // return list.toSet()
 
