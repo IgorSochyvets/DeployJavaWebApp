@@ -198,7 +198,7 @@ def deployHelm(name, ns, filePath, refName) {
         helm ls
     """
     //tmp for tests
-    sh "echo ${DEMO_GREETING}!"
+    sh "echo $DEMO_GREETING"
     //println ("$DEMO_GREETING")
     }
   }
