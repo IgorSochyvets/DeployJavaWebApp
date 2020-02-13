@@ -196,8 +196,9 @@ def deployHelm(name, ns, filePath, refName) {
         --values $filePath \
         --set image.tag=$refName
         helm ls
-        DEMO1 = "This is veariable"
         echo "NOW"
+        DEMO1="This is veariable"
+        echo "THEN"
         echo $DEMO1
     """
     //tmp for tests
