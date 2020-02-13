@@ -127,8 +127,8 @@ def buildDeployMap() {
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
-  //tmp for tests 
-  printenv
+  //tmp for tests
+  println ($DEMO_GREETING)
 
   return deployMap
 } //end of  buildDeployMap
