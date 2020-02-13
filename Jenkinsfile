@@ -128,7 +128,7 @@ def buildDeployMap() {
   deployMap.each{ k, v -> println "${k}:${v}" }
 
   //tmp for tests
-  println ($DEMO_GREETING)
+  println ("$DEMO_GREETING")
 
   return deployMap
 } //end of  buildDeployMap
