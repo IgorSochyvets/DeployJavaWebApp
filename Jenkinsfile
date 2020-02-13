@@ -43,8 +43,14 @@ stage('Checkout') {
   echo "${params.deployTag}"  // parameters from upstream job - short commit
 }
 
-// build deployMap and start stages
-buildDeployMap()
+// build Map with info what to deploy
+mapToDeploy = buildDeployMap()
+
+// checkout all repos for releases which must be deployed
+checkoutForDeploy(mapToDeploy)
+
+// deploy in parallel
+deployFromMap(mapToDeploy)
 
 } // node
 } //podTemplate
@@ -118,53 +124,37 @@ def buildDeployMap() {
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
-  /* do deploy stages successively
-  // every deployMap element - stage (deploy or skip)
-  deployMap.each {
-    stage("Deploy:" + it.key) {
-      if (it.value == 'true') {
-        echo "Deploying " + it.key
-        if ( isMaster() || isBuildingTag() ) {
-          checkoutAppRepo("${params.deployTag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${params.deployTag}")
-        }
-        else if (isChangeSet(it.key))  {
-          def values = readYaml(file: it.key)
-          checkoutAppRepo("${values.image.tag}")
-          deployHelm(getReleaseName(it.key), getNameSpace(it.key), it.key, "${values.image.tag}")
-        }
-      }
-      else {
-        echo "Skipping " + it.key
-        Utils.markStageSkippedForConditional("Deploy:" + it.key)
-      }
-    }
-  }
-*/
+  return deployMap
+} //end of  buildDeployMap
 
-  // do checkout successively and Create Folders
+
+
+//// Separate Method - checkout successively - not in Parallel
+// do checkout successively and Create Folders
+
+def checkoutForDeploy(deployMap1) {
   def listTags = []
-  deployMap.each {
+  deployMap1.each {
       if (it.value == 'true') {
         if ( isMaster() || isBuildingTag() ) {
           listTags << params.deployTag
-//          checkoutAppRepo("${params.deployTag}")
         }
         else if (isChangeSet(it.key))  {
           def values = readYaml(file: it.key)
           listTags << values.image.tag
-//          checkoutAppRepo("${values.image.tag}")
         }
       }
   }
   // do checkout (tag) ( once for each unique tag )
   listTags.toSet().each { println checkoutAppRepo(it)}
+}
 
-  // return list.toSet()
 
-    //do deploy stages in parallel
+//// Separate Method - Deployment!  ////  ////  ////  ////////  ////  ////  ////
+//deploy stages in parallel
+def deployFromMap(deployMap2) {
   def runningMap = [ : ]
-  deployMap.each {
+  deployMap2.each {
     runningMap.put(it.key, { stage("Deploy:"+it.key) {
       if (it.value == 'true') {
         echo "Deploying " + it.key
@@ -183,14 +173,10 @@ def buildDeployMap() {
     }
     })
   }
-
   stage('Parallel') {
     parallel(runningMap)
   }
-    //end of parallel block
-
-} //end of  buildDeployMap
-
+}  //end of parallel block
 
 // Main Methon for Helm Deployment for Dev/Qa/Prod
 // name - release name; ns - namespace; filePath - path to config file releaseName.yaml, refName - name of dir where App Repo is stored;
