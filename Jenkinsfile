@@ -109,7 +109,7 @@ def buildDeployMap() {
 
   listFilePaths.each {println(it)}
 
-  echo "Starting :"
+  echo "Starting  :"
   def fileList = "ls .".execute()
   def files= []
   fileList .text.eachLine {files.add(it)}
