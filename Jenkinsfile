@@ -26,8 +26,8 @@ spec:
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
     env:
-    - name: DEMO_GREETING
-      value: "Hello from the environment"
+      - name: DEMO_GREETING
+        value: "Hello from the environment"
     command:
     - cat
     tty: true
