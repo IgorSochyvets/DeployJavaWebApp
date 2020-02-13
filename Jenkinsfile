@@ -107,6 +107,8 @@ def buildDeployMap() {
     sh(returnStdout: true, script: 'find $PWD | sort | grep prod- | grep yaml | cut -c 64-' )
   stringDeploypaths.split('\n').each { listFilePaths << it }
 
+  listFilePaths.each {println(it)} 
+
   // initializing deployMap from listFilePaths with all values = 'false'
   def deployMap = [:]
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
