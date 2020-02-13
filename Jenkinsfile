@@ -196,6 +196,7 @@ def deployHelm(name, ns, filePath, refName) {
         --values $filePath \
         --set image.tag=$refName
         helm ls
+        echo $DEMO_GREETING
     """
     //tmp for tests
     //sh "echo $DEMO_GREETING"
