@@ -25,6 +25,9 @@ spec:
   containers:
   - name: helm
     image: lachlanevenson/k8s-helm:v2.16.1
+    env:
+    - name: DEMO_GREETING
+      value: "Hello from the environment"
     command:
     - cat
     tty: true
@@ -123,6 +126,9 @@ def buildDeployMap() {
 
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
+
+  //tmp for tests 
+  printenv
 
   return deployMap
 } //end of  buildDeployMap
