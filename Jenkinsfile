@@ -127,8 +127,6 @@ def buildDeployMap() {
   echo "Map to be deployed ('true' - to be deployed): "
   deployMap.each{ k, v -> println "${k}:${v}" }
 
-  //tmp for tests
-  println ("$DEMO_GREETING")
 
   return deployMap
 } //end of  buildDeployMap
@@ -199,6 +197,8 @@ def deployHelm(name, ns, filePath, refName) {
         --set image.tag=$refName
         helm ls
     """
+    //tmp for tests
+    println ("$DEMO_GREETING")
     }
   }
 }
