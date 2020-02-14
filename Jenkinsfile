@@ -109,14 +109,6 @@ def buildDeployMap() {
 
   listFilePaths.each {println(it)}
 
-  echo "Starting  :"
-  def fileList = "ls .".execute()
-  def files= []
-  fileList .text.eachLine {files.add(it)}
-  //return files
-  files.each {println(it)}
-
-
   // initializing deployMap from listFilePaths with all values = 'false'
   def deployMap = [:]
   listFilePaths.each{ i -> deployMap.put(i, 'false')}
